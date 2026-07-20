@@ -16,40 +16,41 @@ export async function loginWithGoogle() {
   return account.createOAuth2Session(OAuthProvider.Google, redirectUrl, redirectUrl);
 }
 
-export async function loginOrSignupWithPin(email: string, pin: string) {
+export async function loginOrSignupWithPin(pin: string) {
   if (pin.length !== 4 || !/^\d+$/.test(pin)) {
     throw new Error("PIN must be exactly 4 digits.");
   }
 
+  const syntheticEmail = `${pin}@imssa.local`;
   const paddedPassword = getPaddedPin(pin);
 
   try {
     // Attempt login first
-    await account.createEmailPasswordSession(email, paddedPassword);
+    await account.createEmailPasswordSession(syntheticEmail, paddedPassword);
     return { success: true, isNew: false };
   } catch (error: any) {
     // If user doesn't exist, check if they are approved
     if (error.code === 401 && error.type === "user_invalid_credentials") {
-      throw new Error("Invalid credentials. Please check your email and PIN.");
+      throw new Error("Invalid credentials. Please check your PIN.");
     }
 
     if (error.code === 404 || error.type === "user_not_found" || error.code === 401) {
-      // User doesn't exist. Check if they are approved in user_requests or users collection
+      // User doesn't exist. Check if they are approved in users collection by passkey
       try {
         const { Query } = await import("appwrite");
         const existingProfiles = await databases.listDocuments(APPWRITE_DB_ID, "users", [
-          Query.equal("email", email)
+          Query.equal("passkey", pin)
         ]);
 
         if (existingProfiles.total === 0) {
-          throw new Error("You must be approved by an administrator before creating an account.");
+          throw new Error("Your passkey is not authorized. Please contact an administrator.");
         }
 
         // They are approved! Create their auth account
-        await account.create(ID.unique(), email, paddedPassword);
+        await account.create(ID.unique(), syntheticEmail, paddedPassword);
         
         // Login immediately after creation
-        await account.createEmailPasswordSession(email, paddedPassword);
+        await account.createEmailPasswordSession(syntheticEmail, paddedPassword);
 
         // Link auth user ID to profile
         const user = await account.get();

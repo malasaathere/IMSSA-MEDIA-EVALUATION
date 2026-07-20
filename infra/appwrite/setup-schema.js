@@ -94,6 +94,10 @@ async function setup() {
   await ignoreConflict(databases.createStringAttribute(DB_ID, 'profiles', 'authUserId', 50, true));
   await ignoreConflict(databases.createStringAttribute(DB_ID, 'profiles', 'name', 255, true));
   await ignoreConflict(databases.createStringAttribute(DB_ID, 'profiles', 'email', 255, true));
+
+  // Users (Legacy/Auth)
+  await ignoreConflict(databases.createStringAttribute(DB_ID, 'users', 'passkey', 50, false));
+  await ignoreConflict(databases.createStringAttribute(DB_ID, 'users', 'email', 255, false));
   
   // Storage Buckets
   console.log('Setting up Storage Buckets...');

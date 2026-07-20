@@ -16,11 +16,10 @@ export function LoginForm() {
     setError(null);
 
     const formData = new FormData(event.currentTarget);
-    const email = formData.get("email") as string;
     const pin = formData.get("pin") as string;
 
     try {
-      const result = await loginOrSignupWithPin(email, pin);
+      const result = await loginOrSignupWithPin(pin);
       if (result.success) {
         // Redirect to a dashboard or portal router
         // By default, just send them to home, we'll implement role-based routing later
@@ -42,23 +41,6 @@ export function LoginForm() {
             <p className="text-sm text-red-700">{error}</p>
           </div>
         )}
-
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-slate-700">
-            Email Address
-          </label>
-          <div className="mt-1">
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              className="appearance-none block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-navy-500 focus:border-navy-500 sm:text-sm"
-              placeholder="john@example.com"
-            />
-          </div>
-        </div>
 
         <div>
           <label htmlFor="pin" className="block text-sm font-medium text-slate-700">
