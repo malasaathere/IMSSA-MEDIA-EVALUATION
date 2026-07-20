@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
-import { apiClient } from '../../api/api-client'
+import { databases } from '../../lib/appwrite'
+import { COLLECTIONS, DATABASE_ID } from '../../lib/appwrite-collections'
 
 export function AdminWorkspace() {
   const { data: users, isLoading: usersLoading } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
-      const res = await apiClient.get('/users')
-      return res.data
+      const res = await databases.listDocuments(DATABASE_ID, COLLECTIONS.USERS)
+      return res.documents
     }
   })
 
