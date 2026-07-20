@@ -60,20 +60,20 @@ export const api = {
 };
 
 export const apiClient = {
-  get: async (endpoint: string) => {
+  get: async (endpoint: string): Promise<any> => {
     console.warn(`Mock GET ${endpoint} using Appwrite not fully mapped`);
-    return [];
+    return { data: {} };
   },
-  post: async (endpoint: string, data: any) => {
+  post: async (endpoint: string, data: any): Promise<any> => {
     console.warn(`Mock POST ${endpoint} using Appwrite not fully mapped`);
-    return {};
+    return { data: {} };
   },
-  put: async (endpoint: string, data: any) => {
+  put: async (endpoint: string, data: any): Promise<any> => {
     console.warn(`Mock PUT ${endpoint} using Appwrite not fully mapped`);
-    return {};
+    return { data: {} };
   },
-  delete: async (endpoint: string) => {
+  delete: async (endpoint: string): Promise<any> => {
     console.warn(`Mock DELETE ${endpoint} using Appwrite not fully mapped`);
-    return {};
+    return { data: {} };
   },
 };
