@@ -1,0 +1,14 @@
+{
+  "name": "appwrite-infra",
+  "version": "1.0.0",
+  "description": "Appwrite schema provisioning and deployment",
+  "main": "setup-schema.js",
+  "type": "module",
+  "scripts": {
+    "setup": "node setup-schema.js"
+  },
+  "dependencies": {
+    "node-appwrite": "^14.1.0",
+    "dotenv": "^16.4.5"
+  }
+}
