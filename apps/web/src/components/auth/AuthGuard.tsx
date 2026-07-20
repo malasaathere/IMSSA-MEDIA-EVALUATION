@@ -11,8 +11,8 @@ const PUBLIC_ROUTES = ["/login", "/register", "/login/callback"];
 
 const ROLE_ROUTES: Record<string, { label: string; href: string; icon: any; roles: string[] }> = {
   marketing: { label: "Marketing", href: "/", icon: Home, roles: ["MARKETING_COORDINATOR"] },
-  designer: { label: "My Work", href: "/designer", icon: PenTool, roles: ["DESIGNER"] },
-  director: { label: "Review Inbox", href: "/director", icon: Eye, roles: ["DIRECTOR"] },
+  designer: { label: "My Work", href: "/designer", icon: PenTool, roles: ["DESIGNER", "VIDEO_EDITOR"] },
+  director: { label: "Review Inbox", href: "/director", icon: Eye, roles: ["MEDIA_DIRECTOR"] },
   analytics: { label: "Analytics", href: "/analytics", icon: PieChart, roles: ["CHIEF_COORDINATOR"] },
   plan: { label: "Google Plan", href: "/marketing-plan", icon: LayoutTemplate, roles: ["MARKETING_COORDINATOR"] },
   admin: { label: "Admin", href: "/admin", icon: ShieldAlert, roles: ["ADMIN"] },
@@ -50,14 +50,14 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   }
 
   // Authorization Check
-  const currentRoles = profile?.roles || [];
+  const currentRoles = (profile?.roles || []).map(r => r.toUpperCase().replace(' ', '_'));
   
   // A simplistic route guard based on pathname segments
   let authorized = true;
   if (pathname.startsWith("/admin") && !currentRoles.includes("ADMIN")) authorized = false;
   if (pathname.startsWith("/analytics") && !currentRoles.includes("CHIEF_COORDINATOR") && !currentRoles.includes("ADMIN")) authorized = false;
-  if (pathname.startsWith("/designer") && !currentRoles.includes("DESIGNER") && !currentRoles.includes("ADMIN")) authorized = false;
-  if (pathname.startsWith("/director") && !currentRoles.includes("DIRECTOR") && !currentRoles.includes("ADMIN")) authorized = false;
+  if (pathname.startsWith("/designer") && !currentRoles.includes("DESIGNER") && !currentRoles.includes("VIDEO_EDITOR") && !currentRoles.includes("ADMIN")) authorized = false;
+  if (pathname.startsWith("/director") && !currentRoles.includes("MEDIA_DIRECTOR") && !currentRoles.includes("ADMIN")) authorized = false;
 
   const allowedRoutes = Object.values(ROLE_ROUTES).filter(route => 
     route.roles.some(role => currentRoles.includes(role) || currentRoles.includes("ADMIN"))

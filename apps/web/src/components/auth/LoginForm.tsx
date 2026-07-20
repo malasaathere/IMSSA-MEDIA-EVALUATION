@@ -21,9 +21,16 @@ export function LoginForm() {
     try {
       const result = await loginOrSignupWithPin(pin);
       if (result.success) {
-        // Redirect to a dashboard or portal router
-        // By default, just send them to home, we'll implement role-based routing later
-        window.location.href = "/";
+        const roles = result.user?.roles || [];
+        if (roles.includes('DESIGNER')) {
+          window.location.href = "/designer";
+        } else if (roles.includes('MEDIA_DIRECTOR') || roles.includes('ADMIN')) {
+          window.location.href = "/director";
+        } else if (roles.includes('CHIEF_COORDINATOR')) {
+          window.location.href = "/analytics";
+        } else {
+          window.location.href = "/";
+        }
       }
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred.");
@@ -66,7 +73,7 @@ export function LoginForm() {
           <button
             type="submit"
             disabled={isPending}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-navy-600 hover:bg-navy-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-navy-500 disabled:opacity-50 transition-colors"
+            className="w-full flex justify-center py-2 px-4 border border-primary rounded-md shadow-sm text-sm font-medium text-primary bg-white hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-focus disabled:opacity-50 transition-all duration-300"
           >
             {isPending ? (
               <>

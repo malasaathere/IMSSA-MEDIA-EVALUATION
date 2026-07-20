@@ -8,7 +8,7 @@ const PIN_SALT = "IMSSA_SECURE_SALT_2026"; // Ensure 8+ chars
  * Pads a 4-digit PIN to meet Appwrite's 8-character password requirement.
  */
 export function getPaddedPin(pin: string) {
-  return `${pin}${PIN_SALT}`;
+  return `${pin}0000`;
 }
 
 export async function loginWithGoogle() {
@@ -25,44 +25,50 @@ export async function loginOrSignupWithPin(pin: string) {
   const paddedPassword = getPaddedPin(pin);
 
   try {
-    // Attempt login first
-    await account.createEmailPasswordSession(syntheticEmail, paddedPassword);
-    return { success: true, isNew: false };
-  } catch (error: any) {
-    // Appwrite returns 401 (user_invalid_credentials) even if the user doesn't exist to prevent enumeration.
-    // Since our password is deterministically derived from the PIN, a 401 almost certainly means the user
-    // doesn't exist in the Auth system yet. Let's check our 'users' collection to see if they are authorized.
-    
-    try {
-      const { Query } = await import("appwrite");
-      const existingProfiles = await databases.listDocuments(APPWRITE_DB_ID, "users", [
-        Query.equal("passkey", pin)
-      ]);
+    const { Query } = await import("appwrite");
+    // Always check if the PIN exists in our database first
+    const existingProfiles = await databases.listDocuments(APPWRITE_DB_ID, "users", [
+      Query.equal("passkey", pin)
+    ]);
 
-      if (existingProfiles.total === 0) {
-        throw new Error("Your passkey is not authorized. Please contact an administrator.");
-      }
-
-      // They are authorized! Create their auth account
-      await account.create(ID.unique(), syntheticEmail, paddedPassword);
-      
-      // Login immediately after creation
-      await account.createEmailPasswordSession(syntheticEmail, paddedPassword);
-
-      // Link auth user ID to profile
-      const user = await account.get();
-      await databases.updateDocument(APPWRITE_DB_ID, "users", existingProfiles.documents[0].$id, {
-        authUserId: user.$id
-      });
-
-      return { success: true, isNew: true };
-    } catch (signupError: any) {
-      if (signupError.code === 409) {
-         // This would only happen if the account exists but login still failed.
-         throw new Error("Invalid credentials. Please check your PIN.");
-      }
-      throw new Error(signupError.message || "Failed to create your account.");
+    if (existingProfiles.total === 0) {
+      throw new Error("Your passkey is not authorized. Please contact an administrator.");
     }
+    
+    const dbUser = existingProfiles.documents[0];
+    let isNew = false;
+
+    // Check if auth account already exists by trying to log in
+    try {
+      await account.createEmailPasswordSession(syntheticEmail, paddedPassword);
+    } catch (error: any) {
+      // 401 could mean they don't exist yet, try to create them
+      try {
+        await account.create(ID.unique(), syntheticEmail, paddedPassword);
+        await account.createEmailPasswordSession(syntheticEmail, paddedPassword);
+        const user = await account.get();
+        await databases.updateDocument(APPWRITE_DB_ID, "users", dbUser.$id, {
+          authUserId: user.$id
+        });
+        isNew = true;
+      } catch (signupError: any) {
+        if (signupError.code === 409) {
+           throw new Error("Invalid credentials. Please check your PIN.");
+        }
+        throw new Error(signupError.message || "Failed to create your account.");
+      }
+    }
+
+    return { 
+      success: true, 
+      isNew,
+      user: {
+        name: dbUser.name,
+        roles: dbUser.roles || []
+      }
+    };
+  } catch (error: any) {
+    throw new Error(error.message || "An unexpected error occurred during login.");
   }
 }
 
@@ -76,7 +82,28 @@ export async function logout() {
 
 export async function getCurrentUser() {
   try {
-    return await account.get();
+    const user = await account.get();
+    
+    try {
+      const { Query } = await import("appwrite");
+      // Find the user's roles from our database
+      const existingProfiles = await databases.listDocuments(APPWRITE_DB_ID, "users", [
+        Query.equal("authUserId", user.$id)
+      ]);
+      
+      let roles: string[] = [];
+      let name = user.name || "";
+      
+      if (existingProfiles.total > 0) {
+        roles = existingProfiles.documents[0].roles || [];
+        name = existingProfiles.documents[0].name || name;
+      }
+      
+      return { ...user, roles, name };
+    } catch (dbError) {
+      console.error("Failed to fetch user roles from database", dbError);
+      return { ...user, roles: [] as string[] };
+    }
   } catch (error) {
     return null;
   }

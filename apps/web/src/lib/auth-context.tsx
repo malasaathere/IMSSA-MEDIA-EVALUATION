@@ -31,10 +31,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     checkSession();
   }, []);
 
-  const fetchProfile = async (email: string) => {
+  const fetchProfile = async (authUserId: string) => {
     try {
       const response = await databases.listDocuments(APPWRITE_DB_ID, "users", [
-        Query.equal("email", email)
+        Query.equal("authUserId", authUserId)
       ]);
       if (response.total > 0) {
         const doc = response.documents[0];
@@ -58,7 +58,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const currentUser = await account.get();
       setUser(currentUser);
-      await fetchProfile(currentUser.email);
+      await fetchProfile(currentUser.$id);
     } catch (error) {
       if (error instanceof AppwriteException && error.code === 401) {
         setUser(null);

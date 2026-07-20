@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { MessageSquare, Check, X, Maximize2, Loader2 } from "lucide-react";
 import { ReviewCanvas } from "./ReviewCanvas";
 import { PostApprovalDialog } from "./PostApprovalDialog";
+import { AddUserDialog } from "./AddUserDialog";
 import { useTasks, useVersions } from "../../api/queries";
 import { api } from "../../api/api-client";
 import { BUCKETS } from "../../lib/appwrite-collections";
@@ -32,6 +33,9 @@ export function DirectorWorkspace() {
         <div>
           <h1 className="text-2xl font-semibold text-navy-950">Review Inbox</h1>
           <p className="text-sm text-text-muted">Media Director Workspace</p>
+        </div>
+        <div className="flex items-center">
+          <AddUserDialog />
         </div>
       </header>
 
