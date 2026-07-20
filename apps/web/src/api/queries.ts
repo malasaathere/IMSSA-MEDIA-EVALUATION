@@ -24,9 +24,11 @@ export function useAssignTask() {
   });
 }
 
-export function useInitiateUpload() {
-  return useMutation({
-    mutationFn: ({ taskId, data }: { taskId: string, data: any }) => api.initiateUpload(taskId, data),
+export function useVersions(taskId: string | null) {
+  return useQuery({
+    queryKey: ['versions', taskId],
+    queryFn: () => taskId ? api.getVersions(taskId) : null,
+    enabled: !!taskId,
   });
 }
 
@@ -57,5 +59,14 @@ export function useSubmitFeedback() {
 export function useCreateAnnotation() {
   return useMutation({
     mutationFn: ({ versionId, data }: { versionId: string, data: any }) => api.createAnnotation(versionId, data),
+  });
+}
+
+import { listUserRequests } from './user-requests';
+
+export function useUserRequests(statusFilter?: string) {
+  return useQuery({
+    queryKey: ['user_requests', statusFilter],
+    queryFn: () => listUserRequests(statusFilter),
   });
 }

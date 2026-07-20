@@ -1,0 +1,10 @@
+{
+  "name": "worker-backup-export",
+  "version": "1.0.0",
+  "description": "Scheduled Appwrite function to export db backups",
+  "main": "src/main.js",
+  "type": "module",
+  "dependencies": {
+    "node-appwrite": "^14.1.0"
+  }
+}

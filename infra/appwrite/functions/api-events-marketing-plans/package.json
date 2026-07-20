@@ -1,0 +1,10 @@
+{
+  "name": "api-events-marketing-plans",
+  "version": "1.0.0",
+  "description": "Appwrite API Function for marketing plan manipulation",
+  "main": "src/main.js",
+  "type": "module",
+  "dependencies": {
+    "node-appwrite": "^14.1.0"
+  }
+}

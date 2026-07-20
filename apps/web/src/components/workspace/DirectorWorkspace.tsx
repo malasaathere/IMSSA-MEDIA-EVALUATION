@@ -1,18 +1,29 @@
 import { useState } from "react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { MessageSquare, Check, X, Maximize2 } from "lucide-react";
+import { MessageSquare, Check, X, Maximize2, Loader2 } from "lucide-react";
 import { ReviewCanvas } from "./ReviewCanvas";
 import { PostApprovalDialog } from "./PostApprovalDialog";
+import { useTasks, useVersions } from "../../api/queries";
+import { api } from "../../api/api-client";
+import { BUCKETS } from "../../lib/appwrite-collections";
 
 export function DirectorWorkspace() {
-  const [selectedTask, setSelectedTask] = useState<number | null>(1);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const { data: response, isLoading: tasksLoading } = useTasks();
+  const tasks = response?.documents || [];
+  
+  // Tasks ready for review or currently in review
+  const inboxTasks = tasks.filter(t => t.status === 'PENDING' || t.status === 'IN_REVIEW');
+  const selectedTask = tasks.find(t => t.$id === selectedTaskId) || inboxTasks[0];
 
-  const inboxTasks = [
-    { id: 1, title: "Opening Ceremony Poster", event: "Event 1", designer: "Alice", status: "In Review" },
-    { id: 2, title: "Highlights Video", event: "Event 2", designer: "Bob", status: "In Review" },
-  ];
+  const { data: versionsResponse, isLoading: versionsLoading } = useVersions(selectedTask?.$id || null);
+  const latestVersion = versionsResponse?.documents?.[0];
+
+  if (tasksLoading) {
+    return <div className="min-h-screen flex items-center justify-center bg-surface"><Loader2 className="animate-spin text-gold-500 h-10 w-10" /></div>;
+  }
 
   return (
     <div className="flex h-screen flex-col bg-surface">
@@ -31,19 +42,22 @@ export function DirectorWorkspace() {
           
           {inboxTasks.map(task => (
             <div 
-              key={task.id}
-              onClick={() => setSelectedTask(task.id)}
+              key={task.$id}
+              onClick={() => setSelectedTaskId(task.$id)}
               className={`cursor-pointer rounded-lg border p-3 transition-colors ${
-                selectedTask === task.id ? "border-navy-900 bg-surface-selected" : "border-border hover:bg-surface"
+                (selectedTask && selectedTask.$id === task.$id) ? "border-navy-900 bg-surface-selected" : "border-border hover:bg-surface"
               }`}
             >
               <div className="flex justify-between items-start mb-2">
                 <h4 className="text-sm font-semibold text-navy-950">{task.title}</h4>
               </div>
-              <p className="text-xs text-text-muted mb-2">{task.event} • By {task.designer}</p>
-              <Badge variant="warning">In Review</Badge>
+              <p className="text-xs text-text-muted mb-2">{task.eventId || 'Event'} • By Designer</p>
+              <Badge variant="warning">{task.status || 'IN REVIEW'}</Badge>
             </div>
           ))}
+          {inboxTasks.length === 0 && (
+            <div className="text-center text-sm text-text-muted mt-8">Inbox zero!</div>
+          )}
         </div>
 
         {/* Main Review Area */}
@@ -65,7 +79,11 @@ export function DirectorWorkspace() {
 
               {/* Preview Area */}
               <div className="flex-1 overflow-auto p-6 flex items-center justify-center relative">
-                <ReviewCanvas />
+                {latestVersion && latestVersion.fileId ? (
+                  <ReviewCanvas imageUrl={api.getFileView(BUCKETS.DRAFT_IMAGES, latestVersion.fileId)} />
+                ) : (
+                  <div className="text-text-muted">No draft submitted yet</div>
+                )}
               </div>
 
               {/* Bottom Actions */}

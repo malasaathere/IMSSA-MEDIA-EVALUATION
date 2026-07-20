@@ -21,3 +21,14 @@ export const COLLECTIONS = {
   TASK_MESSAGES: "task_messages",
   CALENDAR_LINKS: "calendar_links",
 };
+
+export const BUCKETS = {
+  AVATARS: "avatars",
+  TASK_REFERENCES: "task-references",
+  DRAFT_IMAGES: "draft-images",
+  DRAFT_VIDEOS: "draft-videos",
+  APPROVED_DELIVERABLES: "approved-deliverables",
+  REVIEW_PREVIEWS: "review-previews",
+  TEMPORARY_AI_ASSETS: "temporary-ai-assets",
+  REPORT_EXPORTS: "report-exports",
+};

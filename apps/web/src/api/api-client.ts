@@ -1,4 +1,4 @@
-import { databases, account, APPWRITE_DB_ID } from '../lib/appwrite';
+import { databases, account, storage, APPWRITE_DB_ID } from '../lib/appwrite';
 import { ID, Query } from 'appwrite';
 
 // A mock API client adapted for Appwrite
@@ -19,10 +19,14 @@ export const api = {
   },
   
   // Phase 2: Uploads and Versions
-  initiateUpload: async (taskId: string, data: any) => {
-    // Will involve Storage bucket in Appwrite
-    console.warn('initiateUpload not fully implemented in Appwrite yet');
-    return {};
+  uploadFile: async (bucketId: string, file: File) => {
+    return await storage.createFile(bucketId, ID.unique(), file);
+  },
+  getFilePreview: (bucketId: string, fileId: string) => {
+    return storage.getFilePreview(bucketId, fileId);
+  },
+  getFileView: (bucketId: string, fileId: string) => {
+    return storage.getFileView(bucketId, fileId);
   },
   completeUpload: async (fileId: string) => {
     return {};
@@ -32,6 +36,9 @@ export const api = {
       taskId,
       ...data
     });
+  },
+  getVersions: async (taskId: string) => {
+    return await databases.listDocuments(APPWRITE_DB_ID, 'deliverable_versions', [Query.equal('taskId', taskId), Query.orderDesc('$createdAt')]);
   },
   approveVersion: async (versionId: string, data: any) => {
     // Function call to handle approval logic

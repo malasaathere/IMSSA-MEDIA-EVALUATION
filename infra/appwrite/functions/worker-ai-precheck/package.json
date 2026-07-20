@@ -1,0 +1,10 @@
+{
+  "name": "worker-ai-precheck",
+  "version": "1.0.0",
+  "description": "Appwrite function to run baseline AI checks on drafts",
+  "main": "src/main.js",
+  "type": "module",
+  "dependencies": {
+    "node-appwrite": "^14.1.0"
+  }
+}

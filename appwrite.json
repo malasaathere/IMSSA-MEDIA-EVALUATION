@@ -1,0 +1,150 @@
+{
+  "projectId": "6a5d22360034431fb3fd",
+  "projectName": "imssa-media",
+  "functions": [
+    {
+      "$id": "api-events-marketing-plans",
+      "name": "api-events-marketing-plans",
+      "runtime": "node-18.0",
+      "execute": [],
+      "events": [],
+      "schedule": "",
+      "timeout": 15,
+      "path": "apps/functions/api-events-marketing-plans",
+      "entrypoint": "src/main.js",
+      "commands": "npm install"
+    },
+    {
+      "$id": "api-tasks-assignments",
+      "name": "api-tasks-assignments",
+      "runtime": "node-18.0",
+      "execute": [],
+      "events": [],
+      "schedule": "",
+      "timeout": 15,
+      "path": "apps/functions/api-tasks-assignments",
+      "entrypoint": "src/main.js",
+      "commands": "npm install"
+    },
+    {
+      "$id": "api-uploads-versions",
+      "name": "api-uploads-versions",
+      "runtime": "node-18.0",
+      "execute": [],
+      "events": [],
+      "schedule": "",
+      "timeout": 15,
+      "path": "apps/functions/api-uploads-versions",
+      "entrypoint": "src/main.js",
+      "commands": "npm install"
+    },
+    {
+      "$id": "api-reviews-annotations",
+      "name": "api-reviews-annotations",
+      "runtime": "node-18.0",
+      "execute": [],
+      "events": [],
+      "schedule": "",
+      "timeout": 15,
+      "path": "apps/functions/api-reviews-annotations",
+      "entrypoint": "src/main.js",
+      "commands": "npm install"
+    },
+    {
+      "$id": "api-notifications-messaging",
+      "name": "api-notifications-messaging",
+      "runtime": "node-18.0",
+      "execute": [],
+      "events": [],
+      "schedule": "",
+      "timeout": 15,
+      "path": "apps/functions/api-notifications-messaging",
+      "entrypoint": "src/main.js",
+      "commands": "npm install"
+    },
+    {
+      "$id": "integration-google-oauth",
+      "name": "integration-google-oauth",
+      "runtime": "node-18.0",
+      "execute": [],
+      "events": [],
+      "schedule": "",
+      "timeout": 15,
+      "path": "apps/functions/integration-google-oauth",
+      "entrypoint": "src/main.js",
+      "commands": "npm install"
+    },
+    {
+      "$id": "worker-google-sheets-sync",
+      "name": "worker-google-sheets-sync",
+      "runtime": "node-18.0",
+      "execute": [],
+      "events": [],
+      "schedule": "",
+      "timeout": 15,
+      "path": "apps/functions/worker-google-sheets-sync",
+      "entrypoint": "src/main.js",
+      "commands": "npm install"
+    },
+    {
+      "$id": "worker-n8n-delivery",
+      "name": "worker-n8n-delivery",
+      "runtime": "node-18.0",
+      "execute": [],
+      "events": [],
+      "schedule": "",
+      "timeout": 15,
+      "path": "apps/functions/worker-n8n-delivery",
+      "entrypoint": "src/main.js",
+      "commands": "npm install"
+    },
+    {
+      "$id": "worker-deadline-reminders",
+      "name": "worker-deadline-reminders",
+      "runtime": "node-18.0",
+      "execute": [],
+      "events": [],
+      "schedule": "0 0 * * *",
+      "timeout": 15,
+      "path": "apps/functions/worker-deadline-reminders",
+      "entrypoint": "src/main.js",
+      "commands": "npm install"
+    },
+    {
+      "$id": "worker-draft-cleanup",
+      "name": "worker-draft-cleanup",
+      "runtime": "node-18.0",
+      "execute": [],
+      "events": [],
+      "schedule": "0 1 * * *",
+      "timeout": 15,
+      "path": "apps/functions/worker-draft-cleanup",
+      "entrypoint": "src/main.js",
+      "commands": "npm install"
+    },
+    {
+      "$id": "worker-ai-precheck",
+      "name": "worker-ai-precheck",
+      "runtime": "node-18.0",
+      "execute": [],
+      "events": [],
+      "schedule": "",
+      "timeout": 15,
+      "path": "apps/functions/worker-ai-precheck",
+      "entrypoint": "src/main.js",
+      "commands": "npm install"
+    },
+    {
+      "$id": "worker-backup-export",
+      "name": "worker-backup-export",
+      "runtime": "node-18.0",
+      "execute": [],
+      "events": [],
+      "schedule": "0 2 * * *",
+      "timeout": 15,
+      "path": "apps/functions/worker-backup-export",
+      "entrypoint": "src/main.js",
+      "commands": "npm install"
+    }
+  ]
+}

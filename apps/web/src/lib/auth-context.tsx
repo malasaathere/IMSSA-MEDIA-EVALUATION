@@ -1,11 +1,20 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { account } from './appwrite';
-import { Models, AppwriteException } from 'appwrite';
+import { account, databases, APPWRITE_DB_ID } from './appwrite';
+import { Models, AppwriteException, Query } from 'appwrite';
+
+interface UserProfile {
+  $id: string;
+  name: string;
+  email: string;
+  roles: string[];
+  events: string[];
+}
 
 interface AuthContextType {
   user: Models.User<Models.Preferences> | null;
+  profile: UserProfile | null;
   isLoading: boolean;
   login: (email: string, pass: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -15,19 +24,45 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<Models.User<Models.Preferences> | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     checkSession();
   }, []);
 
+  const fetchProfile = async (email: string) => {
+    try {
+      const response = await databases.listDocuments(APPWRITE_DB_ID, "users", [
+        Query.equal("email", email)
+      ]);
+      if (response.total > 0) {
+        const doc = response.documents[0];
+        setProfile({
+          $id: doc.$id,
+          name: doc.name,
+          email: doc.email,
+          roles: doc.roles || [],
+          events: doc.events || []
+        });
+      } else {
+        setProfile(null);
+      }
+    } catch (e) {
+      console.error("Failed to fetch profile", e);
+      setProfile(null);
+    }
+  };
+
   const checkSession = async () => {
     try {
       const currentUser = await account.get();
       setUser(currentUser);
+      await fetchProfile(currentUser.email);
     } catch (error) {
       if (error instanceof AppwriteException && error.code === 401) {
         setUser(null);
+        setProfile(null);
       } else {
         console.error("Auth check failed", error);
       }
@@ -52,6 +87,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await account.deleteSession('current');
       setUser(null);
+      setProfile(null);
     } catch (error) {
       console.error("Logout failed", error);
     } finally {
@@ -60,7 +96,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ user, profile, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

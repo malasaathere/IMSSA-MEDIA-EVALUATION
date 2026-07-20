@@ -8,7 +8,8 @@
     "setup": "node setup-schema.js"
   },
   "dependencies": {
-    "node-appwrite": "^14.1.0",
-    "dotenv": "^16.4.5"
+    "csv-parse": "^7.0.1",
+    "dotenv": "^16.4.5",
+    "node-appwrite": "^14.1.0"
   }
 }

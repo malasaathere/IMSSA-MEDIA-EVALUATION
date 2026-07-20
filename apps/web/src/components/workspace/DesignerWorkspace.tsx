@@ -1,12 +1,22 @@
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { useTasks } from "../../api/queries";
+import { api } from "../../api/api-client";
+import { BUCKETS } from "../../lib/appwrite-collections";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { UploadCloud, CheckCircle2, Clock, MessageSquare, CheckSquare } from "lucide-react";
+import { UploadCloud, CheckCircle2, Clock, MessageSquare, CheckSquare, Loader2 } from "lucide-react";
+import { WorkflowStepper } from "../layout/WorkflowStepper";
 
 export function DesignerWorkspace() {
+  const { data: response, isLoading } = useTasks();
+  const tasks = response?.documents || [];
+  // For demo purposes, we pick the first IN_PROGRESS task, or the first task overall
+  const activeTask = tasks.find(t => t.status === 'IN_PROGRESS') || tasks[0];
+
   const [files, setFiles] = useState<File[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [checklist, setChecklist] = useState([
     { id: 1, text: "Check contrast ratios", checked: false },
     { id: 2, text: "Verify required dimensions", checked: false },
@@ -18,6 +28,32 @@ export function DesignerWorkspace() {
   };
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
+  const handleSubmit = async () => {
+    if (!activeTask || files.length === 0) return;
+    setIsSubmitting(true);
+    try {
+      for (const file of files) {
+        const uploadedFile = await api.uploadFile(BUCKETS.DRAFT_IMAGES, file);
+        await api.submitVersion(activeTask.$id, {
+          versionNumber: 1,
+          fileId: uploadedFile.$id,
+          submittedById: activeTask.currentAssigneeId || 'unknown'
+        });
+      }
+      setFiles([]);
+      alert("Submitted for review successfully!");
+    } catch (error) {
+      console.error("Upload failed", error);
+      alert("Failed to submit files.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (isLoading) {
+    return <div className="min-h-screen flex items-center justify-center bg-surface"><Loader2 className="animate-spin text-gold-500 h-10 w-10" /></div>;
+  }
+
   return (
     <div className="flex h-screen flex-col bg-surface">
       {/* Header */}
@@ -28,9 +64,9 @@ export function DesignerWorkspace() {
         </div>
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2 rounded-full border border-border bg-surface px-4 py-1.5">
-            <span className="text-sm font-medium text-navy-950">Capacity: 1/3</span>
+            <span className="text-sm font-medium text-navy-950">Capacity: {activeTask ? '1' : '0'}/3</span>
             <div className="h-2 w-16 overflow-hidden rounded-full bg-border">
-              <div className="h-full w-1/3 bg-info transition-all" />
+              <div className={`h-full bg-info transition-all ${activeTask ? 'w-1/3' : 'w-0'}`} />
             </div>
           </div>
         </div>
@@ -41,24 +77,33 @@ export function DesignerWorkspace() {
           
           {/* Active Task Details */}
           <div className="col-span-1 lg:col-span-2 flex flex-col space-y-6">
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>Opening Ceremony Poster</CardTitle>
-                  <Badge variant="info">In Progress</Badge>
-                </div>
-                <CardDescription>Event 1 - Due Jul 22, 2026</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-text">
-                  Prepare the approved social-media sizes for the opening ceremony. Needs to include the new logo and modern typography.
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <Badge variant="outline"><MessageSquare className="mr-1 h-3 w-3" /> Discussion (2)</Badge>
-                  <Badge variant="outline"><CheckSquare className="mr-1 h-3 w-3" /> Brief</Badge>
-                </div>
-              </CardContent>
-            </Card>
+            {activeTask ? (
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle>{activeTask.title}</CardTitle>
+                    <Badge variant="info">{activeTask.status || 'IN PROGRESS'}</Badge>
+                  </div>
+                  <CardDescription>{activeTask.eventId || 'Event'} - Due {new Date(activeTask.deadline || Date.now()).toLocaleDateString()}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-text mb-6">
+                    {activeTask.description}
+                  </p>
+                  <WorkflowStepper currentStepId="draft" className="mb-6 hidden sm:block" />
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <Badge variant="outline"><MessageSquare className="mr-1 h-3 w-3" /> Discussion</Badge>
+                    <Badge variant="outline"><CheckSquare className="mr-1 h-3 w-3" /> Brief</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card>
+                <CardContent className="p-12 text-center text-text-muted">
+                  No active tasks assigned to you right now. Take a break!
+                </CardContent>
+              </Card>
+            )}
 
             {/* Upload Area */}
             <Card>
@@ -94,7 +139,10 @@ export function DesignerWorkspace() {
                       </div>
                     ))}
                     <div className="flex justify-end pt-2">
-                      <Button>Submit for Review</Button>
+                      <Button onClick={handleSubmit} disabled={isSubmitting}>
+                        {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                        Submit for Review
+                      </Button>
                     </div>
                   </div>
                 )}

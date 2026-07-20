@@ -1,0 +1,10 @@
+{
+  "name": "api-notifications-messaging",
+  "version": "1.0.0",
+  "description": "Appwrite function for webhook dispatching and notifications",
+  "main": "src/main.js",
+  "type": "module",
+  "dependencies": {
+    "node-appwrite": "^14.1.0"
+  }
+}
