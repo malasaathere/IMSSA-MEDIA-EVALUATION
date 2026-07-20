@@ -29,42 +29,40 @@ export async function loginOrSignupWithPin(pin: string) {
     await account.createEmailPasswordSession(syntheticEmail, paddedPassword);
     return { success: true, isNew: false };
   } catch (error: any) {
-    // If user doesn't exist, check if they are approved
-    if (error.code === 401 && error.type === "user_invalid_credentials") {
-      throw new Error("Invalid credentials. Please check your PIN.");
-    }
-
-    if (error.code === 404 || error.type === "user_not_found" || error.code === 401) {
-      // User doesn't exist. Check if they are approved in users collection by passkey
-      try {
-        const { Query } = await import("appwrite");
-        const existingProfiles = await databases.listDocuments(APPWRITE_DB_ID, "users", [
-          Query.equal("passkey", pin)
-        ]);
-
-        if (existingProfiles.total === 0) {
-          throw new Error("Your passkey is not authorized. Please contact an administrator.");
-        }
-
-        // They are approved! Create their auth account
-        await account.create(ID.unique(), syntheticEmail, paddedPassword);
-        
-        // Login immediately after creation
-        await account.createEmailPasswordSession(syntheticEmail, paddedPassword);
-
-        // Link auth user ID to profile
-        const user = await account.get();
-        await databases.updateDocument(APPWRITE_DB_ID, "users", existingProfiles.documents[0].$id, {
-          authUserId: user.$id
-        });
-
-        return { success: true, isNew: true };
-      } catch (signupError: any) {
-        throw new Error(signupError.message || "Failed to create your account.");
-      }
-    }
+    // Appwrite returns 401 (user_invalid_credentials) even if the user doesn't exist to prevent enumeration.
+    // Since our password is deterministically derived from the PIN, a 401 almost certainly means the user
+    // doesn't exist in the Auth system yet. Let's check our 'users' collection to see if they are authorized.
     
-    throw error;
+    try {
+      const { Query } = await import("appwrite");
+      const existingProfiles = await databases.listDocuments(APPWRITE_DB_ID, "users", [
+        Query.equal("passkey", pin)
+      ]);
+
+      if (existingProfiles.total === 0) {
+        throw new Error("Your passkey is not authorized. Please contact an administrator.");
+      }
+
+      // They are authorized! Create their auth account
+      await account.create(ID.unique(), syntheticEmail, paddedPassword);
+      
+      // Login immediately after creation
+      await account.createEmailPasswordSession(syntheticEmail, paddedPassword);
+
+      // Link auth user ID to profile
+      const user = await account.get();
+      await databases.updateDocument(APPWRITE_DB_ID, "users", existingProfiles.documents[0].$id, {
+        authUserId: user.$id
+      });
+
+      return { success: true, isNew: true };
+    } catch (signupError: any) {
+      if (signupError.code === 409) {
+         // This would only happen if the account exists but login still failed.
+         throw new Error("Invalid credentials. Please check your PIN.");
+      }
+      throw new Error(signupError.message || "Failed to create your account.");
+    }
   }
 }
 
