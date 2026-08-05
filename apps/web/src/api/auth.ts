@@ -1,19 +1,13 @@
 import { account, databases } from "../lib/appwrite";
-import { ID, OAuthProvider } from "appwrite";
+import { ID } from "appwrite";
 
 const APPWRITE_DB_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID || "imssa-media";
-const PIN_SALT = "IMSSA_SECURE_SALT_2026"; // Ensure 8+ chars
 
 /**
  * Pads a 4-digit PIN to meet Appwrite's 8-character password requirement.
  */
 export function getPaddedPin(pin: string) {
   return `${pin}0000`;
-}
-
-export async function loginWithGoogle() {
-  const redirectUrl = typeof window !== 'undefined' ? window.location.origin + "/login/callback" : "http://localhost:3000/login/callback";
-  return account.createOAuth2Session(OAuthProvider.Google, redirectUrl, redirectUrl);
 }
 
 export async function loginOrSignupWithPin(pin: string) {

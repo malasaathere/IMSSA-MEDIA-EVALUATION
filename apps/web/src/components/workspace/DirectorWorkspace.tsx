@@ -55,7 +55,7 @@ export function DirectorWorkspace() {
               <div className="flex justify-between items-start mb-2">
                 <h4 className="text-sm font-semibold text-navy-950">{task.title}</h4>
               </div>
-              <p className="text-xs text-text-muted mb-2">{task.eventId || 'Event'} • By Designer</p>
+              <p className="text-xs text-text-muted mb-2">{task.eventId || 'General'} • {task.workType || 'Task'}</p>
               <Badge variant="warning">{task.status || 'IN REVIEW'}</Badge>
             </div>
           ))}
@@ -71,8 +71,10 @@ export function DirectorWorkspace() {
               {/* Toolbar */}
               <div className="flex items-center justify-between border-b border-border bg-white p-4">
                 <div className="flex items-center space-x-4">
-                  <h2 className="text-lg font-semibold text-navy-950">Opening Ceremony Poster - v2</h2>
-                  <Badge variant="outline">Submitted 2h ago</Badge>
+                  <h2 className="text-lg font-semibold text-navy-950">{selectedTask.title}</h2>
+                  <Badge variant="outline">
+                    {latestVersion ? `Submitted ${new Date(latestVersion.$createdAt).toLocaleString()}` : 'No submission yet'}
+                  </Badge>
                 </div>
                 <div className="flex space-x-2">
                   <Button variant="outline" size="sm">

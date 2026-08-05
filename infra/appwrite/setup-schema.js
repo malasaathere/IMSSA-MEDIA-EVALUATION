@@ -10,7 +10,7 @@ const client = new Client()
 const databases = new Databases(client);
 const storage = new Storage(client);
 
-const DB_ID = 'imssa_media';
+const DB_ID = process.env.APPWRITE_DATABASE_ID || 'imssa_media';
 
 async function setup() {
   console.log('Setting up Appwrite schema (Education Add-on version)...');

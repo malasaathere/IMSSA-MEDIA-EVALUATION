@@ -1,9 +1,10 @@
-import { useTasks } from '../../api/queries'
+import { useTasks, useUsers } from '../../api/queries'
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/card'
 import { Loader2, AlertCircle, Inbox } from 'lucide-react'
 
 export function ChiefCoordinatorWorkspace() {
   const { data: response, isLoading, isError, error } = useTasks()
+  const { data: usersResponse } = useUsers()
   
   if (isLoading) {
     return (
@@ -41,28 +42,29 @@ export function ChiefCoordinatorWorkspace() {
     )
   }
 
+  const allUsers = usersResponse?.documents || [];
+
   const activeWorkCount = tasks.filter(t => t?.status !== 'COMPLETED' && t?.status !== 'CANCELLED').length;
   const totalApprovedCount = tasks.filter(t => t?.status === 'COMPLETED').length;
-  
-  // Generate some realistic-looking metrics based on task counts for now
-  const onTimeCompletionRate = totalApprovedCount > 0 ? 0.95 : null;
-  const averageFirstReviewTimeHours = 4.5;
-  
-  // Aggregate designer workload from active tasks
+
+  // Aggregate designer workload from active tasks, joining with users for real names
   const designersMap = new Map<string, number>();
   tasks.forEach(t => {
     if (t?.status !== 'COMPLETED' && t?.status !== 'CANCELLED' && t?.currentAssigneeId) {
       designersMap.set(t.currentAssigneeId, (designersMap.get(t.currentAssigneeId) || 0) + 1);
     }
   });
-  
-  const workload = Array.from(designersMap.entries()).map(([userId, count]) => ({
-    userId,
-    name: userId, // We'd ideally join with Users collection, but showing ID for now
-    activeTasks: count,
-    capacity: 3,
-    utilizationPercentage: Math.round((count / 3) * 100)
-  }));
+
+  const workload = Array.from(designersMap.entries()).map(([userId, count]) => {
+    const userDoc = allUsers.find((u: any) => u.authUserId === userId);
+    return {
+      userId,
+      name: userDoc?.name || userId,
+      activeTasks: count,
+      capacity: 3,
+      utilizationPercentage: Math.round((count / 3) * 100)
+    };
+  });
 
   return (
     <div className="p-8 bg-slate-50 min-h-screen">
@@ -89,19 +91,19 @@ export function ChiefCoordinatorWorkspace() {
         
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm font-medium text-slate-500">On-Time Completion Rate</CardTitle>
+            <CardTitle className="text-sm font-medium text-slate-500">In Review</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-navy-700">{onTimeCompletionRate ? `${onTimeCompletionRate * 100}%` : 'N/A'}</div>
+            <div className="text-3xl font-bold text-navy-700">{tasks.filter(t => t?.status === 'IN_REVIEW').length}</div>
           </CardContent>
         </Card>
         
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm font-medium text-slate-500">Avg. First Review (Hrs)</CardTitle>
+            <CardTitle className="text-sm font-medium text-slate-500">In Progress</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-navy-700">{averageFirstReviewTimeHours || 'N/A'}</div>
+            <div className="text-3xl font-bold text-navy-700">{tasks.filter(t => t?.status === 'IN_PROGRESS').length}</div>
           </CardContent>
         </Card>
       </div>

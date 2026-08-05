@@ -1,7 +1,14 @@
-import { KanbanBoard } from "../kanban/KanbanBoard"
-import { CapacityPanel } from "./CapacityPanel"
+"use client";
+
+import { useState } from "react";
+import { KanbanBoard } from "../kanban/KanbanBoard";
+import { CapacityPanel } from "./CapacityPanel";
+import { CreateTaskDialog } from "./CreateTaskDialog";
+import { GlobalChatWidget } from "../chat/GlobalChatWidget";
 
 export function MarketingWorkspace() {
+  const [createTaskOpen, setCreateTaskOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-surface p-8">
       <div className="max-w-[1600px] mx-auto">
@@ -10,7 +17,10 @@ export function MarketingWorkspace() {
             <h1 className="text-3xl font-bold text-navy-950 mb-2">Marketing Workspace</h1>
             <p className="text-text-muted">Manage media evaluation tasks and team capacity.</p>
           </div>
-          <button className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm">
+          <button
+            onClick={() => setCreateTaskOpen(true)}
+            className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm"
+          >
             Create Task
           </button>
         </header>
@@ -27,17 +37,19 @@ export function MarketingWorkspace() {
           {/* Sidebar Area */}
           <div className="flex flex-col gap-6">
             <CapacityPanel />
-            
-            {/* Quick Stats or Actions could go here */}
+
+            {/* Recent Activity */}
             <div className="bg-white rounded-xl border border-border p-6 shadow-sm flex-1">
-               <h3 className="text-lg font-semibold text-navy-900 mb-4">Recent Activity</h3>
-               <div className="text-sm text-text-muted flex items-center justify-center h-32">
-                 No recent activity
-               </div>
+              <h3 className="text-lg font-semibold text-navy-900 mb-4">Recent Activity</h3>
+              <div className="text-sm text-text-muted flex items-center justify-center h-32">
+                No recent activity
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      <CreateTaskDialog open={createTaskOpen} onOpenChange={setCreateTaskOpen} />
     </div>
-  )
+  );
 }

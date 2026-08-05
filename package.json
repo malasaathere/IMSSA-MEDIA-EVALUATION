@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "sync:google-plans": "cd infra/appwrite && node sync_google_marketing_plans.js",
+    "deploy:google-sync": "cd infra/appwrite && node deploy_google_sheets_sync.js",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",

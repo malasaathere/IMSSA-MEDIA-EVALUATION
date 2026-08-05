@@ -11,9 +11,10 @@ export interface Task {
   status: TaskStatus;
   priority: 'LOW' | 'MEDIUM' | 'HIGH';
   dueDate: string;
+  assigneeName?: string;
 }
 
-export function TaskCard({ task }: { task: Task }) {
+export function TaskCard({ task, onClick }: { task: Task, onClick?: () => void }) {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'HIGH': return 'danger';
@@ -24,7 +25,7 @@ export function TaskCard({ task }: { task: Task }) {
   }
 
   return (
-    <Card className="mb-3 cursor-pointer border-transparent bg-white shadow-sm hover:border-primary-soft hover:shadow-md transition-all active:scale-[0.98]">
+    <Card onClick={onClick} className="mb-3 cursor-pointer border-transparent bg-white shadow-sm hover:border-primary-soft hover:shadow-md transition-all active:scale-[0.98]">
       <CardHeader className="p-4 pb-2">
         <div className="flex justify-between items-start mb-2">
           <Badge variant={getPriorityColor(task.priority)}>{task.priority}</Badge>
@@ -43,8 +44,15 @@ export function TaskCard({ task }: { task: Task }) {
           <span>{new Date(task.dueDate).toLocaleDateString()}</span>
         </div>
         <div className="flex -space-x-2">
-          {/* Mock Avatar */}
-          <div className="h-6 w-6 rounded-full bg-primary text-white flex items-center justify-center text-[10px] border-2 border-white font-medium">JD</div>
+          {task.assigneeName ? (
+            <div className="h-6 w-6 rounded-full bg-primary text-white flex items-center justify-center text-[10px] border-2 border-white font-medium" title={task.assigneeName}>
+              {task.assigneeName.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase()}
+            </div>
+          ) : (
+            <div className="h-6 w-6 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-[10px] border-2 border-white font-medium" title="Unassigned">
+              ?
+            </div>
+          )}
         </div>
       </CardFooter>
     </Card>

@@ -130,12 +130,13 @@ const FUNCTIONS_TO_CREATE = [
     events: [],
     schedule: '',
     timeout: 15,
-    entrypoint: 'index.js',
+    entrypoint: 'src/main.js',
     commands: 'npm install',
     variables: [
       { key: 'APPWRITE_API_KEY', value: process.env.APPWRITE_API_KEY || '' },
       { key: 'APPWRITE_ENDPOINT', value: process.env.APPWRITE_ENDPOINT || 'http://localhost/v1' },
-      { key: 'APPWRITE_PROJECT_ID', value: process.env.APPWRITE_PROJECT_ID || '' }
+      { key: 'APPWRITE_PROJECT_ID', value: process.env.APPWRITE_PROJECT_ID || '' },
+      { key: 'APPWRITE_DATABASE_ID', value: process.env.APPWRITE_DATABASE_ID || 'imssa_media' }
     ]
   },
   {
@@ -220,7 +221,11 @@ async function setupFunctions() {
       } catch (e) {
         if (e.code === 409) {
           // Variable exists, update it
-          await functionsClient.updateVariable(funcDef.$id, variable.key, variable.key, variable.value);
+          try {
+            await functionsClient.updateVariable(funcDef.$id, variable.key, variable.key, variable.value);
+          } catch (updateErr) {
+            console.warn(`Could not update variable ${variable.key}: ${updateErr.message}`);
+          }
         } else {
           console.warn(`Could not set variable ${variable.key}: ${e.message}`);
         }

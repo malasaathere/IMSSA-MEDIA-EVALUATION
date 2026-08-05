@@ -1,11 +1,63 @@
-import { databases, account, storage, APPWRITE_DB_ID } from '../lib/appwrite';
-import { ID, Query } from 'appwrite';
+import { databases, functions, storage, APPWRITE_DB_ID } from '../lib/appwrite';
+import { ID, Query, ExecutionMethod, Permission, Role } from 'appwrite';
 
-// A mock API client adapted for Appwrite
+export interface CreateTaskInput {
+  title: string;
+  description?: string;
+  eventId: string;
+  workType: string;
+  priority: 'LOW' | 'MEDIUM' | 'HIGH';
+  currentAssigneeId: string;
+  deadline: string;
+}
+
+export interface NotificationInput {
+  recipientId: string;
+  type: 'DRAFT_SUBMITTED' | 'REVISION_SUBMITTED';
+  title: string;
+  message: string;
+  taskId: string;
+  versionId?: string;
+  createdById: string;
+}
+
+export class ApiError extends Error {
+  code?: string;
+  details?: Record<string, unknown>;
+
+  constructor(message: string, code?: string, details?: Record<string, unknown>) {
+    super(message);
+    this.name = 'ApiError';
+    this.code = code;
+    this.details = details;
+  }
+}
+
+// A thin Appwrite-backed API client
 export const api = {
   // Phase 1: Tasks
-  createTask: async (data: any) => {
-    return await databases.createDocument(APPWRITE_DB_ID, 'tasks', ID.unique(), data);
+  createTask: async (data: CreateTaskInput) => {
+    const execution = await functions.createExecution({
+      functionId: 'api-tasks-assignments',
+      body: JSON.stringify({ action: 'CREATE_AND_ASSIGN', task: data }),
+      async: false,
+      xpath: '/tasks',
+      method: ExecutionMethod.POST,
+      headers: { 'content-type': 'application/json' },
+    });
+
+    let payload: any = {};
+    try {
+      payload = execution.responseBody ? JSON.parse(execution.responseBody) : {};
+    } catch {
+      throw new ApiError('The task service returned an invalid response.', 'INVALID_RESPONSE');
+    }
+
+    if (execution.responseStatusCode >= 400 || !payload.success) {
+      throw new ApiError(payload.message || payload.error || 'Failed to create task.', payload.code, payload);
+    }
+
+    return payload.task;
   },
   getTasks: async () => {
     return await databases.listDocuments(APPWRITE_DB_ID, 'tasks', [Query.orderDesc('$createdAt')]);
@@ -20,7 +72,10 @@ export const api = {
   
   // Phase 2: Uploads and Versions
   uploadFile: async (bucketId: string, file: File) => {
-    return await storage.createFile(bucketId, ID.unique(), file);
+    return await storage.createFile(bucketId, ID.unique(), file, [
+      Permission.read(Role.users()),
+      Permission.update(Role.users()),
+    ]);
   },
   getFilePreview: (bucketId: string, fileId: string) => {
     return storage.getFilePreview(bucketId, fileId);
@@ -35,7 +90,10 @@ export const api = {
     return await databases.createDocument(APPWRITE_DB_ID, 'deliverable_versions', ID.unique(), {
       taskId,
       ...data
-    });
+    }, [Permission.read(Role.users()), Permission.update(Role.users())]);
+  },
+  updateTaskStatus: async (taskId: string, status: string) => {
+    return await databases.updateDocument(APPWRITE_DB_ID, 'tasks', taskId, { status });
   },
   getVersions: async (taskId: string) => {
     return await databases.listDocuments(APPWRITE_DB_ID, 'deliverable_versions', [Query.equal('taskId', taskId), Query.orderDesc('$createdAt')]);
@@ -63,6 +121,44 @@ export const api = {
       versionId,
       ...data
     });
+  },
+  getMarketingPlans: async () => {
+    return await databases.listDocuments(APPWRITE_DB_ID, 'marketing_plan_items', [Query.limit(500)]);
+  },
+  createMarketingPlan: async (data: any) => {
+    return await databases.createDocument(APPWRITE_DB_ID, 'marketing_plan_items', ID.unique(), data);
+  },
+  updateMarketingPlan: async (id: string, data: any) => {
+    return await databases.updateDocument(APPWRITE_DB_ID, 'marketing_plan_items', id, data);
+  },
+  deleteMarketingPlan: async (id: string) => {
+    return await databases.deleteDocument(APPWRITE_DB_ID, 'marketing_plan_items', id);
+  },
+  getDesignerPacks: async () => {
+    return await databases.listDocuments(APPWRITE_DB_ID, 'designer_packs', [Query.limit(100)]);
+  },
+  getUsers: async () => {
+    return await databases.listDocuments(APPWRITE_DB_ID, 'users', [Query.limit(100)]);
+  },
+  createNotification: async (data: NotificationInput) => {
+    return await databases.createDocument(APPWRITE_DB_ID, 'notifications', ID.unique(), {
+      ...data,
+      isRead: false,
+    }, [
+      Permission.read(Role.user(data.recipientId)),
+      Permission.update(Role.user(data.recipientId)),
+      Permission.delete(Role.user(data.recipientId)),
+    ]);
+  },
+  getNotifications: async (recipientId: string) => {
+    return await databases.listDocuments(APPWRITE_DB_ID, 'notifications', [
+      Query.equal('recipientId', recipientId),
+      Query.orderDesc('$createdAt'),
+      Query.limit(20),
+    ]);
+  },
+  markNotificationRead: async (notificationId: string) => {
+    return await databases.updateDocument(APPWRITE_DB_ID, 'notifications', notificationId, { isRead: true });
   },
 };
 

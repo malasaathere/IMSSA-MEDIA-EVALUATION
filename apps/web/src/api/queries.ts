@@ -8,6 +8,70 @@ export function useTasks() {
   });
 }
 
+export function useMarketingPlans() {
+  return useQuery({
+    queryKey: ['marketingPlans'],
+    queryFn: api.getMarketingPlans,
+    refetchInterval: 60_000,
+    refetchOnWindowFocus: true,
+  });
+}
+
+export function useCreateMarketingPlan() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: api.createMarketingPlan,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['marketingPlans'] }),
+  });
+}
+
+export function useUpdateMarketingPlan() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: any }) => api.updateMarketingPlan(id, data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['marketingPlans'] }),
+  });
+}
+
+export function useDeleteMarketingPlan() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => api.deleteMarketingPlan(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['marketingPlans'] }),
+  });
+}
+
+export function useDesignerPacks() {
+  return useQuery({
+    queryKey: ['designerPacks'],
+    queryFn: api.getDesignerPacks,
+  });
+}
+
+export function useUsers() {
+  return useQuery({
+    queryKey: ['users'],
+    queryFn: api.getUsers,
+  });
+}
+
+export function useNotifications(recipientId?: string) {
+  return useQuery({
+    queryKey: ['notifications', recipientId],
+    queryFn: () => recipientId ? api.getNotifications(recipientId) : null,
+    enabled: !!recipientId,
+    refetchInterval: 30_000,
+  });
+}
+
+export function useMarkNotificationRead(recipientId?: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: api.markNotificationRead,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notifications', recipientId] }),
+  });
+}
+
 export function useCreateTask() {
   const queryClient = useQueryClient();
   return useMutation({

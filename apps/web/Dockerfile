@@ -9,16 +9,24 @@ COPY packages ./packages
 COPY apps/web ./apps/web
 
 # Install dependencies and build
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 RUN pnpm turbo run build --filter=web...
 
 # Production serving image
-FROM nginx:alpine AS runner
+FROM node:20-alpine AS runner
+WORKDIR /app
 
-# Copy the build output to replace the default nginx contents.
-COPY --from=builder /app/apps/web/dist /usr/share/nginx/html
-# Copy custom nginx configuration if needed
-# COPY apps/web/nginx.conf /etc/nginx/conf.d/default.conf
+ENV NODE_ENV production
+# ENV NEXT_TELEMETRY_DISABLED 1
 
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder /app/apps/web/.next/standalone ./
+COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder /app/apps/web/public ./apps/web/public
+
+EXPOSE 3000
+
+ENV PORT 3000
+
+CMD ["node", "apps/web/server.js"]

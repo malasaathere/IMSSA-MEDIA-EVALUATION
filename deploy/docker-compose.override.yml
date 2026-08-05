@@ -1,0 +1,28 @@
+
+services:
+  frontend:
+    build:
+      context: ..
+      dockerfile: apps/web/Dockerfile
+    container_name: imssa-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    networks:
+      - appwrite
+    depends_on:
+      - traefik
+
+  init-backend:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.init
+    container_name: appwrite-init
+    networks:
+      - appwrite
+    depends_on:
+      - traefik
+    environment:
+      - APPWRITE_ENDPOINT=http://traefik/v1
+      - APPWRITE_PROJECT_ID=${APPWRITE_PROJECT_ID:-}
+      - APPWRITE_API_KEY=${APPWRITE_API_KEY:-}

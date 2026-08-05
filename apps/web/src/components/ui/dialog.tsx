@@ -23,3 +23,15 @@ export function Dialog({ open, onOpenChange, children }: { open: boolean, onOpen
     </div>
   )
 }
+
+export function DialogContent({ className, children }: { className?: string, children: React.ReactNode }) {
+  return <div className={className}>{children}</div>;
+}
+
+export function DialogHeader({ children }: { children: React.ReactNode }) {
+  return <div className="flex flex-col space-y-1.5 text-center sm:text-left">{children}</div>;
+}
+
+export function DialogTitle({ children }: { children: React.ReactNode }) {
+  return <h2 className="text-lg font-semibold leading-none tracking-tight text-navy-950">{children}</h2>;
+}

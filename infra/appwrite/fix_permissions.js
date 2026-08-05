@@ -24,6 +24,32 @@ async function fixPermissions() {
             ]
         );
         console.log("Successfully updated permissions! Guests can now read the users collection.");
+
+        console.log("Updating permissions for other collections...");
+        const collectionsToUpdate = [
+            { id: 'tasks', name: 'Tasks' },
+            { id: 'marketing_plan_items', name: 'Marketing Plan Items' },
+            { id: 'designer_packs', name: 'Designer Packs' }
+        ];
+
+        for (const coll of collectionsToUpdate) {
+            try {
+                await databases.updateCollection(
+                    DATABASE_ID,
+                    coll.id,
+                    coll.name,
+                    [
+                        Permission.read(Role.any()),
+                        Permission.write(Role.any()),
+                        Permission.update(Role.any()),
+                        Permission.delete(Role.any())
+                    ]
+                );
+                console.log(`Updated permissions for ${coll.name}`);
+            } catch (err) {
+                console.log(`Skipping ${coll.name} - it might not exist yet.`);
+            }
+        }
     } catch (error) {
         console.error("Failed to update permissions:", error);
     }

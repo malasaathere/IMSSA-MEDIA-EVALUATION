@@ -1,27 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import { useTasks } from "../../api/queries";
+import { useTasks, useDesignerPacks, useUsers } from "../../api/queries";
 import { api } from "../../api/api-client";
+import { useAuth } from "../../lib/auth-context";
 import { BUCKETS } from "../../lib/appwrite-collections";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { UploadCloud, CheckCircle2, Clock, MessageSquare, CheckSquare, Loader2 } from "lucide-react";
+import { UploadCloud, CheckCircle2, CheckSquare, Loader2, MessageSquare } from "lucide-react";
 import { WorkflowStepper } from "../layout/WorkflowStepper";
+import { TaskChat } from "../kanban/TaskChat";
 
 export function DesignerWorkspace() {
+  const { user, profile } = useAuth();
   const { data: response, isLoading } = useTasks();
+  const { data: usersResponse } = useUsers();
   const tasks = response?.documents || [];
-  // For demo purposes, we pick the first IN_PROGRESS task, or the first task overall
-  const activeTask = tasks.find(t => t.status === 'IN_PROGRESS') || tasks[0];
+  const assignedTasks = tasks.filter((task: any) => task.currentAssigneeId === user?.$id);
+  const activeTask = assignedTasks.find((task: any) => task.status === 'IN_PROGRESS' || task.status === 'REVISION_REQUESTED') || assignedTasks[0];
+
+  const { data: packsResponse, isLoading: packsLoading } = useDesignerPacks();
 
   const [files, setFiles] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [checklist, setChecklist] = useState([
-    { id: 1, text: "Check contrast ratios", checked: false },
-    { id: 2, text: "Verify required dimensions", checked: false },
-    { id: 3, text: "Ensure IMSSA branding is present", checked: false }
-  ]);
+  const [submissionResult, setSubmissionResult] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [checklist, setChecklist] = useState<{id: string, text: string, checked: boolean}[]>([]);
+
+  // Initialize checklist from designer packs
+  useEffect(() => {
+    if (packsResponse?.documents) {
+      setChecklist(packsResponse.documents.map(doc => ({
+        id: doc.$id,
+        text: doc.text,
+        checked: false
+      })));
+    }
+  }, [packsResponse]);
 
   const onDrop = (acceptedFiles: File[]) => {
     setFiles([...files, ...acceptedFiles]);
@@ -31,20 +45,61 @@ export function DesignerWorkspace() {
   const handleSubmit = async () => {
     if (!activeTask || files.length === 0) return;
     setIsSubmitting(true);
+    setSubmissionResult(null);
     try {
+      const existingVersions = await api.getVersions(activeTask.$id);
+      let versionNumber = existingVersions.total + 1;
+      const createdVersionIds: string[] = [];
+
       for (const file of files) {
         const uploadedFile = await api.uploadFile(BUCKETS.DRAFT_IMAGES, file);
-        await api.submitVersion(activeTask.$id, {
-          versionNumber: 1,
+        const version = await api.submitVersion(activeTask.$id, {
+          versionNumber,
           fileId: uploadedFile.$id,
-          submittedById: activeTask.currentAssigneeId || 'unknown'
+          submittedById: user?.$id || activeTask.currentAssigneeId,
+          status: 'SUBMITTED',
         });
+        createdVersionIds.push(version.$id);
+        versionNumber += 1;
       }
+
+      await api.updateTaskStatus(activeTask.$id, 'IN_REVIEW');
+
+      const isRevision = activeTask.status === 'REVISION_REQUESTED';
+      const recipients = (usersResponse?.documents || []).filter((candidate: any) => {
+        const roles = Array.isArray(candidate.roles) ? candidate.roles : [];
+        return roles.includes('MEDIA_DIRECTOR') || roles.includes('MARKETING_COORDINATOR');
+      });
+      const uniqueRecipients = Array.from(new Map(
+        recipients.filter((recipient: any) => recipient.authUserId).map((recipient: any) => [recipient.authUserId, recipient])
+      ).values()) as any[];
+
+      const notificationResults = await Promise.allSettled(uniqueRecipients.map((recipient: any) =>
+        api.createNotification({
+          recipientId: recipient.authUserId,
+          type: isRevision ? 'REVISION_SUBMITTED' : 'DRAFT_SUBMITTED',
+          title: isRevision ? 'Revised design ready for review' : 'New design ready for review',
+          message: `${profile?.name || 'A designer'} uploaded ${isRevision ? 'a revised design' : 'a new design'} for “${activeTask.title}”.`,
+          taskId: activeTask.$id,
+          versionId: createdVersionIds[0],
+          createdById: user?.$id || activeTask.currentAssigneeId,
+        })
+      ));
+
+      const notificationFailures = notificationResults.filter(result => result.status === 'rejected').length;
       setFiles([]);
-      alert("Submitted for review successfully!");
-    } catch (error) {
+      setSubmissionResult({
+        type: 'success',
+        message: notificationFailures === 0
+          ? 'Successfully uploaded and submitted for review. Media Directors and Marketing Coordinators have been notified.'
+          : `Successfully uploaded and submitted for review. ${notificationFailures} notification${notificationFailures === 1 ? '' : 's'} could not be delivered.`,
+      });
+    } catch (error: unknown) {
       console.error("Upload failed", error);
-      alert("Failed to submit files.");
+      setSubmissionResult({
+        type: 'error',
+        message: error instanceof Error ? error.message : 'Failed to upload and submit the design.',
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -112,6 +167,16 @@ export function DesignerWorkspace() {
                 <CardDescription>Drag and drop your file here to submit for review.</CardDescription>
               </CardHeader>
               <CardContent>
+                {submissionResult && (
+                  <div className={`mb-5 flex items-start gap-3 rounded-md border p-4 text-sm ${
+                    submissionResult.type === 'success'
+                      ? 'border-green-200 bg-green-50 text-green-800'
+                      : 'border-red-200 bg-red-50 text-red-700'
+                  }`} role="status">
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0" />
+                    <span>{submissionResult.message}</span>
+                  </div>
+                )}
                 <div 
                   {...getRootProps()} 
                   className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-12 text-center transition-colors cursor-pointer ${
@@ -176,25 +241,17 @@ export function DesignerWorkspace() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Activity</CardTitle>
+                <CardTitle>Task Discussion</CardTitle>
+                <CardDescription>
+                  {activeTask ? `Messages for: ${activeTask.title}` : 'Select a task to view discussion'}
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4 text-sm">
-                  <div className="flex items-start space-x-3">
-                    <Clock className="mt-0.5 h-4 w-4 text-text-muted" />
-                    <div>
-                      <p className="font-medium text-navy-950">Assigned</p>
-                      <p className="text-xs text-text-muted">Today at 10:00 AM</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <MessageSquare className="mt-0.5 h-4 w-4 text-text-muted" />
-                    <div>
-                      <p className="font-medium text-navy-950">Marketing Coordinator</p>
-                      <p className="text-xs text-text-muted">Please prioritize this today.</p>
-                    </div>
-                  </div>
-                </div>
+                {activeTask ? (
+                  <TaskChat taskId={activeTask.$id} />
+                ) : (
+                  <p className="text-sm text-text-muted text-center py-6">No active task selected.</p>
+                )}
               </CardContent>
             </Card>
           </div>

@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { UserPlus, Loader2, CheckCircle2, Copy } from "lucide-react";
-import { createUser } from "../../actions/users";
+import { functions } from "@/lib/appwrite";
 import { Badge } from "../ui/badge";
 
 export function AddUserDialog() {
@@ -25,7 +25,8 @@ export function AddUserDialog() {
     setResult(null);
     
     try {
-      const res = await createUser(name, role);
+      const execution = await functions.createExecution('create-user', JSON.stringify({ name, role }), false);
+      const res = JSON.parse(execution.responseBody);
       if (res.success && res.passkey) {
         setResult({ passkey: res.passkey, name: res.name || name, role: res.role || role });
       } else {
@@ -46,16 +47,15 @@ export function AddUserDialog() {
   };
 
   return (
-    <Dialog open={open} onOpenChange={(val) => {
-      setOpen(val);
-      if (!val) reset();
-    }}>
-      <DialogTrigger asChild>
-        <Button variant="outline" className="bg-white">
-          <UserPlus className="mr-2 h-4 w-4" /> Add Team Member
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md bg-white">
+    <>
+      <Button variant="outline" className="bg-white" onClick={() => setOpen(true)}>
+        <UserPlus className="mr-2 h-4 w-4" /> Add Team Member
+      </Button>
+      <Dialog open={open} onOpenChange={(val) => {
+        setOpen(val);
+        if (!val) reset();
+      }}>
+        <DialogContent className="sm:max-w-md bg-white">
         <DialogHeader>
           <DialogTitle>Add Team Member</DialogTitle>
         </DialogHeader>
@@ -129,7 +129,8 @@ export function AddUserDialog() {
             </div>
           </form>
         )}
-      </DialogContent>
-    </Dialog>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

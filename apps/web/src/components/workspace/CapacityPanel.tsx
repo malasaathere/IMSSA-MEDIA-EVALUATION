@@ -1,13 +1,25 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { Users, AlertTriangle, CheckCircle2 } from "lucide-react"
+import { useUsers, useTasks } from "../../api/queries"
 
 export function CapacityPanel() {
-  // Mock data for capacity
-  const reviewers = [
-    { id: 1, name: "Alice Chen", active: 3, capacity: 3 },
-    { id: 2, name: "Bob Smith", active: 1, capacity: 3 },
-    { id: 3, name: "Charlie Davis", active: 2, capacity: 3 },
-  ];
+  const { data: usersResponse } = useUsers();
+  const { data: tasksResponse } = useTasks();
+
+  const users = usersResponse?.documents || [];
+  const tasks = tasksResponse?.documents || [];
+
+  const eligibleUsers = users.filter((u: any) => u.roles && (u.roles.includes('DESIGNER') || u.roles.includes('MEDIA_DIRECTOR')));
+
+  const reviewers = eligibleUsers.map((user: any) => {
+    const activeTasksCount = tasks.filter((t: any) => t.currentAssigneeId === user.authUserId && (t.status === 'IN_PROGRESS' || t.status === 'PENDING' || t.status === 'IN_REVIEW')).length;
+    return {
+      id: user.$id,
+      name: user.name,
+      active: activeTasksCount,
+      capacity: 3
+    };
+  });
 
   const totalActive = reviewers.reduce((acc, r) => acc + r.active, 0);
   const totalCapacity = reviewers.reduce((acc, r) => acc + r.capacity, 0);
@@ -46,7 +58,7 @@ export function CapacityPanel() {
             <div key={reviewer.id} className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="h-8 w-8 rounded-full bg-primary-soft text-primary font-medium flex items-center justify-center text-sm">
-                  {reviewer.name.split(' ').map(n => n[0]).join('')}
+                  {reviewer.name.split(' ').map((n: string) => n[0]).join('')}
                 </div>
                 <span className="text-sm font-medium text-navy-900">{reviewer.name}</span>
               </div>

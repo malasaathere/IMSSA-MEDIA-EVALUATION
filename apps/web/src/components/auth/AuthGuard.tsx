@@ -1,11 +1,14 @@
 "use client";
 
 import { useAuth } from "@/lib/auth-context";
-import { Loader2, Menu, X, Home, PieChart, PenTool, Search, Bell, Settings, Eye, ShieldAlert, LayoutDashboard, LayoutTemplate } from "lucide-react";
+import { Loader2, Menu, X, Home, PieChart, PenTool, Search, Bell, Settings, Eye, ShieldAlert, LayoutDashboard, Calendar } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { SystemStatusBar } from "../layout/SystemStatusBar";
+import { SearchModal } from "../workspace/SearchModal";
+import { GlobalChatWidget } from "../chat/GlobalChatWidget";
+import { useMarkNotificationRead, useNotifications } from "../../api/queries";
 
 const PUBLIC_ROUTES = ["/login", "/register", "/login/callback"];
 
@@ -14,7 +17,8 @@ const ROLE_ROUTES: Record<string, { label: string; href: string; icon: any; role
   designer: { label: "My Work", href: "/designer", icon: PenTool, roles: ["DESIGNER", "VIDEO_EDITOR"] },
   director: { label: "Review Inbox", href: "/director", icon: Eye, roles: ["MEDIA_DIRECTOR"] },
   analytics: { label: "Analytics", href: "/analytics", icon: PieChart, roles: ["CHIEF_COORDINATOR"] },
-  plan: { label: "Google Plan", href: "/marketing-plan", icon: LayoutTemplate, roles: ["MARKETING_COORDINATOR"] },
+  plan: { label: "Marketing Plans", href: "/marketing-plan", icon: Calendar, roles: ["MARKETING_COORDINATOR"] },
+  calendar: { label: "Calendar", href: "/calendar", icon: Calendar, roles: ["MARKETING_COORDINATOR", "CHIEF_COORDINATOR", "DESIGNER", "MEDIA_DIRECTOR", "ADMIN", "VIDEO_EDITOR"] },
   admin: { label: "Admin", href: "/admin", icon: ShieldAlert, roles: ["ADMIN"] },
 };
 
@@ -23,6 +27,12 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const { data: notificationsResponse } = useNotifications(user?.$id);
+  const markNotificationRead = useMarkNotificationRead(user?.$id);
+  const notifications = notificationsResponse?.documents || [];
+  const unreadCount = notifications.filter((notification: any) => !notification.isRead).length;
 
   const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
 
@@ -135,13 +145,42 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
           </div>
 
           <div className="flex items-center gap-4">
-            <button className="text-slate-400 hover:text-slate-600">
+            <button onClick={() => setSearchOpen(true)} className="text-slate-400 hover:text-slate-600" title="Search">
               <Search className="w-5 h-5" />
             </button>
-            <button className="text-slate-400 hover:text-slate-600 relative">
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
-            </button>
+            <div className="relative">
+              <button onClick={() => setNotificationsOpen(!notificationsOpen)} className="text-slate-400 hover:text-slate-600 relative flex items-center">
+                <Bell className="w-5 h-5" />
+                {unreadCount > 0 && (
+                  <span className="absolute -right-2 -top-2 min-w-4 rounded-full bg-red-500 px-1 text-center text-[10px] font-bold text-white ring-2 ring-white">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
+              </button>
+              {notificationsOpen && (
+                <div className="absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg py-2 border border-slate-200 z-50">
+                  <div className="px-4 py-2 border-b border-slate-100 font-medium text-sm text-slate-700">Notifications</div>
+                  {notifications.length === 0 ? (
+                    <div className="px-4 py-8 text-center text-sm text-slate-500">No new notifications</div>
+                  ) : (
+                    <div className="max-h-80 overflow-y-auto">
+                      {notifications.map((notification: any) => (
+                        <button
+                          key={notification.$id}
+                          type="button"
+                          onClick={() => !notification.isRead && markNotificationRead.mutate(notification.$id)}
+                          className={`w-full border-b border-slate-100 px-4 py-3 text-left hover:bg-slate-50 ${notification.isRead ? 'bg-white' : 'bg-blue-50'}`}
+                        >
+                          <p className="text-sm font-semibold text-slate-800">{notification.title}</p>
+                          <p className="mt-1 text-xs text-slate-600">{notification.message}</p>
+                          <p className="mt-1 text-[10px] text-slate-400">{new Date(notification.$createdAt).toLocaleString()}</p>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
             <div className="flex items-center gap-3 pl-4 border-l border-slate-200">
               <Link href="/profile" className="hidden sm:flex flex-col items-end hover:bg-slate-50 p-1 rounded transition-colors">
                 <span className="text-sm font-medium text-slate-700">{profile?.name || user.email}</span>
@@ -173,6 +212,10 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
         {/* System Status Bar at bottom */}
         <SystemStatusBar />
       </div>
+
+      {/* Global overlays — available on all pages */}
+      <SearchModal open={searchOpen} onOpenChange={setSearchOpen} />
+      <GlobalChatWidget />
     </div>
   );
 }
