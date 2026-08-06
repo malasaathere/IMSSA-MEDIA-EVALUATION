@@ -36,9 +36,9 @@ export function KanbanBoard() {
 
   return (
     <>
-      <div className="flex h-full gap-6 overflow-x-auto pb-4">
+      <div className="flex h-full snap-x snap-mandatory gap-4 overflow-x-auto pb-4 sm:gap-6">
         {columns.map((column) => (
-          <div key={column.id} className="flex flex-col w-80 min-w-[320px] max-w-[320px]">
+          <div key={column.id} className="flex w-[85vw] max-w-[320px] flex-none snap-start flex-col sm:w-80 sm:min-w-[320px]">
             <div className="flex items-center justify-between mb-4 px-2">
               <h3 className="font-semibold text-navy-900">{column.title}</h3>
               <span className="text-sm font-medium text-text-muted bg-surface px-2 py-1 rounded-full">

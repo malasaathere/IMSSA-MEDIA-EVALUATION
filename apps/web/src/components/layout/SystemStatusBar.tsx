@@ -25,7 +25,7 @@ export function SystemStatusBar() {
   }, []);
 
   return (
-    <div className="h-8 bg-navy-950 border-t border-navy-800 flex items-center px-4 justify-between text-xs text-slate-300 z-50">
+    <div className="min-h-8 bg-navy-950 border-t border-navy-800 flex items-center px-3 sm:px-4 justify-between text-[10px] sm:text-xs text-slate-300 z-50">
       <div className="flex items-center space-x-4">
         <span className="flex items-center">
           {isOnline ? (
@@ -54,7 +54,7 @@ export function SystemStatusBar() {
       
       <div className="flex items-center space-x-4 opacity-75">
         <span>IMSSA Media v2.0.0</span>
-        {isOnline && <span className="flex items-center"><CheckCircle2 className="w-3 h-3 text-green-500 mr-1" /> All services operational</span>}
+        {isOnline && <span className="hidden items-center sm:flex"><CheckCircle2 className="w-3 h-3 text-green-500 mr-1" /> All services operational</span>}
       </div>
     </div>
   );

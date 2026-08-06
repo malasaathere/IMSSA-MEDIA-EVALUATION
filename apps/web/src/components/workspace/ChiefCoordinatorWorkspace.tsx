@@ -67,10 +67,10 @@ export function ChiefCoordinatorWorkspace() {
   });
 
   return (
-    <div className="p-8 bg-slate-50 min-h-screen">
-      <h1 className="text-3xl font-bold text-navy-900 mb-8">Analytics Dashboard</h1>
+    <div className="p-4 sm:p-6 lg:p-8 bg-slate-50 min-h-screen">
+      <h1 className="text-2xl font-bold text-navy-900 mb-6 sm:text-3xl sm:mb-8">Analytics Dashboard</h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-6 mb-8">
         <Card>
           <CardHeader>
             <CardTitle className="text-sm font-medium text-slate-500">Active Work (Tasks)</CardTitle>
@@ -109,8 +109,8 @@ export function ChiefCoordinatorWorkspace() {
       </div>
 
       <h2 className="text-2xl font-bold text-navy-900 mb-4">Designer Workload (Capacity)</h2>
-      <div className="bg-white rounded-lg shadow border border-slate-200 overflow-hidden">
-        <table className="min-w-full divide-y divide-slate-200">
+      <div className="bg-white rounded-lg shadow border border-slate-200 overflow-x-auto">
+        <table className="min-w-[720px] w-full divide-y divide-slate-200">
           <thead className="bg-slate-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Designer</th>

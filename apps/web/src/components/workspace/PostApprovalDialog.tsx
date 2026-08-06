@@ -6,17 +6,21 @@ import { Star } from "lucide-react";
 interface PostApprovalDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onSubmit: (feedback: { rating: number; message: string; suggestions: string }) => Promise<void>;
+  isSubmitting?: boolean;
 }
 
-export function PostApprovalDialog({ open, onOpenChange }: PostApprovalDialogProps) {
+export function PostApprovalDialog({ open, onOpenChange, onSubmit, isSubmitting = false }: PostApprovalDialogProps) {
   const [rating, setRating] = useState<number>(0);
   const [hoverRating, setHoverRating] = useState<number>(0);
   const [message, setMessage] = useState("");
   const [suggestions, setSuggestions] = useState("");
 
-  const handleSave = () => {
-    // Save logic
-    onOpenChange(false);
+  const handleSave = async () => {
+    await onSubmit({ rating, message, suggestions });
+    setRating(0);
+    setMessage("");
+    setSuggestions("");
   };
 
   const getRatingLabel = (r: number) => {
@@ -36,7 +40,7 @@ export function PostApprovalDialog({ open, onOpenChange }: PostApprovalDialogPro
         <div>
           <h2 className="text-xl font-semibold text-navy-950 mb-1">Performance Feedback</h2>
           <p className="text-sm text-text-muted">
-            The task has been approved. Please provide constructive feedback for the designer.
+            Approve this task and provide constructive feedback for the designer.
           </p>
         </div>
 
@@ -90,8 +94,10 @@ export function PostApprovalDialog({ open, onOpenChange }: PostApprovalDialogPro
         </div>
 
         <div className="flex justify-end space-x-3 pt-2">
-          <Button variant="ghost" onClick={() => onOpenChange(false)}>Skip Feedback</Button>
-          <Button onClick={handleSave} disabled={rating === 0}>Submit Feedback</Button>
+          <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={isSubmitting}>Cancel</Button>
+          <Button onClick={handleSave} disabled={rating === 0 || isSubmitting}>
+            {isSubmitting ? 'Approving...' : 'Submit Feedback'}
+          </Button>
         </div>
       </div>
     </Dialog>

@@ -25,22 +25,24 @@ export function ReviewCanvas({ imageUrl, initialAnnotations = [], onAnnotationsC
   const [currentTool, setCurrentTool] = useState<'pointer' | 'pin' | 'rect'>('pointer');
   
   const containerRef = useRef<HTMLDivElement>(null);
-  const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
+  const [dimensions, setDimensions] = useState({ width: 320, height: 240 });
   const [isFitToScreen, setIsFitToScreen] = useState(false);
 
   // Measure container and update dimensions
   useEffect(() => {
     const updateDimensions = () => {
       if (containerRef.current) {
+        const availableWidth = containerRef.current.parentElement?.clientWidth || window.innerWidth - 32;
         if (isFitToScreen) {
           // Fill available space (e.g. fixed window height minus offset)
           setDimensions({
-            width: containerRef.current.clientWidth,
-            height: window.innerHeight - 200 // approximate available height
+            width: Math.max(280, availableWidth),
+            height: Math.max(280, window.innerHeight - 240)
           });
         } else {
           // Default fixed size for original aspect ratio testing
-          setDimensions({ width: 800, height: 600 });
+          const width = Math.min(800, Math.max(280, availableWidth));
+          setDimensions({ width, height: Math.round(width * 0.75) });
         }
       }
     };
@@ -139,8 +141,8 @@ export function ReviewCanvas({ imageUrl, initialAnnotations = [], onAnnotationsC
       {/* Canvas Area */}
       <div 
         ref={containerRef} 
-        className={`relative border border-slate-200 bg-slate-100 rounded-lg overflow-hidden flex justify-center items-center ${isFitToScreen ? 'w-full' : 'max-w-max mx-auto shadow-md'}`}
-        style={{ width: isFitToScreen ? '100%' : dimensions.width, height: dimensions.height }}
+        className={`relative max-w-full border border-slate-200 bg-slate-100 rounded-lg overflow-hidden flex justify-center items-center ${isFitToScreen ? 'w-full' : 'mx-auto shadow-md'}`}
+        style={{ width: dimensions.width, height: dimensions.height }}
       >
         {imageUrl ? (
           <img 

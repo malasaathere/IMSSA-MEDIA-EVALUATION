@@ -4,30 +4,29 @@ import { useState } from "react";
 import { KanbanBoard } from "../kanban/KanbanBoard";
 import { CapacityPanel } from "./CapacityPanel";
 import { CreateTaskDialog } from "./CreateTaskDialog";
-import { GlobalChatWidget } from "../chat/GlobalChatWidget";
 
 export function MarketingWorkspace() {
   const [createTaskOpen, setCreateTaskOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-surface p-8">
+    <div className="min-h-screen bg-surface p-4 sm:p-6 lg:p-8">
       <div className="max-w-[1600px] mx-auto">
-        <header className="mb-8 flex justify-between items-end">
+        <header className="mb-6 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-navy-950 mb-2">Marketing Workspace</h1>
+            <h1 className="text-2xl font-bold text-navy-950 mb-2 sm:text-3xl">Marketing Workspace</h1>
             <p className="text-text-muted">Manage media evaluation tasks and team capacity.</p>
           </div>
           <button
             onClick={() => setCreateTaskOpen(true)}
-            className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm"
+            className="w-full bg-primary hover:bg-primary-hover text-white px-4 py-2.5 rounded-lg font-medium transition-colors shadow-sm sm:w-auto"
           >
             Create Task
           </button>
         </header>
 
-        <div className="grid grid-cols-1 xl:grid-cols-[1fr_350px] gap-8 h-[calc(100vh-160px)]">
+        <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_350px] gap-6 lg:gap-8 xl:min-h-[calc(100vh-180px)]">
           {/* Main Kanban Area */}
-          <div className="bg-white rounded-2xl border border-border p-6 shadow-sm overflow-hidden flex flex-col">
+          <div className="min-w-0 bg-white rounded-2xl border border-border p-3 sm:p-6 shadow-sm overflow-hidden flex flex-col">
             <h2 className="text-xl font-semibold text-navy-900 mb-6">Task Board</h2>
             <div className="flex-1 overflow-hidden">
               <KanbanBoard />

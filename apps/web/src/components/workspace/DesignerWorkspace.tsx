@@ -110,11 +110,11 @@ export function DesignerWorkspace() {
   }
 
   return (
-    <div className="flex h-screen flex-col bg-surface">
+    <div className="flex min-h-screen flex-col bg-surface">
       {/* Header */}
-      <header className="flex items-center justify-between border-b border-border bg-white px-6 py-4">
+      <header className="flex flex-col items-start gap-3 border-b border-border bg-white px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <div>
-          <h1 className="text-2xl font-semibold text-navy-950">My Work</h1>
+          <h1 className="text-xl font-semibold text-navy-950 sm:text-2xl">My Work</h1>
           <p className="text-sm text-text-muted">Designer & Editor Workspace</p>
         </div>
         <div className="flex items-center space-x-4">
@@ -127,7 +127,7 @@ export function DesignerWorkspace() {
         </div>
       </header>
 
-      <main className="flex-1 overflow-auto p-6">
+      <main className="flex-1 overflow-auto p-3 sm:p-6">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           
           {/* Active Task Details */}
@@ -135,7 +135,7 @@ export function DesignerWorkspace() {
             {activeTask ? (
               <Card>
                 <CardHeader>
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <CardTitle>{activeTask.title}</CardTitle>
                     <Badge variant="info">{activeTask.status || 'IN PROGRESS'}</Badge>
                   </div>
@@ -179,7 +179,7 @@ export function DesignerWorkspace() {
                 )}
                 <div 
                   {...getRootProps()} 
-                  className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-12 text-center transition-colors cursor-pointer ${
+                  className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 text-center transition-colors cursor-pointer sm:p-12 ${
                     isDragActive ? "border-focus bg-surface-selected" : "border-border hover:bg-surface"
                   }`}
                 >

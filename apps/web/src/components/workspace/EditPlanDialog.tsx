@@ -113,7 +113,7 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
           </div>
 
           {/* Dates */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-sm font-medium text-navy-800 mb-1">Handover Date</label>
               <Input value={form.handoverDate || ""} onChange={e => handleChange("handoverDate", e.target.value)} placeholder="e.g. 11th July" />
@@ -125,7 +125,7 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
           </div>
 
           {/* Designer + Status */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-sm font-medium text-navy-800 mb-1">Designer</label>
               <Input value={form.designer || ""} onChange={e => handleChange("designer", e.target.value)} />
@@ -143,7 +143,7 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
           </div>
 
           {/* Content Writer + Caption Status */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-sm font-medium text-navy-800 mb-1">Content Writer</label>
               <Input value={form.contentWriter || ""} onChange={e => handleChange("contentWriter", e.target.value)} />

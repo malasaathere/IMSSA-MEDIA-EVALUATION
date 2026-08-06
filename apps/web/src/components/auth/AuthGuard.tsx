@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/lib/auth-context";
-import { Loader2, Menu, X, Home, PieChart, PenTool, Search, Bell, Settings, Eye, ShieldAlert, LayoutDashboard, Calendar } from "lucide-react";
+import { Loader2, Menu, X, Home, PieChart, PenTool, Search, Bell, Eye, ShieldAlert, LayoutDashboard, Calendar, LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -94,6 +94,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
             <LayoutDashboard className="w-5 h-5 text-gold-500" /> IMSSA Media
           </span>
           <button onClick={() => setSidebarOpen(false)} className="lg:hidden">
+            <span className="sr-only">Close navigation</span>
             <X className="w-6 h-6 text-slate-300 hover:text-white" />
           </button>
         </div>
@@ -129,11 +130,12 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top Navbar */}
-        <header className="bg-white border-b border-slate-200 h-16 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-10">
+        <header className="bg-white border-b border-slate-200 min-h-16 flex items-center justify-between gap-2 px-3 sm:px-6 sticky top-0 z-10">
           <div className="flex items-center">
             <button
               onClick={() => setSidebarOpen(true)}
               className="lg:hidden text-slate-500 hover:text-slate-700 mr-4"
+              aria-label="Open navigation"
             >
               <Menu className="w-6 h-6" />
             </button>
@@ -144,12 +146,12 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <button onClick={() => setSearchOpen(true)} className="text-slate-400 hover:text-slate-600" title="Search">
               <Search className="w-5 h-5" />
             </button>
             <div className="relative">
-              <button onClick={() => setNotificationsOpen(!notificationsOpen)} className="text-slate-400 hover:text-slate-600 relative flex items-center">
+              <button onClick={() => setNotificationsOpen(!notificationsOpen)} className="text-slate-400 hover:text-slate-600 relative flex items-center" aria-label="Notifications">
                 <Bell className="w-5 h-5" />
                 {unreadCount > 0 && (
                   <span className="absolute -right-2 -top-2 min-w-4 rounded-full bg-red-500 px-1 text-center text-[10px] font-bold text-white ring-2 ring-white">
@@ -181,23 +183,25 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
                 </div>
               )}
             </div>
-            <div className="flex items-center gap-3 pl-4 border-l border-slate-200">
+            <div className="flex items-center gap-2 sm:gap-3 sm:pl-4 sm:border-l sm:border-slate-200">
               <Link href="/profile" className="hidden sm:flex flex-col items-end hover:bg-slate-50 p-1 rounded transition-colors">
                 <span className="text-sm font-medium text-slate-700">{profile?.name || user.email}</span>
                 <span className="text-xs text-slate-500">{currentRoles[0]?.replace(/_/g, " ") || "No Role"}</span>
               </Link>
               <button 
                 onClick={logout}
-                className="text-sm font-medium text-red-600 hover:text-red-700"
+                className="inline-flex min-h-10 items-center gap-1 rounded-md px-2 text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700"
+                aria-label="Sign out"
               >
-                Sign Out
+                <LogOut className="h-4 w-4 sm:hidden" />
+                <span className="hidden sm:inline">Sign Out</span>
               </button>
             </div>
           </div>
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-auto bg-slate-50 relative">
+        <main className="flex-1 overflow-auto bg-slate-50 relative pb-8">
           {!authorized ? (
             <div className="p-8 text-center">
               <ShieldAlert className="w-12 h-12 text-red-400 mx-auto mb-4" />

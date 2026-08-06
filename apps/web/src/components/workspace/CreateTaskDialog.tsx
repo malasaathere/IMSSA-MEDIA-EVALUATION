@@ -115,7 +115,7 @@ export function CreateTaskDialog({ open, onOpenChange }: CreateTaskDialogProps) 
           </div>
 
           {/* Row: Event + Work Type */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-sm font-medium text-navy-800 mb-1">Event *</label>
               <select
@@ -139,7 +139,7 @@ export function CreateTaskDialog({ open, onOpenChange }: CreateTaskDialogProps) 
           </div>
 
           {/* Row: Priority + Deadline */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-sm font-medium text-navy-800 mb-1">Priority *</label>
               <select

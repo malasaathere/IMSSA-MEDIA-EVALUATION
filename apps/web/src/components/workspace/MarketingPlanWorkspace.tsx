@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { useMarketingPlans } from '../../api/queries';
-import { Loader2, Upload, Sparkles, ChevronDown } from 'lucide-react';
+import { Loader2, Upload, Sparkles } from 'lucide-react';
 import { EditPlanDialog } from './EditPlanDialog';
 import { ImportSheetsDialog } from './ImportSheetsDialog';
 import { getCampaignTone } from '../../lib/campaign-colors';
@@ -67,10 +67,10 @@ export const MarketingPlanWorkspace = () => {
   };
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-5 p-4 sm:space-y-6 sm:p-6">
       <div className="flex flex-wrap justify-between items-center gap-4">
-        <h1 className="text-3xl font-bold tracking-tight">Marketing Plan</h1>
-        <div className="flex gap-2 flex-wrap">
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Marketing Plan</h1>
+        <div className="grid w-full grid-cols-1 gap-2 sm:flex sm:w-auto sm:flex-wrap">
           <Button variant="outline" onClick={() => setImportOpen(true)}>
             <Upload className="mr-2 h-4 w-4" />
             Import from Google Sheets
