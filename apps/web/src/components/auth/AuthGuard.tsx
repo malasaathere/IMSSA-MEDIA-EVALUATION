@@ -21,7 +21,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   }, [isLoading, isPublicRoute, router, user]);
 
   if (isLoading) {
-    return <div className="grid min-h-screen place-items-center bg-surface"><Loader2 className="h-10 w-10 animate-spin text-primary" /></div>;
+    return <div className="grid min-h-screen place-items-center bg-surface"><div className="text-center"><Loader2 className="mx-auto h-10 w-10 animate-spin text-primary" /><p className="mt-3 text-sm text-text-muted">Checking your session…</p></div></div>;
   }
 
   if (!user && isPublicRoute) return <>{children}</>;

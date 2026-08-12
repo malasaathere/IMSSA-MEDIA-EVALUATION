@@ -21,6 +21,14 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AUTH_TIMEOUT_MS = 10_000;
+
+function withTimeout<T>(operation: Promise<T>, message: string): Promise<T> {
+  return Promise.race([
+    operation,
+    new Promise<T>((_, reject) => window.setTimeout(() => reject(new Error(message)), AUTH_TIMEOUT_MS)),
+  ]);
+}
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<Models.User<Models.Preferences> | null>(null);
@@ -33,9 +41,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const fetchProfile = async (authUserId: string) => {
     try {
-      const response = await databases.listDocuments(APPWRITE_DB_ID, "users", [
+      const response = await withTimeout(databases.listDocuments(APPWRITE_DB_ID, "users", [
         Query.equal("authUserId", authUserId)
-      ]);
+      ]), "Profile loading timed out.");
       if (response.total > 0) {
         const doc = response.documents[0];
         setProfile({
@@ -56,7 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const checkSession = async () => {
     try {
-      const currentUser = await account.get();
+      const currentUser = await withTimeout(account.get(), "The login service took too long to respond.");
       setUser(currentUser);
       await fetchProfile(currentUser.$id);
     } catch (error) {
@@ -65,6 +73,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setProfile(null);
       } else {
         console.error("Auth check failed", error);
+        setUser(null);
+        setProfile(null);
       }
     } finally {
       setIsLoading(false);
@@ -74,7 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = async (email: string, pass: string) => {
     setIsLoading(true);
     try {
-      await account.createEmailPasswordSession(email, pass);
+      await withTimeout(account.createEmailPasswordSession(email, pass), "The login service took too long to respond.");
       await checkSession();
     } catch (error) {
       setIsLoading(false);
