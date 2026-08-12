@@ -10,6 +10,7 @@ const ALLOWED_ROLES = new Set([
   'MEDIA_DIRECTOR',
   'CONTENT_WRITER',
 ]);
+const ACTIVE_TASK_STATUSES = new Set(['ASSIGNED', 'ACKNOWLEDGED', 'IN_PROGRESS', 'REVISION_REQUESTED', 'READY_FOR_REVIEW', 'IN_REVIEW']);
 
 const clean = (value) => String(value ?? '').trim();
 const normalizeRole = (value) => clean(value).toUpperCase().replace(/[ -]+/g, '_');
@@ -37,6 +38,15 @@ async function createManagedUser({ databases, users, name, roles, events }) {
   } catch (profileError) {
     await users.delete(authUser.$id).catch(() => undefined);
     throw profileError;
+  }
+}
+
+async function allDocuments(databases, collectionId) {
+  const documents = [];
+  for (let offset = 0; ; offset += 500) {
+    const page = await databases.listDocuments(DATABASE_ID, collectionId, [Query.limit(500), Query.offset(offset)]);
+    documents.push(...page.documents);
+    if (documents.length >= page.total || page.documents.length === 0) return documents;
   }
 }
 
@@ -135,6 +145,56 @@ export default async ({ req, res, log, error }) => {
       log(JSON.stringify({ action: 'CREATE_EVENT', actorId: actor.$id, eventId: event.$id, name, coordinatorAssignments, newCoordinatorId: newCoordinator?.$id || null }));
       return res.json({ success: true, event: { $id: event.$id, ...eventData }, newCoordinator }, 201);
     }
+    if (action === 'DELETE_USER') {
+      const userId = clean(body.userId);
+      if (!userId) return res.json({ success: false, error: 'Select a user to remove.' }, 400);
+      const target = await databases.getDocument(DATABASE_ID, 'users', userId);
+      if (target.$id === actor.$id || (target.authUserId && target.authUserId === authUserId)) {
+        return res.json({ success: false, error: 'You cannot remove the account you are currently using.' }, 409);
+      }
+      const targetRoles = (target.roles || []).map(normalizeRole);
+      if (targetRoles.includes('ADMIN')) {
+        const admins = await databases.listDocuments(DATABASE_ID, 'users', [Query.contains('roles', 'ADMIN'), Query.limit(2)]);
+        if (admins.total <= 1) return res.json({ success: false, error: 'The final administrator cannot be removed.' }, 409);
+      }
+      const tasks = await allDocuments(databases, 'tasks');
+      const hasWork = tasks.some((task) => [target.$id, target.authUserId].filter(Boolean).includes(task.currentAssigneeId)
+        && ACTIVE_TASK_STATUSES.has(clean(task.status).toUpperCase()));
+      if (hasWork) return res.json({ success: false, error: 'This user still has assigned work. Reassign their tasks before removing the account.' }, 409);
+
+      if (target.authUserId) await users.updateStatus(target.authUserId, false);
+      await databases.deleteDocument(DATABASE_ID, 'users', target.$id);
+      if (target.authUserId) await users.delete(target.authUserId);
+      log(JSON.stringify({ action: 'DELETE_USER', actorId: actor.$id, targetId: target.$id, name: target.name }));
+      return res.json({ success: true, removedUserId: target.$id });
+    }
+    if (action === 'DELETE_EVENT') {
+      const eventId = clean(body.eventId);
+      if (!eventId) return res.json({ success: false, error: 'Select an event to remove.' }, 400);
+      const event = await databases.getDocument(DATABASE_ID, 'events', eventId);
+      const eventName = clean(event.name);
+      const [tasks, plans, profiles] = await Promise.all([
+        allDocuments(databases, 'tasks'),
+        allDocuments(databases, 'marketing_plan_items'),
+        allDocuments(databases, 'users'),
+      ]);
+      const normalizedEvent = eventName.toLowerCase();
+      const matchesEvent = (value) => clean(value).toLowerCase() === normalizedEvent || clean(value) === event.$id;
+      const taskCount = tasks.filter((task) => matchesEvent(task.eventId) || matchesEvent(task.eventName)).length;
+      const planCount = plans.filter((plan) => matchesEvent(plan.eventId) || matchesEvent(plan.eventName) || matchesEvent(plan.campaign)).length;
+      if (taskCount || planCount) {
+        return res.json({ success: false, error: `This event still has ${taskCount} task${taskCount === 1 ? '' : 's'} and ${planCount} marketing-plan item${planCount === 1 ? '' : 's'}. Remove or move those records first.` }, 409);
+      }
+      for (const profile of profiles) {
+        const nextEvents = (profile.events || []).filter((assignedEvent) => !matchesEvent(assignedEvent));
+        if (nextEvents.length !== (profile.events || []).length) {
+          await databases.updateDocument(DATABASE_ID, 'users', profile.$id, { events: nextEvents });
+        }
+      }
+      await databases.deleteDocument(DATABASE_ID, 'events', event.$id);
+      log(JSON.stringify({ action: 'DELETE_EVENT', actorId: actor.$id, eventId: event.$id, name: eventName }));
+      return res.json({ success: true, removedEventId: event.$id });
+    }
     if (action !== 'UPDATE_USER') return res.json({ success: false, error: 'Unsupported administration action.' }, 400);
     const userId = clean(body.userId);
     const name = clean(body.name);
@@ -174,6 +234,6 @@ export default async ({ req, res, log, error }) => {
   } catch (exception) {
     error(exception?.message || String(exception));
     if (exception?.code === 404) return res.json({ success: false, error: 'The selected user no longer exists.' }, 404);
-    return res.json({ success: false, error: 'Could not update this user assignment.' }, 500);
+    return res.json({ success: false, error: 'The administration action could not be completed.' }, 500);
   }
 };

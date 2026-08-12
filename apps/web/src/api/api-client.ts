@@ -82,6 +82,17 @@ export const api = {
     if (execution.responseStatusCode >= 400 || !payload.success) throw new ApiError(payload.error || 'Could not create this event.');
     return payload;
   },
+  deleteEvent: async (eventId: string) => {
+    const execution = await functions.createExecution({
+      functionId: 'api-admin-access', body: JSON.stringify({ action: 'DELETE_EVENT', eventId }), async: false,
+      xpath: '/events', method: ExecutionMethod.POST, headers: { 'content-type': 'application/json' },
+    });
+    let payload: any = {};
+    try { payload = execution.responseBody ? JSON.parse(execution.responseBody) : {}; }
+    catch { throw new ApiError('The administration service returned an invalid response.', 'INVALID_RESPONSE'); }
+    if (execution.responseStatusCode >= 400 || !payload.success) throw new ApiError(payload.error || 'Could not remove this event.');
+    return payload;
+  },
   createUser: async (data: CreateUserInput) => {
     const execution = await functions.createExecution({
       functionId: 'api-admin-access',
@@ -97,6 +108,17 @@ export const api = {
     if (execution.responseStatusCode >= 400 || !payload.success) {
       throw new ApiError(payload.error || 'Could not create this user.', payload.code, payload);
     }
+    return payload;
+  },
+  deleteUser: async (userId: string) => {
+    const execution = await functions.createExecution({
+      functionId: 'api-admin-access', body: JSON.stringify({ action: 'DELETE_USER', userId }), async: false,
+      xpath: '/users', method: ExecutionMethod.POST, headers: { 'content-type': 'application/json' },
+    });
+    let payload: any = {};
+    try { payload = execution.responseBody ? JSON.parse(execution.responseBody) : {}; }
+    catch { throw new ApiError('The administration service returned an invalid response.', 'INVALID_RESPONSE'); }
+    if (execution.responseStatusCode >= 400 || !payload.success) throw new ApiError(payload.error || 'Could not remove this user.');
     return payload;
   },
   updateUserAccess: async (data: UpdateUserAccessInput) => {

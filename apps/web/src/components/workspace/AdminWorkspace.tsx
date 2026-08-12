@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { BriefcaseBusiness, CalendarRange, Loader2, ShieldCheck, Users } from 'lucide-react'
+import { BriefcaseBusiness, CalendarRange, Loader2, ShieldCheck, Trash2, Users } from 'lucide-react'
 import Link from 'next/link'
 import { databases } from '../../lib/appwrite'
 import { api } from '../../api/api-client'
@@ -38,6 +38,9 @@ export function AdminWorkspace() {
   const [draftStatus, setDraftStatus] = useState<'ACTIVE' | 'INACTIVE'>('ACTIVE');
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
+  const [deleteTarget, setDeleteTarget] = useState<{ type: 'user' | 'event'; item: any } | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
 
   const eventOptions = useMemo(() => Array.from(new Set([
     ...managedEvents.map((event: any) => event.name),
@@ -81,6 +84,24 @@ export function AdminWorkspace() {
     }
   };
 
+  const removeTarget = async () => {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    setDeleteError('');
+    try {
+      if (deleteTarget.type === 'user') await api.deleteUser(deleteTarget.item.$id);
+      else await api.deleteEvent(deleteTarget.item.$id);
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['adminUsers'] }),
+        queryClient.invalidateQueries({ queryKey: ['users'] }),
+        queryClient.invalidateQueries({ queryKey: ['adminEvents'] }),
+      ]);
+      setDeleteTarget(null);
+    } catch (error: any) {
+      setDeleteError(error?.message || `Could not remove this ${deleteTarget.type}.`);
+    } finally { setDeleting(false); }
+  };
+
   const activeUsers = users.filter((user: any) => user.status === 'ACTIVE').length;
   const multiRoleUsers = users.filter((user: any) => (user.roles || []).length > 1).length;
 
@@ -110,6 +131,12 @@ export function AdminWorkspace() {
         ))}
       </div>
 
+      <div className="mb-8 rounded-[22px] border border-slate-200 bg-white p-3 shadow sm:p-6">
+        <div className="mb-4"><h2 className="text-xl font-bold text-navy-900">Events</h2><p className="mt-1 text-sm text-text-muted">Add events, assign coordinators, or remove unused events.</p></div>
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">{managedEvents.map((event: any) => <article key={event.$id} className="flex min-w-0 items-center justify-between gap-3 rounded-2xl border border-border bg-surface p-4"><div className="min-w-0"><p className="truncate font-semibold text-navy-950">{event.name}</p><p className="mt-1 truncate text-xs text-text-muted">{event.description || 'No description added'}</p></div><Button aria-label={`Remove ${event.name}`} variant="outline" size="sm" onClick={() => { setDeleteError(''); setDeleteTarget({ type: 'event', item: event }); }} className="shrink-0 text-red-700"><Trash2 className="h-4 w-4" /></Button></article>)}</div>
+        {!managedEvents.length && <p className="rounded-xl bg-surface p-4 text-sm text-text-muted">No events have been created.</p>}
+      </div>
+
       <div className="mb-8 overflow-x-auto rounded-[22px] border border-slate-200 bg-white p-3 shadow sm:p-6">
         <div className="mb-4"><h2 className="text-xl font-bold text-navy-900">Roles & Event Assignments</h2><p className="mt-1 text-sm text-text-muted">Multiple positions are supported—for example, Dulaj can be both Chief Coordinator and Designer.</p></div>
         {usersLoading ? <div className="flex items-center gap-2 py-10 text-text-muted"><Loader2 className="h-5 w-5 animate-spin"/> Loading users…</div> : (
@@ -123,7 +150,7 @@ export function AdminWorkspace() {
                 <td className="px-4 py-4"><div className="flex max-w-sm flex-wrap gap-1.5">{(user.roles || []).map((role: string) => <span key={role} className="rounded-full bg-primary-soft px-2.5 py-1 text-[10px] font-bold text-primary">{role.replace(/_/g,' ')}</span>)}</div></td>
                 <td className="px-4 py-4"><div className="flex max-w-sm flex-wrap gap-1.5">{(user.events || []).length ? user.events.map((event: string) => <span key={event} className="rounded-full border border-border bg-surface px-2.5 py-1 text-[10px] font-semibold text-navy-700">{event}</span>) : <span className="text-xs italic text-text-muted">No event assigned</span>}</div></td>
                 <td className="px-4 py-4"><span className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${user.status === 'ACTIVE' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>{user.status}</span></td>
-                <td className="px-4 py-4 text-right"><Button variant="outline" size="sm" onClick={() => openAccessEditor(user)}>Edit assignment</Button></td>
+                <td className="px-4 py-4 text-right"><div className="flex justify-end gap-2"><Button variant="outline" size="sm" onClick={() => openAccessEditor(user)}>Edit assignment</Button><Button aria-label={`Remove ${user.name}`} variant="outline" size="sm" onClick={() => { setDeleteError(''); setDeleteTarget({ type: 'user', item: user }); }} className="text-red-700"><Trash2 className="h-4 w-4" /></Button></div></td>
               </tr>)}
             </tbody>
           </table>
@@ -162,6 +189,16 @@ export function AdminWorkspace() {
 
           {saveError && <p className="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">{saveError}</p>}
           <div className="mt-6 flex justify-end gap-3"><Button variant="outline" onClick={() => setSelectedUser(null)}>Cancel</Button><Button onClick={saveAccess} disabled={saving || draftRoles.length === 0 || draftName.trim().length < 2}>{saving && <Loader2 className="mr-2 h-4 w-4 animate-spin"/>}Save assignment</Button></div>
+        </div>
+      </Dialog>
+
+      <Dialog open={Boolean(deleteTarget)} onOpenChange={(open) => !open && !deleting && setDeleteTarget(null)}>
+        <div>
+          <h2 className="text-xl font-bold text-navy-950">Remove {deleteTarget?.type}</h2>
+          <p className="mt-3 text-sm leading-6 text-text-muted">This will permanently remove <strong className="text-navy-950">{deleteTarget?.item?.name}</strong>{deleteTarget?.type === 'user' ? ' and their passkey account' : ' and remove it from every user’s event access'}.</p>
+          <p className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">Removal is blocked when the user still owns work, or when the event still contains tasks or marketing-plan items.</p>
+          {deleteError && <p className="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">{deleteError}</p>}
+          <div className="mt-6 flex justify-end gap-3"><Button variant="outline" onClick={() => setDeleteTarget(null)} disabled={deleting}>Cancel</Button><Button onClick={removeTarget} disabled={deleting} className="bg-red-700 hover:bg-red-800">{deleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Remove permanently</Button></div>
         </div>
       </Dialog>
     </div>
