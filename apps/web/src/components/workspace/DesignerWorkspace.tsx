@@ -112,10 +112,11 @@ export function DesignerWorkspace() {
   return (
     <div className="flex min-h-screen flex-col bg-surface">
       {/* Header */}
-      <header className="flex flex-col items-start gap-3 border-b border-border bg-white px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+      <header className="page-heading mx-4 mt-4 sm:mx-6 sm:mt-6">
         <div>
-          <h1 className="text-xl font-semibold text-navy-950 sm:text-2xl">My Work</h1>
-          <p className="text-sm text-text-muted">Designer & Editor Workspace</p>
+          <p>DESIGNER & EDITOR WORKSPACE</p>
+          <h1>My Work</h1>
+          <span>Review your brief, upload drafts and respond to feedback.</span>
         </div>
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2 rounded-full border border-border bg-surface px-4 py-1.5">

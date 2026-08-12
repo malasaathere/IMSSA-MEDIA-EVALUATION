@@ -129,7 +129,12 @@ export const api = {
     return await databases.createDocument(APPWRITE_DB_ID, 'marketing_plan_items', ID.unique(), data);
   },
   updateMarketingPlan: async (id: string, data: any) => {
-    return await databases.updateDocument(APPWRITE_DB_ID, 'marketing_plan_items', id, data);
+    const isPosted = [data?.status, data?.finalStatus]
+      .some((value) => typeof value === 'string' && value.trim().toLowerCase() === 'posted');
+    const consistentData = isPosted
+      ? { ...data, finalStatus: 'Posted', designStatus: 'Posted', captionStatus: 'Posted' }
+      : data;
+    return await databases.updateDocument(APPWRITE_DB_ID, 'marketing_plan_items', id, consistentData);
   },
   deleteMarketingPlan: async (id: string) => {
     return await databases.deleteDocument(APPWRITE_DB_ID, 'marketing_plan_items', id);

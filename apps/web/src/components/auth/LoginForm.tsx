@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { loginOrSignupWithPin, logout } from "../../api/auth";
-import { Loader2, AlertCircle, Megaphone, BarChart3, Palette, ShieldCheck, ArrowLeft, KeyRound } from "lucide-react";
+import { Loader2, AlertCircle, Megaphone, BarChart3, Palette, ShieldCheck, ArrowLeft, KeyRound, Settings2 } from "lucide-react";
 
-type PortalId = 'marketing' | 'chief' | 'designer' | 'director';
+type PortalId = 'marketing' | 'chief' | 'designer' | 'director' | 'admin';
 
 const PORTALS: Array<{
   id: PortalId;
@@ -45,6 +45,14 @@ const PORTALS: Array<{
     roles: ['MEDIA_DIRECTOR'],
     href: '/director',
     icon: ShieldCheck,
+  },
+  {
+    id: 'admin',
+    title: 'Administrator',
+    description: 'Assign user positions, event scope, and system access.',
+    roles: ['ADMIN'],
+    href: '/admin',
+    icon: Settings2,
   },
 ];
 
@@ -90,8 +98,9 @@ export function LoginForm() {
   return (
     <div>
       {!portal ? (
+        <div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {PORTALS.map(item => {
+          {PORTALS.filter(item => item.id !== 'admin').map(item => {
             const Icon = item.icon;
             return (
               <button
@@ -109,6 +118,16 @@ export function LoginForm() {
             );
           })}
         </div>
+          <div className="mt-5 text-center">
+            <button
+              type="button"
+              onClick={() => { setSelectedPortal('admin'); setError(null); }}
+              className="text-xs font-medium text-slate-400 underline-offset-4 transition-colors hover:text-slate-600 hover:underline"
+            >
+              System access
+            </button>
+          </div>
+        </div>
       ) : (
         <form onSubmit={handleSubmit} className="mx-auto max-w-md space-y-6">
           <button
@@ -125,7 +144,7 @@ export function LoginForm() {
               <KeyRound className="h-6 w-6" />
             </span>
             <h3 className="mt-4 text-xl font-bold text-navy-950">{portal.title}</h3>
-            <p className="mt-1 text-sm text-slate-600">Enter your authorized 4-digit passkey.</p>
+            <p className="mt-1 text-sm text-slate-600">Enter your authorized account passkey.</p>
           </div>
 
         {error && (
@@ -137,22 +156,23 @@ export function LoginForm() {
 
           <div>
           <label htmlFor="pin" className="block text-sm font-medium text-slate-700">
-            4-Digit PIN
+            Passkey
           </label>
           <div className="mt-1">
             <input
               id="pin"
               name="pin"
               type="password"
-              inputMode="numeric"
-              pattern="[0-9]{4}"
-              maxLength={4}
+              inputMode="text"
+              pattern="[A-Za-z0-9_-]{4,20}"
+              minLength={4}
+              maxLength={20}
               required
               className="appearance-none block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-navy-500 focus:border-navy-500 sm:text-sm tracking-widest text-center text-lg"
-              placeholder="••••"
+              placeholder="Enter passkey"
             />
           </div>
-          <p className="mt-1 text-xs text-slate-500">Enter the 4-digit PIN for your account.</p>
+          <p className="mt-1 text-xs text-slate-500">Use the passkey assigned to your account.</p>
           </div>
 
           <div>

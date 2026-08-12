@@ -5,7 +5,9 @@ import { Dialog } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useUpdateMarketingPlan } from "../../api/queries";
-import { Loader2, Edit2 } from "lucide-react";
+import { Loader2, Edit2, CheckCircle2 } from "lucide-react";
+import { useAuth } from "../../lib/auth-context";
+import { canEditMarketingPlan } from "../../lib/access-control";
 
 const PLATFORMS = [
   "Facebook, LinkedIn, Instagram",
@@ -17,7 +19,7 @@ const PLATFORMS = [
   "TikTok",
   "All Platforms",
 ];
-const STATUSES = ["Pending", "On going", "assigned", "On revision", "Completed", "Approved", "No caption", "Posted"];
+const STATUSES = ["Pending", "On going", "assigned", "On revision", "Completed", "Approved", "No caption", "Posted", "Overdue", "Cancelled"];
 
 interface EditPlanDialogProps {
   plan: any | null;
@@ -27,8 +29,10 @@ interface EditPlanDialogProps {
 
 export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps) {
   const updatePlan = useUpdateMarketingPlan();
+  const { profile } = useAuth();
   const [form, setForm] = useState<any>({});
   const [error, setError] = useState("");
+  const canEdit = canEditMarketingPlan(plan, profile?.roles || [], profile?.events || []);
 
   useEffect(() => {
     if (plan) {
@@ -52,15 +56,29 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
   }, [plan]);
 
   const handleChange = (field: string, value: string) => {
-    setForm((prev: any) => ({ ...prev, [field]: value }));
+    setForm((prev: any) => {
+      if (value.trim().toLowerCase() === "posted") {
+        return { ...prev, [field]: value, finalStatus: "Posted", designStatus: "Posted", captionStatus: "Posted" };
+      }
+      return { ...prev, [field]: value };
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     if (!plan?.$id) return;
+    if (!canEdit) {
+      setError("You can only edit marketing plans for events assigned to your account.");
+      return;
+    }
     try {
-      await updatePlan.mutateAsync({ id: plan.$id, data: form });
+      const isPosted = [form.finalStatus]
+        .some((value) => typeof value === "string" && value.trim().toLowerCase() === "posted");
+      const data = isPosted
+        ? { ...form, finalStatus: "Posted", designStatus: "Posted", captionStatus: "Posted" }
+        : form;
+      await updatePlan.mutateAsync({ id: plan.$id, data });
       onOpenChange(false);
     } catch (err: any) {
       setError(err?.message || "Failed to update. Please try again.");
@@ -81,6 +99,11 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {!canEdit && (
+            <p className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-800">
+              Read-only: this event is not assigned to your account.
+            </p>
+          )}
           {/* Title */}
           <div>
             <label className="block text-sm font-medium text-navy-800 mb-1">Title</label>
@@ -113,6 +136,23 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
           </div>
 
           {/* Dates */}
+          <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3">
+            <label className="mb-1 block text-sm font-semibold text-navy-800">Overall Post Status</label>
+            <select
+              value={form.finalStatus || "Pending"}
+              onChange={e => handleChange("finalStatus", e.target.value)}
+              className="w-full rounded-xl border border-emerald-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+            >
+              {STATUSES.filter(status => status !== "No caption").map(status => <option key={status} value={status}>{status}</option>)}
+            </select>
+            {form.finalStatus === "Posted" && (
+              <p className="mt-2 flex items-start gap-2 text-xs font-medium leading-5 text-emerald-800">
+                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
+                Design Status and Caption Status will both be saved as Posted.
+              </p>
+            )}
+          </div>
+
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-sm font-medium text-navy-800 mb-1">Handover Date</label>
@@ -166,7 +206,7 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
 
           <div className="flex justify-end gap-3 pt-2">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-            <Button type="submit" disabled={updatePlan.isPending}>
+            <Button type="submit" disabled={updatePlan.isPending || !canEdit}>
               {updatePlan.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
               Save Changes
             </Button>

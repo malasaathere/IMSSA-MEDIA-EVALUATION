@@ -9,6 +9,8 @@ import { Loader2, Upload, Sparkles } from 'lucide-react';
 import { EditPlanDialog } from './EditPlanDialog';
 import { ImportSheetsDialog } from './ImportSheetsDialog';
 import { getCampaignTone } from '../../lib/campaign-colors';
+import { useAuth } from '../../lib/auth-context';
+import { canEditMarketingPlan, normalizeRoles } from '../../lib/access-control';
 
 function getStatusVariant(status: string): any {
   const s = (status || '').toLowerCase();
@@ -22,6 +24,7 @@ function getStatusVariant(status: string): any {
 
 export const MarketingPlanWorkspace = () => {
   const { data: plansResponse, isLoading } = useMarketingPlans();
+  const { profile } = useAuth();
   const plans = plansResponse?.documents || [];
 
   const campaigns = ['All', ...Array.from(new Set(plans.map((p: any) => p.campaign).filter(Boolean)))];
@@ -35,6 +38,9 @@ export const MarketingPlanWorkspace = () => {
   const filteredPlans = selectedCampaign === 'All'
     ? plans
     : plans.filter((p: any) => p.campaign === selectedCampaign);
+  const roles = normalizeRoles(profile?.roles || []);
+  const authorizedEvents = profile?.events || [];
+  const isMarketingCoordinator = roles.includes('MARKETING_COORDINATOR');
 
   const handleEdit = (plan: any) => {
     setEditPlan(plan);
@@ -68,8 +74,8 @@ export const MarketingPlanWorkspace = () => {
 
   return (
     <div className="space-y-5 p-4 sm:space-y-6 sm:p-6">
-      <div className="flex flex-wrap justify-between items-center gap-4">
-        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Marketing Plan</h1>
+      <div className="page-heading">
+        <div><p>CAMPAIGN OPERATIONS</p><h1>Marketing Plan</h1><span>Plan deliverables, captions, platforms and publishing dates.</span></div>
         <div className="grid w-full grid-cols-1 gap-2 sm:flex sm:w-auto sm:flex-wrap">
           <Button variant="outline" onClick={() => setImportOpen(true)}>
             <Upload className="mr-2 h-4 w-4" />
@@ -80,6 +86,14 @@ export const MarketingPlanWorkspace = () => {
       </div>
 
       {/* Campaign filter buttons */}
+      {isMarketingCoordinator && (
+        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+          {authorizedEvents.length > 0
+            ? `You can edit only your assigned event${authorizedEvents.length === 1 ? '' : 's'}: ${authorizedEvents.join(', ')}.`
+            : 'No events are assigned to your account yet. Marketing plans are read-only until an administrator assigns an event.'}
+        </div>
+      )}
+
       <div className="flex flex-wrap gap-2">
         {campaigns.map((camp: string) => (
           <Button
@@ -135,7 +149,9 @@ export const MarketingPlanWorkspace = () => {
                     </td>
                   </tr>
                 ) : (
-                  filteredPlans.map((plan: any) => (
+                  filteredPlans.map((plan: any) => {
+                    const editable = canEditMarketingPlan(plan, roles, authorizedEvents);
+                    return (
                     <React.Fragment key={plan.$id}>
                       <tr className={`border-b transition-colors ${getCampaignTone(plan.campaign).row}`}>
                         <td className="px-4 py-3 font-medium max-w-[150px] truncate">
@@ -176,8 +192,8 @@ export const MarketingPlanWorkspace = () => {
                           </Button>
                         </td>
                         <td className="px-4 py-3">
-                          <Button variant="outline" size="sm" onClick={() => handleEdit(plan)}>
-                            Edit
+                          <Button variant="outline" size="sm" onClick={() => editable && handleEdit(plan)} disabled={!editable} title={editable ? `Edit ${plan.campaign || 'event'} plan` : 'Only the assigned event Marketing Coordinator can edit this plan'}>
+                            {editable ? 'Edit' : 'View only'}
                           </Button>
                         </td>
                       </tr>
@@ -202,7 +218,7 @@ export const MarketingPlanWorkspace = () => {
                         </tr>
                       )}
                     </React.Fragment>
-                  ))
+                  )})
                 )}
               </tbody>
             </table>

@@ -12,18 +12,18 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         className={cn(
-          "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+          "inline-flex min-w-0 items-center justify-center whitespace-nowrap rounded-xl text-sm font-semibold ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
           {
-            "bg-navy-900 text-white hover:bg-navy-950": variant === "default",
+            "bg-primary text-white shadow-[0_7px_16px_rgba(7,135,126,.18)] hover:bg-primary-hover": variant === "default",
             "bg-red-600 text-white hover:bg-red-700": variant === "destructive",
             "border border-border bg-white text-navy-950 hover:bg-surface-selected": variant === "outline",
             "bg-surface-selected text-navy-950 hover:bg-surface-selected/80": variant === "secondary",
             "hover:bg-surface-selected hover:text-navy-950": variant === "ghost",
             "text-navy-950 underline-offset-4 hover:underline": variant === "link",
-            "h-10 px-4 py-2": size === "default",
-            "h-9 rounded-md px-3": size === "sm",
-            "h-11 rounded-md px-8": size === "lg",
-            "h-10 w-10": size === "icon",
+            "h-11 px-4 py-2": size === "default",
+            "h-9 rounded-xl px-3": size === "sm",
+            "h-12 rounded-xl px-8": size === "lg",
+            "h-11 w-11": size === "icon",
           },
           className
         )}

@@ -1,0 +1,443 @@
+IMSSA MEDIA EVALUATION PLATFORM
+GOOGLE STITCH UI GENERATION PROMPT PACK
+Version 1.0 | August 2026
+
+HOW TO USE THIS FILE
+1. Open Google Stitch at https://stitch.withgoogle.com/.
+2. Start a new web application design.
+3. Paste MASTER PROMPT first to establish the product and visual system.
+4. Generate each major screen separately using the numbered SCREEN PROMPTS.
+5. Keep the same visual theme and component system across every generation.
+6. Generate both desktop and mobile variants for each primary screen.
+7. Use Stitch chat to refine a generated screen with the relevant REVISION PROMPT.
+
+Do not paste every screen prompt into a single generation if Stitch simplifies or omits details. Generate one role workspace or one complex screen at a time.
+
+======================================================================
+MASTER PROMPT — PRODUCT, DESIGN SYSTEM AND GLOBAL UX
+======================================================================
+
+Design a polished, responsive web application named “IMSSA Media Evaluation”. It is an internal media-production and campaign-management platform for a university media organization. The application replaces disconnected spreadsheets, chats and file handovers with a traceable workflow for marketing planning, task assignment, creative production, review, approval, communication and analytics.
+
+PRIMARY USERS
+- Marketing Coordinators plan campaigns, create tasks and assign designers.
+- Designers and Video Editors complete creative tasks and upload versions.
+- Media Directors review submitted work, annotate it, approve it or request revisions.
+- Chief Coordinators monitor delivery, deadlines and team capacity.
+- Administrators manage users, roles, access requests and system health.
+
+GLOBAL EXPERIENCE GOALS
+- On every screen, make it immediately clear what needs attention, who owns it, when it is due and what happens next.
+- Use progressive disclosure: cards show essential information; details appear in drawers, dialogs or dedicated pages.
+- Keep task, event, assignee, deadline and status context visible during every workflow.
+- Provide explicit loading, empty, validation, error, saved, offline and permission-denied states.
+- Never communicate status with color alone; pair color with a text label and icon.
+- Make primary actions obvious and place them close to the content they affect.
+- Preserve history and evidence for assignment, upload, revision, review and approval actions.
+
+VISUAL DIRECTION
+- Professional, modern internal SaaS dashboard; calm and trustworthy rather than playful.
+- Use a deep navy structure color (#0B2545), action blue (#2E74B5), teal accent (#0E7490), success green (#047857), warning amber (#B7791F), danger red (#9B1C1C), pale blue-gray surfaces (#E8EEF5) and light neutral backgrounds (#F4F7FA).
+- Use Inter, Aptos or a similar clean sans-serif typeface.
+- Body text should feel equivalent to 16 px; supporting text must remain readable.
+- Use a 4 px spacing system with common gaps of 8, 12, 16, 24 and 32 px.
+- Cards should have subtle borders, restrained shadows and 10–12 px corner radius.
+- Use clear hierarchy, generous whitespace and compact but readable data density.
+- Minimum touch target 44×44 px; prefer 48×48 px on mobile.
+- Visible keyboard focus indicators with at least a 2 px contrasting outline.
+- Meet WCAG 2.2 AA contrast and accessibility expectations.
+
+GLOBAL APPLICATION SHELL
+- Desktop: collapsible left sidebar, top navigation bar, page title, contextual actions and main content.
+- Mobile: compact top bar with labelled menu button; navigation opens as a drawer.
+- Sidebar items should appear according to the active role: Marketing, Marketing Plan, My Work, Review Inbox, Analytics, Calendar, Administration and Profile.
+- Top bar includes global search, notification bell with unread count, role switcher for multi-role users, user menu and sign out.
+- Add a floating Team Chat launcher with unread badge; use a full-height panel on desktop and full-screen sheet on mobile.
+- Add a non-blocking system-status banner for synchronization or service problems.
+
+CANONICAL TASK STATUS SYSTEM
+- Draft: neutral gray, document icon.
+- Assigned / To Do: blue, assignment icon.
+- In Progress: cyan, progress icon.
+- Ready for Review / In Review: purple, eye icon.
+- Revision Requested: amber, revision icon.
+- Approved / Completed: green, check icon.
+- Cancelled: gray or red outline, cancelled icon.
+
+CURRENT PRODUCT DATA TO USE IN MOCKUPS
+- Campaigns: HackX 11.0, HackX Jr 9.0 and Exposition 2026.
+- Users: 20 active team members with Marketing Coordinator, Designer, Video Editor, Media Director and Chief Coordinator roles.
+- Use realistic task and marketing-plan data, not lorem ipsum.
+- Example tasks: “Exposition 2026 Logo Design”, “Podcast Ep 1 Thumbnail” and “HackX Social Media Launch Flyer”.
+- Show dates in a clear format such as “17 Jul 2026” and use Asia/Colombo timezone.
+
+RESPONSIVE REQUIREMENTS
+- 320–639 px: single-column content, drawer navigation, card alternatives to wide tables and sticky bottom primary actions.
+- 640–1023 px: flexible two-column layouts and collapsible side panels.
+- 1024 px and above: persistent sidebar and multi-panel workspaces.
+- Do not allow page-level horizontal scrolling at 320 px.
+- Complex dialogs become full-screen on narrow mobile screens.
+- Charts need readable text summaries or table alternatives on mobile.
+
+Generate reusable components and consistent variants for default, hover, focus, pressed, disabled, loading, error and success states.
+
+======================================================================
+SCREEN PROMPT 1 — SIGN IN AND REQUEST ACCESS
+======================================================================
+
+Using the established IMSSA design system, create responsive desktop and mobile authentication screens.
+
+SIGN-IN SCREEN
+- Header with IMSSA Media Evaluation name and short description.
+- Four selectable role portal cards: Marketing Coordinator, Chief Coordinator, Designers & Editors and Media Directors. Each card has an icon and one-line explanation.
+- Persistent field label “4-digit passkey”, masked numeric input, show/hide button and numeric keypad behavior on mobile.
+- Primary button “Sign in”; show disabled, loading “Signing in…” and error variants.
+- Error variants: invalid passkey, inactive account, network failure and unavailable role. Do not reveal whether a passkey belongs to someone else.
+- Secondary links: “Request access” and “Contact administrator”.
+- Keep the form centered and narrow on desktop; full-width with comfortable spacing on mobile.
+
+REQUEST ACCESS SCREEN
+- Fields: Full name, Email, Requested role and Reason for access.
+- Requested role options: Designer, Video Editor, Marketing Coordinator, Media Director and Chief Coordinator.
+- Show persistent labels, helper text, character count and inline validation.
+- Primary button “Submit access request”.
+- Include success state with request status and expected next step.
+- Include duplicate-request and general submission-error states.
+
+======================================================================
+SCREEN PROMPT 2 — MARKETING COORDINATOR WORKSPACE
+======================================================================
+
+Create the responsive Marketing Coordinator home dashboard.
+
+PAGE HEADER
+- Title “Marketing Workspace”.
+- Event filter, search and primary button “Create Task”.
+- Secondary quick actions: “Import Sheet”, “Marketing Plan” and “Calendar”.
+
+PRIORITY SUMMARY
+- Four compact metric cards: Overdue, Due Today, Waiting Assignment and In Review.
+- Each metric is clickable and filters the task board.
+
+TASK BOARD
+- Kanban columns: To Do, In Progress, In Review and Done.
+- Each column shows item count.
+- Task cards show title, campaign/event, priority, assignee avatar/name, deadline, status and revision indicator.
+- Use realistic example tasks.
+- Provide filters for event, assignee, priority, work type and status.
+- On mobile, use horizontal column navigation or a status-tab list without causing page-level horizontal scrolling.
+
+CAPACITY PANEL
+- Show eligible designers and video editors with avatar, role, active task count, capacity limit and overdue indicator.
+- Selecting a person filters the task board or pre-fills task assignment.
+- Capacity must use text plus a visual indicator.
+
+RECENT ACTIVITY
+- Timeline of task creation, assignment, upload, revision, review and approval actions.
+- Each activity item has actor, action, object, event and relative timestamp.
+- Include a clear empty state and loading skeleton.
+
+======================================================================
+SCREEN PROMPT 3 — CREATE TASK FLOW
+======================================================================
+
+Create a polished “Create New Task” workflow. Use a large dialog on desktop and a full-screen form on mobile.
+
+FIELDS
+- Task title with example “Opening Ceremony Banner”; required, 3–255 characters.
+- Description / creative brief with purpose, audience, format, mandatory content and notes.
+- Event selection: HackX 11.0, HackX Jr 9.0 or Exposition 2026.
+- Work type: Poster, Social Post, Video, Animation, Photo, Copy or Other.
+- Priority: Low, Medium or High.
+- Assignee selector showing eligible designers/editors, role, active task count and capacity.
+- Deadline date and time, clearly labelled Asia/Colombo.
+- Optional reference links and file attachments with format/size guidance.
+
+UX DETAILS
+- Use persistent labels, helper text, inline errors and an error summary if several fields fail.
+- Prevent past deadlines.
+- Warn when an assignee is at or near capacity; allow an authorized user to reconsider before submission.
+- Show upload progress, cancel, retry and failure reason for references.
+- Include a review summary before final submission.
+- Primary action “Create and Assign”; prevent duplicate clicks and show progress.
+- Success state shows created task, owner, deadline and “Open Task” action.
+- Preserve unsaved changes and confirm before closing a dirty form.
+
+======================================================================
+SCREEN PROMPT 4 — MARKETING PLAN
+======================================================================
+
+Create the responsive Marketing Plan screen for 254 plan items across HackX 11.0, HackX Jr 9.0 and Exposition 2026.
+
+HEADER AND FILTERS
+- Campaign tabs/selector with record counts.
+- Search by post title or description.
+- Filters: content type, designer, content writer, design status, caption status, final status, platform and share date.
+- Buttons: Import from Google Sheets, Add Plan Item, Export and More.
+- Show active filter chips and “Clear all”.
+
+DESKTOP TABLE
+- Columns: post title/description, type, designer, writer, design status, caption status, final status, handover date, finished-before date, share date and platform.
+- Sticky header, sortable columns, row selection and pagination/virtualized loading.
+- Row actions: View, Edit, Convert to Task, Generate Caption Draft, Open Calendar Item and View Sync State.
+- Bulk actions: assign designer, update status, export filtered items and synchronize selected rows.
+
+MOBILE PRESENTATION
+- Convert rows into cards; place title, campaign, urgent status and share date first.
+- Expand to reveal assignment, caption and publishing details.
+- Keep edit action reachable without opening an overflow menu twice.
+
+IMPORT EXPERIENCE
+- CSV paste/upload, source preview, header mapping, validation summary, duplicate handling and final confirmation.
+- Show inserted, updated, skipped and invalid record counts.
+- Do not silently accept ambiguous date text; preview normalized dates before saving.
+
+EMPTY / ERROR STATES
+- No results after filters, campaign with no items, loading skeleton, sync failure and permission-denied variants.
+
+======================================================================
+SCREEN PROMPT 5 — DESIGNER / VIDEO EDITOR “MY WORK”
+======================================================================
+
+Create the responsive “My Work” workspace for a Designer or Video Editor.
+
+SUMMARY
+- Metric cards: Assigned, Due Soon, In Progress, Revision Requested and Waiting Review.
+
+TASK QUEUE
+- Task cards/list show title, event, priority, deadline, status and next required action.
+- Highlight overdue and revision-requested work without relying on color alone.
+- Filters for event, status, priority and work type.
+
+ACTIVE TASK DETAIL
+- Full creative brief, event, assignee, creator, deadline, references and status.
+- Workflow stepper: Assigned, In Progress, Draft Uploaded, In Review, Revision or Approved.
+- Actions based on state: Acknowledge, Start Work, Upload Draft, Submit Revision or View Approval.
+- Show a task history timeline and previous versions.
+- Include a personal capacity indicator and relevant Designer Pack checklist.
+
+TASK DISCUSSION
+- Task-scoped messages with sender, timestamp, unread marker and failed-send/retry state.
+- Composer supports multiline text and attachment references.
+
+MOBILE UX
+- Use a sticky bottom primary action.
+- Keep status, deadline and next action above the fold.
+- Present secondary content in accessible accordion sections.
+
+======================================================================
+SCREEN PROMPT 6 — UPLOAD DRAFT AND SUBMIT VERSION
+======================================================================
+
+Create a desktop panel and mobile full-screen flow for uploading and submitting a creative version.
+
+- Accessible drop zone and file picker.
+- Clearly show supported file formats, maximum size and whether image/video preview is available.
+- Upload queue with filename, type, size, progress, cancel, retry and failure reason.
+- Preview area with zoom for images and playback controls for videos; fallback file icon when preview is unavailable.
+- Required “Version note” describing what changed.
+- Revision checklist with real items such as brand compliance, dimensions, spelling, safe margins and export quality.
+- Show version number and whether this is a first draft or revision.
+- Primary action “Submit for Review”; disabled until upload finishes and required checklist items are complete.
+- Confirmation state with version number, review status and link back to the task.
+- Include invalid type, oversized file, network interruption, upload retry and duplicate-submission states.
+
+======================================================================
+SCREEN PROMPT 7 — MEDIA DIRECTOR REVIEW INBOX
+======================================================================
+
+Create a responsive Review Inbox for Media Directors.
+
+LAYOUT
+- Desktop three-area workspace: review queue on the left, large preview canvas in the center and task/review context on the right.
+- Tablet allows resizable/collapsible side panels.
+- Mobile uses a queue screen followed by a full-screen review screen with tabs for Preview, Comments and Details.
+
+REVIEW QUEUE
+- Each item shows thumbnail, task title, event, creator, submitted time, deadline, priority and revision round.
+- Filters: event, work type, assignee, priority, waiting age and revision round.
+- Sort: Oldest Waiting, Nearest Deadline, Highest Priority and Newest Submission.
+
+PREVIEW CANVAS
+- Fit, zoom, pan, full-screen and metadata controls.
+- Image review supports anchored numbered annotation markers.
+- Video review supports timestamped comments in the interface concept.
+- Selecting a marker highlights the corresponding comment and vice versa.
+
+CONTEXT PANEL
+- Creative brief, submitted version, previous versions, checklist, task discussion and status history.
+- Comment list shows author, time, status, replies and resolve/reopen action.
+- Autosave comment drafts and show Saving, Saved and Error states.
+
+DECISION BAR
+- Sticky actions “Approve Version” and “Request Revision”.
+- Approval confirms the exact task and version; optional positive note.
+- Revision requires actionable feedback and may reference annotations.
+- Show success state and next task in queue.
+
+======================================================================
+SCREEN PROMPT 8 — CHIEF COORDINATOR ANALYTICS
+======================================================================
+
+Create an accessible executive analytics dashboard.
+
+FILTER BAR
+- Date range, event, assignee, work type and status.
+- Show last updated time and data refresh state.
+
+KPI CARDS
+- Active Work, Completed/Approved, In Review, In Progress, Overdue and On-Time Rate.
+- Include concise definitions/tooltips and clickable drill-down behavior.
+
+VISUALIZATIONS
+- Designer workload horizontal bar chart with active count, capacity limit and overdue segment.
+- Labelled status distribution stacked bar, not a color-only pie.
+- Weekly task-created versus completed delivery trend.
+- Review turnaround showing median decision time and outliers.
+- Campaign readiness showing design, caption and final-status completion for all three campaigns.
+- Every visualization includes title, legend, tooltip, text summary and accessible data-table action.
+
+INSIGHT / ALERT PANEL
+- Surface overdue work, overloaded people, long-waiting reviews and campaigns at risk.
+- Each insight has owner, severity, evidence and “View details” action.
+
+Include loading skeleton, no-data, partial-data, stale-data and analytics-error states.
+
+======================================================================
+SCREEN PROMPT 9 — CALENDAR AND TIMELINE
+======================================================================
+
+Create a responsive Calendar screen shared by all authenticated roles.
+
+- Views: Month, Week, Agenda and mobile List.
+- Combine task deadlines and marketing publishing dates; use distinct icons and labels.
+- Filters for event, assignee, content type, status and source, with active chips and Clear All.
+- Calendar cards show title, source, owner, status and time/date.
+- Selecting an item opens a detail drawer with source record, deadline/share date, status, owner and direct navigation action.
+- Show conflicts when a person has too many high-priority deadlines on the same day.
+- Add visible Google Calendar synchronization states: Synced, Pending, Failed and Not Connected.
+- Provide manual Retry for permitted users and show last successful sync.
+- Display Asia/Colombo timezone clearly.
+- Do not rely on hover; mobile users must access all details by tap.
+
+======================================================================
+SCREEN PROMPT 10 — ADMINISTRATION
+======================================================================
+
+Create a responsive System Administration workspace.
+
+OVERVIEW
+- Metric cards: Active Users, Pending Requests, Active Tasks, Sync Failures and System Health.
+
+USER MANAGEMENT
+- Search and filters for role and status.
+- Table/card fields: name, email, roles, status, timezone and last relevant activity.
+- Row actions: View, Edit Roles, Activate/Deactivate and Reset Access.
+- Never display passkeys.
+- Add Team Member flow supports name, email, multiple roles and timezone.
+
+ACCESS REQUESTS
+- Show requester, email, requested role, reason, submitted time and duplicate indicator.
+- Approve or reject with explicit confirmation and optional/required reason as appropriate.
+
+SYSTEM HEALTH
+- Appwrite connection, backend functions, Google Sheets sync, Google Calendar sync, queue failures and last successful backup.
+- Use clear Healthy, Degraded and Failed labels with icon and text.
+
+AUDIT LOG
+- Actor, action, target, timestamp and outcome.
+- Filters and authorized export.
+
+DATA TOOLS
+- Import preview, export, duplicate detection and migration status.
+- Prefer archive/deactivate over destructive deletion and describe consequences clearly.
+
+======================================================================
+SCREEN PROMPT 11 — PROFILE, NOTIFICATIONS, SEARCH AND TEAM CHAT
+======================================================================
+
+Create the shared utility interfaces.
+
+PROFILE
+- Avatar, name, email, account status, timezone and all roles.
+- Role switcher for multi-role users.
+- Preferences: in-app notifications, email notifications, deadline reminders, reduced motion and high contrast.
+- Security: Reset/change passkey, active session and Sign Out. Never display the stored passkey.
+
+NOTIFICATION CENTER
+- Group by Today, Earlier and Read.
+- Types: Assignment, Deadline Reminder, Draft Submitted, Revision Requested, Approved, Mention and Sync Failure.
+- Each item includes actor, action, object, timestamp, unread state and deep link.
+- Actions: Mark Read, Mark All Read and Notification Preferences.
+
+GLOBAL SEARCH
+- Search tasks and marketing plan items by title, event, assignee and status.
+- Group results by Tasks, Plan Items, Users and Files/Versions.
+- Show a compact preview and direct action; include recent searches, no-results and error states.
+
+TEAM CHAT
+- Desktop slide-over panel and mobile full-screen view.
+- Sender name/avatar, timestamp, delivery state, unread marker and failed-send retry.
+- Multiline composer and safe attachment references.
+- Clearly label this as general team chat; task-specific decisions should remain in Task Discussion.
+
+======================================================================
+SCREEN PROMPT 12 — COMPLETE COMPONENT AND STATE BOARD
+======================================================================
+
+Create a UI component reference board for the IMSSA Media Evaluation platform using the established design system.
+
+Include:
+- Typography hierarchy: page title, section title, card title, body, label, helper and caption.
+- Primary, secondary, tertiary, icon and destructive buttons.
+- Text, number, date/time, select, multiselect, search and textarea fields.
+- Task, priority, sync and account-status chips with text and icons.
+- Task cards, marketing-plan cards, notification rows and activity timeline items.
+- Desktop table and mobile card alternatives.
+- Navigation sidebar, mobile drawer, top bar, breadcrumbs and tabs.
+- Dialog, drawer, tooltip, toast, confirmation and sticky mobile action bar.
+- Upload drop zone, upload queue and preview states.
+- Skeleton loading, empty, error, offline, access denied, saved and unsaved states.
+- Default, hover, focus, pressed, disabled, loading, success and error variants.
+- Contrast-safe light theme and a suggested dark-theme palette only if consistency can be maintained.
+
+======================================================================
+REVISION PROMPTS FOR STITCH CHAT
+======================================================================
+
+REVISION A — Improve UX hierarchy
+Refine this screen so the user can identify the next required action in under ten seconds. Keep task title, event, owner, deadline and status visible. Reduce decorative elements, improve whitespace and make the primary action unmistakable without making secondary information disappear.
+
+REVISION B — Mobile optimization
+Create a 360×800 mobile variant. Remove page-level horizontal scrolling, convert wide tables into readable cards, use a labelled navigation drawer, keep touch targets at least 44×44 px and place the primary action in a sticky bottom action area. Ensure the on-screen keyboard does not cover the active field or submit action.
+
+REVISION C — Accessibility
+Improve this design to meet WCAG 2.2 AA. Increase weak contrast, add persistent field labels, show visible keyboard focus, avoid color-only status communication, ensure logical heading order and make icon-only controls understandable with labels/tooltips.
+
+REVISION D — Complete states
+Add realistic loading skeleton, empty, validation error, network error with Retry, saved-success, offline/degraded and permission-denied variants. Keep navigation and page identity stable across states.
+
+REVISION E — Data density
+Use realistic IMSSA data and increase information density without reducing readability. Show HackX 11.0, HackX Jr 9.0 and Exposition 2026, realistic team members, assignees, task statuses and July/August 2026 dates. Do not use lorem ipsum.
+
+REVISION F — Consistency
+Align this screen with the established IMSSA design system: deep navy structure, blue primary actions, teal accents, neutral surfaces, consistent 4 px spacing grid, 10–12 px card radius, status chips with text/icons and accessible typography.
+
+======================================================================
+FINAL VALIDATION CHECKLIST
+======================================================================
+
+Before exporting designs from Stitch, confirm:
+- Desktop and mobile versions exist for every primary screen.
+- Every screen shows task/event/owner/deadline/status context when applicable.
+- Every form has labels, validation, loading and success/error behavior.
+- Every data view has loading, empty, no-results and failure states.
+- All restricted actions are role-aware.
+- No design reveals passkeys, secrets or internal technical errors.
+- Status and priority are not represented by color alone.
+- Touch targets, focus styles and contrast meet accessibility expectations.
+- Tables have useful mobile alternatives.
+- Create Task, Upload/Submit, Review/Revision and Access Request flows are prototyped end to end.
+- Generated frontend code should preserve semantic structure, accessible labels and responsive behavior.
+
+END OF GOOGLE STITCH PROMPT PACK

@@ -1,10 +1,13 @@
 import { useTasks, useUsers } from '../../api/queries'
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/card'
 import { Loader2, AlertCircle, Inbox } from 'lucide-react'
+import { useAuth } from '../../lib/auth-context'
+import { matchesAuthorizedEvent } from '../../lib/access-control'
 
 export function ChiefCoordinatorWorkspace() {
   const { data: response, isLoading, isError, error } = useTasks()
   const { data: usersResponse } = useUsers()
+  const { profile } = useAuth()
   
   if (isLoading) {
     return (
@@ -30,14 +33,16 @@ export function ChiefCoordinatorWorkspace() {
     throw error;
   }
 
-  const tasks = response?.documents;
+  const allTasks = response?.documents;
+  const authorizedEvents = profile?.events || [];
+  const tasks = Array.isArray(allTasks) ? allTasks.filter(task => matchesAuthorizedEvent(task, authorizedEvents)) : [];
 
   if (!tasks || !Array.isArray(tasks) || tasks.length === 0) {
     return (
       <div className="p-8 flex flex-col items-center justify-center min-h-[60vh] text-slate-500 bg-slate-50">
          <Inbox className="w-12 h-12 text-slate-300 mb-4" />
          <h3 className="text-xl font-bold text-navy-900 mb-2">No Data Available</h3>
-         <p>There are currently no tasks to analyze.</p>
+         <p>There are currently no tasks to analyze for your assigned event{authorizedEvents.length === 1 ? '' : 's'}.</p>
       </div>
     )
   }
@@ -68,7 +73,8 @@ export function ChiefCoordinatorWorkspace() {
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 bg-slate-50 min-h-screen">
-      <h1 className="text-2xl font-bold text-navy-900 mb-6 sm:text-3xl sm:mb-8">Analytics Dashboard</h1>
+      <div className="page-heading mb-8"><div><p>PERFORMANCE OVERVIEW</p><h1>Analytics Dashboard</h1><span>Read-only analytics for {authorizedEvents.length ? authorizedEvents.join(', ') : 'your assigned events'}.</span></div></div>
+      <div className="mb-6 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800">Chief Coordinator access is analytics-only. Task creation, assignment and workflow changes remain with operational roles.</div>
       
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-6 mb-8">
         <Card>
@@ -108,8 +114,8 @@ export function ChiefCoordinatorWorkspace() {
         </Card>
       </div>
 
-      <h2 className="text-2xl font-bold text-navy-900 mb-4">Designer Workload (Capacity)</h2>
-      <div className="bg-white rounded-lg shadow border border-slate-200 overflow-x-auto">
+      <h2 className="text-xl font-bold text-navy-900 mb-4">Designer Workload</h2>
+      <div className="bg-white rounded-[22px] shadow border border-slate-200 overflow-x-auto">
         <table className="min-w-[720px] w-full divide-y divide-slate-200">
           <thead className="bg-slate-50">
             <tr>

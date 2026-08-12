@@ -2,15 +2,12 @@ import { UserProfile } from "../../src/components/profile/UserProfile";
 
 export default function ProfilePage() {
   return (
-    <div className="p-6 md:p-12">
-      <div className="max-w-3xl mx-auto mb-8">
-        <h1 className="text-3xl font-bold text-navy-950">My Profile</h1>
-        <p className="text-slate-500 mt-2">
-          View your platform permissions and account details.
-        </p>
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="page-heading mx-auto mb-8 max-w-4xl">
+        <div><p>ACCOUNT SETTINGS</p><h1>Profile & Preferences</h1><span>Manage your account details, permissions and notifications.</span></div>
       </div>
       
-      <UserProfile />
+      <div className="mx-auto max-w-4xl"><UserProfile /></div>
     </div>
   );
 }

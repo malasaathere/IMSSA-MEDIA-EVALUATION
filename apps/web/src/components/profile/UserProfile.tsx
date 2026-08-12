@@ -24,14 +24,14 @@ export function UserProfile() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
-        <div className="px-6 py-8 border-b border-slate-200 bg-navy-950 text-white flex items-center space-x-6">
-          <div className="w-24 h-24 rounded-full bg-navy-800 border-4 border-navy-700 flex items-center justify-center text-3xl font-bold text-gold-400">
+      <div className="overflow-hidden rounded-[22px] border border-border bg-white shadow-[0_8px_28px_rgba(34,65,61,.055)]">
+        <div className="flex flex-col items-start gap-5 border-b border-emerald-100 bg-gradient-to-br from-emerald-100 via-teal-50 to-lime-50 px-5 py-8 sm:flex-row sm:items-center sm:px-8">
+          <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-[28px] border-4 border-white bg-gradient-to-br from-primary to-emerald-400 text-3xl font-bold text-white shadow-lg">
             {profile.name.charAt(0).toUpperCase()}
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-white">{profile.name}</h1>
-            <p className="text-navy-300 mt-1 flex items-center">
+          <div className="min-w-0">
+            <h1 className="break-words text-2xl font-bold text-navy-950">{profile.name}</h1>
+            <p className="mt-2 flex min-w-0 items-center break-all text-navy-700">
               <Mail className="w-4 h-4 mr-2" />
               {profile.email}
             </p>
@@ -47,7 +47,7 @@ export function UserProfile() {
             <div className="flex flex-wrap gap-2">
               {profile.roles.length > 0 ? (
                 profile.roles.map(role => (
-                  <span key={role} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-navy-100 text-navy-800 border border-navy-200">
+                  <span key={role} className="inline-flex items-center rounded-full border border-emerald-200 bg-primary-soft px-3 py-1 text-sm font-medium text-primary">
                     {role.replace(/_/g, " ")}
                   </span>
                 ))
@@ -65,7 +65,7 @@ export function UserProfile() {
             <div className="flex flex-wrap gap-2">
               {profile.events.length > 0 ? (
                 profile.events.map(event => (
-                  <span key={event} className="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                  <span key={event} className="inline-flex items-center rounded-xl border border-border bg-surface px-3 py-1.5 text-sm font-medium text-navy-800">
                     {event}
                   </span>
                 ))

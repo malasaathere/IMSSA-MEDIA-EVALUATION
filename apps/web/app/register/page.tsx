@@ -2,23 +2,25 @@ import { RegisterForm } from "../../src/components/auth/RegisterForm";
 
 export default function RegisterPage() {
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-navy-900">
-          Request Platform Access
-        </h2>
-        <p className="mt-2 text-center text-sm text-slate-600">
-          Already have an account?{" "}
-          <a href="/login" className="font-medium text-navy-600 hover:text-navy-500">
-            Sign in
-          </a>
-        </p>
-      </div>
-
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-xl">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 border border-slate-200">
-          <RegisterForm />
-        </div>
+    <div className="auth-page">
+      <div className="auth-shell auth-shell-register">
+        <section className="auth-intro">
+          <img src="/branding/imssa-media-logo.png" alt="IMSSA Media" className="auth-logo-image" />
+          <p className="auth-kicker">JOIN THE WORKSPACE</p>
+          <h1>Great media starts with a clear workflow.</h1>
+          <p>Request the right role and your coordinator will review your access.</p>
+          <div className="auth-art" aria-hidden="true"><span /><span /><span /></div>
+        </section>
+        <section className="auth-panel">
+          <div className="auth-heading">
+            <h2>Request access</h2>
+            <p>Tell us how you contribute to the media team.</p>
+          </div>
+          <div className="auth-form-card">
+            <RegisterForm />
+          </div>
+          <p className="auth-switch">Already have an account? <a href="/login">Sign in</a></p>
+        </section>
       </div>
     </div>
   );

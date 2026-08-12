@@ -1,4 +1,4 @@
-import { Client, Functions, ID } from 'node-appwrite';
+import { Client, Functions, ID, Role } from 'node-appwrite';
 import { InputFile } from 'node-appwrite/file';
 import * as dotenv from 'dotenv';
 import { execSync } from 'child_process';
@@ -19,6 +19,26 @@ const functionsClient = new Functions(client);
 
 const FUNCTIONS_TO_CREATE = [
   {
+    $id: 'api-ai-assistant',
+    name: 'api-ai-assistant',
+    runtime: 'node-18.0',
+    events: [],
+    schedule: '',
+    timeout: 30,
+    execute: [Role.users()],
+    entrypoint: 'src/main.js',
+    commands: 'npm install',
+    variables: [
+      { key: 'APPWRITE_API_KEY', value: process.env.APPWRITE_API_KEY || '' },
+      { key: 'APPWRITE_ENDPOINT', value: process.env.APPWRITE_ENDPOINT || 'http://localhost/v1' },
+      { key: 'APPWRITE_PROJECT_ID', value: process.env.APPWRITE_PROJECT_ID || '' },
+      { key: 'APPWRITE_DATABASE_ID', value: process.env.APPWRITE_DATABASE_ID || 'imssa-media' },
+      { key: 'AI_PROVIDER_ENABLED', value: process.env.AI_PROVIDER_ENABLED || 'false' },
+      { key: 'GEMINI_API_KEY', value: process.env.GEMINI_API_KEY || '' },
+      { key: 'AI_MODEL', value: process.env.AI_MODEL || 'gemini-1.5-flash' },
+    ]
+  },
+  {
     $id: 'integration-google-oauth',
     name: 'integration-google-oauth',
     runtime: 'node-18.0',
@@ -37,7 +57,7 @@ const FUNCTIONS_TO_CREATE = [
     $id: 'worker-google-sheets-sync',
     name: 'worker-google-sheets-sync',
     runtime: 'node-18.0',
-    events: ['databases.imssa-media.collections.tasks.documents.*.update'],
+    events: ['databases.imssa-media.collections.marketing_plan_items.documents.*.update'],
     schedule: '',
     timeout: 15,
     entrypoint: 'src/main.js',
@@ -45,7 +65,12 @@ const FUNCTIONS_TO_CREATE = [
     variables: [
       { key: 'GOOGLE_CLIENT_ID', value: process.env.GOOGLE_CLIENT_ID || 'mock_client_id' },
       { key: 'GOOGLE_CLIENT_SECRET', value: process.env.GOOGLE_CLIENT_SECRET || 'mock_client_secret' },
-      { key: 'GOOGLE_REFRESH_TOKEN', value: process.env.GOOGLE_REFRESH_TOKEN || 'mock_refresh_token' }
+      { key: 'GOOGLE_REFRESH_TOKEN', value: process.env.GOOGLE_REFRESH_TOKEN || 'mock_refresh_token' },
+      { key: 'GOOGLE_SPREADSHEET_ID', value: process.env.GOOGLE_SPREADSHEET_ID || '1g2uRSKIlIhbjNPYPyFjV6_O7RFWKxn9ztnwDWhsjMEQ' },
+      { key: 'APPWRITE_API_KEY', value: process.env.APPWRITE_API_KEY || '' },
+      { key: 'APPWRITE_ENDPOINT', value: process.env.APPWRITE_ENDPOINT || '' },
+      { key: 'APPWRITE_PROJECT_ID', value: process.env.APPWRITE_PROJECT_ID || '' },
+      { key: 'APPWRITE_DATABASE_ID', value: process.env.APPWRITE_DATABASE_ID || 'imssa-media' },
     ]
   },
   {
@@ -201,7 +226,7 @@ async function setupFunctions() {
           funcDef.$id,
           funcDef.name,
           funcDef.runtime,
-          [],
+          funcDef.execute || [],
           funcDef.events,
           funcDef.schedule,
           funcDef.timeout,

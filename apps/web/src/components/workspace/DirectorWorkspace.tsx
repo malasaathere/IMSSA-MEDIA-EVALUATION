@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { Check, X, Loader2 } from "lucide-react";
+import { Check, X, Loader2, Search, SlidersHorizontal } from "lucide-react";
 import { ReviewCanvas } from "./ReviewCanvas";
 import { PostApprovalDialog } from "./PostApprovalDialog";
 import { AddUserDialog } from "./AddUserDialog";
@@ -10,20 +10,39 @@ import { api } from "../../api/api-client";
 import { BUCKETS } from "../../lib/appwrite-collections";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../../lib/auth-context";
+import { matchesAuthorizedEvent, normalizeRoles } from "../../lib/access-control";
 
 export function DirectorWorkspace() {
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [actionPending, setActionPending] = useState(false);
   const [actionMessage, setActionMessage] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [eventFilter, setEventFilter] = useState("ALL");
+  const [statusFilter, setStatusFilter] = useState("ALL");
+  const [workTypeFilter, setWorkTypeFilter] = useState("ALL");
   const queryClient = useQueryClient();
   const { profile } = useAuth();
   const { data: response, isLoading: tasksLoading } = useTasks();
   const tasks = response?.documents || [];
-  
-  // Tasks ready for review or currently in review
-  const inboxTasks = tasks.filter(t => t.status === 'PENDING' || t.status === 'IN_REVIEW');
-  const selectedTask = tasks.find(t => t.$id === selectedTaskId) || inboxTasks[0];
+  const roles = normalizeRoles(profile?.roles || []);
+  const assignedEvents = profile?.events || [];
+  const isAdmin = roles.includes('ADMIN');
+  const scopedTasks = isAdmin ? tasks : tasks.filter(task => matchesAuthorizedEvent(task, assignedEvents));
+  const reviewTasks = scopedTasks.filter(task => task.status === 'PENDING' || task.status === 'IN_REVIEW');
+  const eventOptions = Array.from(new Set(scopedTasks.map((task: any) => task.eventName || task.eventId).filter(Boolean))).sort() as string[];
+  const workTypeOptions = Array.from(new Set(scopedTasks.map((task: any) => task.workType).filter(Boolean))).sort() as string[];
+  const inboxTasks = reviewTasks.filter((task: any) => {
+    const query = searchQuery.trim().toLowerCase();
+    const matchesSearch = !query || [task.title, task.description, task.eventName, task.eventId, task.workType]
+      .some(value => String(value || '').toLowerCase().includes(query));
+    const taskEvent = task.eventName || task.eventId || '';
+    return matchesSearch
+      && (eventFilter === 'ALL' || taskEvent === eventFilter)
+      && (statusFilter === 'ALL' || task.status === statusFilter)
+      && (workTypeFilter === 'ALL' || task.workType === workTypeFilter);
+  });
+  const selectedTask = inboxTasks.find(t => t.$id === selectedTaskId) || inboxTasks[0];
 
   const { data: versionsResponse, isLoading: versionsLoading } = useVersions(selectedTask?.$id || null);
   const latestVersion = versionsResponse?.documents?.[0];
@@ -80,10 +99,11 @@ export function DirectorWorkspace() {
   return (
     <div className="flex min-h-screen flex-col bg-surface lg:h-screen">
       {/* Header */}
-      <header className="flex flex-col items-start gap-3 border-b border-border bg-white px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+      <header className="page-heading mx-4 mt-4 sm:mx-6 sm:mt-6">
         <div>
-          <h1 className="text-2xl font-semibold text-navy-950">Review Inbox</h1>
-          <p className="text-sm text-text-muted">Media Director Workspace</p>
+          <p>MEDIA DIRECTOR WORKSPACE</p>
+          <h1>Review Inbox</h1>
+          <span>Annotate submissions, request revisions and approve final work.</span>
         </div>
         <div className="flex items-center">
           <AddUserDialog />
@@ -92,8 +112,18 @@ export function DirectorWorkspace() {
 
       <main className="flex flex-1 flex-col overflow-visible lg:flex-row lg:overflow-hidden">
         {/* Left Sidebar - Inbox */}
-        <div className="w-full flex-shrink-0 border-b border-border bg-white p-3 space-y-3 overflow-x-auto lg:w-80 lg:border-b-0 lg:border-r lg:overflow-y-auto lg:p-4 lg:space-y-4">
-          <h3 className="text-sm font-semibold text-navy-950 px-2">Needs Review ({inboxTasks.length})</h3>
+        <div className="w-full flex-shrink-0 border-b border-border bg-white p-3 space-y-3 overflow-x-auto lg:w-96 lg:border-b-0 lg:border-r lg:overflow-y-auto lg:p-4 lg:space-y-4">
+          <div className="px-2"><div className="flex items-center justify-between gap-2"><h3 className="text-sm font-semibold text-navy-950">Needs Review ({inboxTasks.length})</h3><SlidersHorizontal className="h-4 w-4 text-primary"/></div><p className="mt-1 text-[11px] text-text-muted">{isAdmin ? 'All assigned events' : assignedEvents.length ? assignedEvents.join(', ') : 'No event assigned'}</p></div>
+
+          <div className="grid gap-2 rounded-2xl border border-border bg-surface p-3">
+            <label className="flex min-h-10 items-center gap-2 rounded-xl border border-border bg-white px-3 text-text-muted"><Search className="h-4 w-4 shrink-0"/><input value={searchQuery} onChange={event => setSearchQuery(event.target.value)} placeholder="Search submissions" className="w-full bg-transparent text-xs text-navy-950 outline-none"/></label>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:grid-cols-1">
+              <select value={eventFilter} onChange={event => setEventFilter(event.target.value)} className="min-h-10 w-full rounded-xl border border-border bg-white px-3 text-xs text-navy-800"><option value="ALL">All events</option>{eventOptions.map(event => <option key={event} value={event}>{event}</option>)}</select>
+              <select value={statusFilter} onChange={event => setStatusFilter(event.target.value)} className="min-h-10 w-full rounded-xl border border-border bg-white px-3 text-xs text-navy-800"><option value="ALL">All review statuses</option><option value="PENDING">Pending</option><option value="IN_REVIEW">In review</option></select>
+              <select value={workTypeFilter} onChange={event => setWorkTypeFilter(event.target.value)} className="min-h-10 w-full rounded-xl border border-border bg-white px-3 text-xs text-navy-800"><option value="ALL">All work types</option>{workTypeOptions.map(type => <option key={type} value={type}>{type}</option>)}</select>
+            </div>
+            {(searchQuery || eventFilter !== 'ALL' || statusFilter !== 'ALL' || workTypeFilter !== 'ALL') && <button onClick={() => { setSearchQuery(''); setEventFilter('ALL'); setStatusFilter('ALL'); setWorkTypeFilter('ALL'); }} className="min-h-9 text-xs font-semibold text-primary hover:underline">Clear filters</button>}
+          </div>
           
           <div className="flex gap-3 lg:block lg:space-y-4">
           {inboxTasks.map(task => (
@@ -113,7 +143,7 @@ export function DirectorWorkspace() {
           ))}
           </div>
           {inboxTasks.length === 0 && (
-            <div className="text-center text-sm text-text-muted mt-8">Inbox zero!</div>
+            <div className="rounded-xl border border-dashed border-border p-5 text-center text-sm text-text-muted">No submissions match these filters.</div>
           )}
         </div>
 
