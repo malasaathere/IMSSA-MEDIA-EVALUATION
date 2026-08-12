@@ -1,135 +1,100 @@
 "use client";
 
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { CheckCircle2, Loader2, UserPlus } from "lucide-react";
+import { api } from "../../api/api-client";
 import { Button } from "../ui/button";
+import { Dialog } from "../ui/dialog";
 import { Input } from "../ui/input";
-import { UserPlus, Loader2, CheckCircle2, Copy } from "lucide-react";
-import { functions } from "@/lib/appwrite";
-import { Badge } from "../ui/badge";
 
-export function AddUserDialog() {
+const ROLE_OPTIONS = [
+  ["ADMIN", "Administrator"],
+  ["CHIEF_COORDINATOR", "Chief Coordinator"],
+  ["MARKETING_COORDINATOR", "Marketing Coordinator"],
+  ["DESIGNER", "Designer"],
+  ["VIDEO_EDITOR", "Video Editor"],
+  ["MEDIA_DIRECTOR", "Media Director"],
+  ["CONTENT_WRITER", "Content Writer"],
+] as const;
+
+export function AddUserDialog({ eventOptions = [], onCreated }: { eventOptions?: string[]; onCreated?: () => void }) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
-  const [role, setRole] = useState("DESIGNER");
+  const [roles, setRoles] = useState<string[]>(["DESIGNER"]);
+  const [events, setEvents] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [result, setResult] = useState<{ passkey: string; name: string; role: string } | null>(null);
+  const [result, setResult] = useState<{ passkey: string; name: string; roles: string[] } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim()) return;
-    
+  const toggle = (value: string, values: string[], setter: (next: string[]) => void) => {
+    setter(values.includes(value) ? values.filter(item => item !== value) : [...values, value]);
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (name.trim().length < 2 || roles.length === 0) return;
     setIsSubmitting(true);
     setError(null);
-    setResult(null);
-    
     try {
-      const execution = await functions.createExecution('create-user', JSON.stringify({ name, role }), false);
-      const res = JSON.parse(execution.responseBody);
-      if (res.success && res.passkey) {
-        setResult({ passkey: res.passkey, name: res.name || name, role: res.role || role });
-      } else {
-        setError(res.error || "Failed to create user.");
-      }
-    } catch (err: any) {
-      setError(err.message || "An unexpected error occurred.");
+      const response = await api.createUser({ name: name.trim(), roles, events });
+      setResult({ passkey: response.passkey, name: response.user.name, roles: response.user.roles });
+      onCreated?.();
+    } catch (exception: any) {
+      setError(exception?.message || "Could not create this user.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const reset = () => {
+  const close = () => {
+    setOpen(false);
     setName("");
-    setRole("DESIGNER");
+    setRoles(["DESIGNER"]);
+    setEvents([]);
     setResult(null);
     setError(null);
   };
 
   return (
     <>
-      <Button variant="outline" className="bg-white" onClick={() => setOpen(true)}>
-        <UserPlus className="mr-2 h-4 w-4" /> Add Team Member
-      </Button>
-      <Dialog open={open} onOpenChange={(val) => {
-        setOpen(val);
-        if (!val) reset();
-      }}>
-        <DialogContent className="sm:max-w-md bg-white">
-        <DialogHeader>
-          <DialogTitle>Add Team Member</DialogTitle>
-        </DialogHeader>
+      <Button onClick={() => setOpen(true)}><UserPlus className="mr-2 h-4 w-4" />Add user</Button>
+      <Dialog open={open} onOpenChange={(next) => next ? setOpen(true) : close()}>
+        <div className="max-h-[80vh] overflow-y-auto pr-2">
+          <h2 className="text-xl font-bold text-navy-950">Add new user</h2>
+          <p className="mt-1 text-sm text-text-muted">Create their passkey account, positions and event access together.</p>
 
-        {result ? (
-          <div className="py-6 flex flex-col items-center justify-center text-center space-y-4">
-            <div className="h-12 w-12 rounded-full bg-success/20 flex items-center justify-center">
-              <CheckCircle2 className="h-6 w-6 text-success" />
-            </div>
-            <div>
-              <h3 className="text-lg font-medium text-navy-950">Successfully added {result.name}</h3>
-              <p className="text-sm text-text-muted mt-1">They have been assigned as a {result.role.replace('_', ' ')}.</p>
-            </div>
-            
-            <div className="mt-4 p-4 bg-slate-50 border border-border rounded-lg w-full">
-              <p className="text-xs font-medium text-navy-500 uppercase tracking-wider mb-2">Their Login Passkey</p>
-              <div className="flex items-center justify-center space-x-3">
-                <span className="text-4xl font-mono tracking-widest text-navy-900 font-bold">{result.passkey}</span>
+          {result ? (
+            <div className="flex flex-col items-center py-6 text-center">
+              <span className="grid h-12 w-12 place-items-center rounded-full bg-green-100"><CheckCircle2 className="h-6 w-6 text-green-700" /></span>
+              <h3 className="mt-4 text-lg font-bold text-navy-950">{result.name} was added</h3>
+              <p className="mt-1 text-sm text-text-muted">Their assigned positions are ready immediately.</p>
+              <div className="mt-5 w-full rounded-2xl border border-border bg-surface p-5">
+                <p className="text-xs font-bold uppercase tracking-wider text-text-muted">Login passkey</p>
+                <p className="mt-2 font-mono text-4xl font-extrabold tracking-[0.25em] text-navy-950">{result.passkey}</p>
               </div>
+              <p className="mt-3 text-xs text-text-muted">Share this passkey securely. It is only shown here after creation.</p>
+              <Button onClick={close} className="mt-6 w-full">Done</Button>
             </div>
-            <p className="text-xs text-text-muted">Please share this passkey securely with the user. They will use it to log in.</p>
+          ) : (
+            <form onSubmit={handleSubmit} className="mt-6 space-y-6">
+              <label className="block text-sm font-semibold text-navy-950">Display name
+                <Input value={name} onChange={event => setName(event.target.value)} maxLength={100} placeholder="e.g. Kasun Perera" className="mt-2" required />
+              </label>
 
-            <Button onClick={() => setOpen(false)} className="w-full mt-4">Done</Button>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-6 pt-4">
-            {error && (
-              <div className="bg-red-50 p-3 rounded text-sm text-red-600">
-                {error}
-              </div>
-            )}
-            
-            <div className="space-y-2">
-              <label htmlFor="name" className="text-sm font-medium text-navy-950">Name</label>
-              <Input
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. Kasun"
-                required
-              />
-            </div>
+              <section><h3 className="text-sm font-bold text-navy-900">Positions</h3><p className="mb-3 mt-1 text-xs text-text-muted">Select every position this person performs.</p>
+                <div className="grid gap-2 sm:grid-cols-2">{ROLE_OPTIONS.map(([value, label]) => <label key={value} className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border p-3 text-sm font-semibold ${roles.includes(value) ? "border-primary bg-primary-soft text-primary" : "border-border bg-white text-navy-700"}`}><input type="checkbox" checked={roles.includes(value)} onChange={() => toggle(value, roles, setRoles)} className="h-4 w-4" />{label}</label>)}</div>
+              </section>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-navy-950">Role</label>
-              <div className="grid grid-cols-2 gap-4 mt-2">
-                <div
-                  onClick={() => setRole("DESIGNER")}
-                  className={`cursor-pointer rounded-lg border p-4 text-center transition-all ${
-                    role === "DESIGNER" ? "border-navy-600 bg-navy-50 ring-1 ring-navy-600" : "border-border hover:border-navy-300"
-                  }`}
-                >
-                  <p className="font-semibold text-navy-900">Designer</p>
-                </div>
-                <div
-                  onClick={() => setRole("VIDEO_EDITOR")}
-                  className={`cursor-pointer rounded-lg border p-4 text-center transition-all ${
-                    role === "VIDEO_EDITOR" ? "border-navy-600 bg-navy-50 ring-1 ring-navy-600" : "border-border hover:border-navy-300"
-                  }`}
-                >
-                  <p className="font-semibold text-navy-900">Video Editor</p>
-                </div>
-              </div>
-            </div>
+              <section><h3 className="text-sm font-bold text-navy-900">Events they work on</h3><p className="mb-3 mt-1 text-xs text-text-muted">Optional event scope for marketing-plan editing and analytics.</p>
+                <div className="grid gap-2 sm:grid-cols-2">{eventOptions.map(event => <label key={event} className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border p-3 text-sm font-semibold ${events.includes(event) ? "border-primary bg-primary-soft text-primary" : "border-border bg-white text-navy-700"}`}><input type="checkbox" checked={events.includes(event)} onChange={() => toggle(event, events, setEvents)} className="h-4 w-4" />{event}</label>)}</div>
+                {!eventOptions.length && <p className="rounded-xl bg-surface p-3 text-sm text-text-muted">No marketing-plan events are available yet.</p>}
+              </section>
 
-            <div className="flex justify-end pt-4 space-x-3">
-              <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
-              <Button type="submit" disabled={isSubmitting} className="bg-navy-600 hover:bg-navy-700">
-                {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating...</> : "Generate Passkey"}
-              </Button>
-            </div>
-          </form>
-        )}
-        </DialogContent>
+              {error && <p className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+              <div className="flex justify-end gap-3"><Button type="button" variant="outline" onClick={close}>Cancel</Button><Button type="submit" disabled={isSubmitting || name.trim().length < 2 || roles.length === 0}>{isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Create user</Button></div>
+            </form>
+          )}
+        </div>
       </Dialog>
     </>
   );

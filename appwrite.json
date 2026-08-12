@@ -180,9 +180,7 @@
             "$id": "create-user",
             "name": "create-user",
             "runtime": "node-18.0",
-            "execute": [
-                "any"
-            ],
+            "execute": [],
             "events": [],
             "schedule": "",
             "timeout": 15,

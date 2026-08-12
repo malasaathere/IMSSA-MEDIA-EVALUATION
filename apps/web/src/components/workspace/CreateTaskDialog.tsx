@@ -1,14 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Dialog } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useCreateTask, useTasks, useUsers } from "../../api/queries";
 import { Loader2, PlusCircle } from "lucide-react";
-import { ApiError } from "../../api/api-client";
+import { ApiError, api } from "../../api/api-client";
+import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "../../lib/auth-context";
 
-const EVENTS = ["HackX 2026", "HackX Jr 2026", "Exposition 2026"];
 const WORK_TYPES = ["Flyer", "Banner", "Social Media Post", "Video", "Poster", "Story", "Other"];
 const PRIORITIES = ["LOW", "MEDIUM", "HIGH"];
 const ACTIVE_STATUSES = new Set([
@@ -23,7 +24,10 @@ interface CreateTaskDialogProps {
 export function CreateTaskDialog({ open, onOpenChange }: CreateTaskDialogProps) {
   const { data: tasksResponse } = useTasks();
   const { data: usersResponse } = useUsers();
+  const { profile } = useAuth();
+  const { data: managedEvents = [] } = useQuery<any[]>({ queryKey: ['adminEvents'], queryFn: api.getAdminEvents, enabled: Boolean(profile?.roles?.includes('ADMIN')) });
   const createTask = useCreateTask();
+  const eventOptions = useMemo(() => profile?.roles?.includes('ADMIN') ? managedEvents.map(event => event.name) : (profile?.events || []), [managedEvents, profile]);
 
   const designers = (usersResponse?.documents || []).filter(
     (u: any) => u.roles?.includes("DESIGNER") || u.roles?.includes("VIDEO_EDITOR")
@@ -39,7 +43,7 @@ export function CreateTaskDialog({ open, onOpenChange }: CreateTaskDialogProps) 
   const [form, setForm] = useState({
     title: "",
     description: "",
-    eventId: EVENTS[0],
+    eventId: "",
     workType: WORK_TYPES[0],
     priority: "MEDIUM",
     currentAssigneeId: "",
@@ -47,6 +51,10 @@ export function CreateTaskDialog({ open, onOpenChange }: CreateTaskDialogProps) 
   });
 
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (eventOptions.length && !eventOptions.includes(form.eventId)) setForm(previous => ({ ...previous, eventId: eventOptions[0] }));
+  }, [eventOptions, form.eventId]);
 
   const handleChange = (field: string, value: string) => {
     setForm(prev => ({ ...prev, [field]: value }));
@@ -56,6 +64,7 @@ export function CreateTaskDialog({ open, onOpenChange }: CreateTaskDialogProps) 
     e.preventDefault();
     setError("");
     if (!form.title.trim()) { setError("Title is required"); return; }
+    if (!form.eventId) { setError("Please select an event"); return; }
     if (!form.currentAssigneeId) { setError("Please select an assignee"); return; }
     if (!form.deadline) { setError("Deadline is required"); return; }
 
@@ -70,7 +79,7 @@ export function CreateTaskDialog({ open, onOpenChange }: CreateTaskDialogProps) 
         deadline: new Date(form.deadline).toISOString(),
       });
       onOpenChange(false);
-      setForm({ title: "", description: "", eventId: EVENTS[0], workType: WORK_TYPES[0], priority: "MEDIUM", currentAssigneeId: "", deadline: "" });
+      setForm({ title: "", description: "", eventId: eventOptions[0] || "", workType: WORK_TYPES[0], priority: "MEDIUM", currentAssigneeId: "", deadline: "" });
     } catch (err: unknown) {
       if (err instanceof ApiError && err.code === "ASSIGNEE_CAPACITY_REACHED") {
         setError(`${err.message} Select another designer or complete an active task first.`);
@@ -123,7 +132,8 @@ export function CreateTaskDialog({ open, onOpenChange }: CreateTaskDialogProps) 
                 onChange={e => handleChange("eventId", e.target.value)}
                 className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary/30"
               >
-                {EVENTS.map(e => <option key={e} value={e}>{e}</option>)}
+                {!eventOptions.length && <option value="">No assigned events</option>}
+                {eventOptions.map(e => <option key={e} value={e}>{e}</option>)}
               </select>
             </div>
             <div>

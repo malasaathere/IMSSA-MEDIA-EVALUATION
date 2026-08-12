@@ -29,6 +29,23 @@ export interface UpdateUserAccessInput {
   events: string[];
 }
 
+export interface CreateUserInput {
+  name: string;
+  roles: string[];
+  events: string[];
+}
+
+export interface CreateEventInput {
+  name: string;
+  description?: string;
+  startsAt?: string;
+  endsAt?: string;
+  color?: string;
+  coordinatorAssignments: { userId: string; role: 'CHIEF_COORDINATOR' | 'MARKETING_COORDINATOR' }[];
+  newCoordinatorName?: string;
+  newCoordinatorRole?: 'CHIEF_COORDINATOR' | 'MARKETING_COORDINATOR';
+}
+
 export class ApiError extends Error {
   code?: string;
   details?: Record<string, unknown>;
@@ -43,6 +60,45 @@ export class ApiError extends Error {
 
 // A thin Appwrite-backed API client
 export const api = {
+  getAdminEvents: async () => {
+    const execution = await functions.createExecution({
+      functionId: 'api-admin-access', body: JSON.stringify({ action: 'LIST_EVENTS' }), async: false,
+      xpath: '/events', method: ExecutionMethod.POST, headers: { 'content-type': 'application/json' },
+    });
+    let payload: any = {};
+    try { payload = execution.responseBody ? JSON.parse(execution.responseBody) : {}; }
+    catch { throw new ApiError('The administration service returned an invalid response.', 'INVALID_RESPONSE'); }
+    if (execution.responseStatusCode >= 400 || !payload.success) throw new ApiError(payload.error || 'Could not load events.');
+    return payload.events as any[];
+  },
+  createEvent: async (data: CreateEventInput) => {
+    const execution = await functions.createExecution({
+      functionId: 'api-admin-access', body: JSON.stringify({ action: 'CREATE_EVENT', ...data }), async: false,
+      xpath: '/events', method: ExecutionMethod.POST, headers: { 'content-type': 'application/json' },
+    });
+    let payload: any = {};
+    try { payload = execution.responseBody ? JSON.parse(execution.responseBody) : {}; }
+    catch { throw new ApiError('The administration service returned an invalid response.', 'INVALID_RESPONSE'); }
+    if (execution.responseStatusCode >= 400 || !payload.success) throw new ApiError(payload.error || 'Could not create this event.');
+    return payload;
+  },
+  createUser: async (data: CreateUserInput) => {
+    const execution = await functions.createExecution({
+      functionId: 'api-admin-access',
+      body: JSON.stringify({ action: 'CREATE_USER', ...data }),
+      async: false,
+      xpath: '/users',
+      method: ExecutionMethod.POST,
+      headers: { 'content-type': 'application/json' },
+    });
+    let payload: any = {};
+    try { payload = execution.responseBody ? JSON.parse(execution.responseBody) : {}; }
+    catch { throw new ApiError('The administration service returned an invalid response.', 'INVALID_RESPONSE'); }
+    if (execution.responseStatusCode >= 400 || !payload.success) {
+      throw new ApiError(payload.error || 'Could not create this user.', payload.code, payload);
+    }
+    return payload;
+  },
   updateUserAccess: async (data: UpdateUserAccessInput) => {
     const execution = await functions.createExecution({
       functionId: 'api-admin-access',
