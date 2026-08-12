@@ -1,0 +1,1119 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//IMSSA//Media Evaluation//EN
+CALSCALE:GREGORIAN
+X-WR-CALNAME:IMSSA Media Post Plan
+X-WR-TIMEZONE:Asia/Colombo
+BEGIN:VEVENT
+UID:Exposition:6@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260711
+DTEND;VALUE=DATE:20260712
+SUMMARY:Exposition 2026: Update Profile Picture
+DESCRIPTION:Designer: Isuru | Writer: Unassigned | Status: Posted | Source: Exposition row 6
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:7@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260711
+DTEND;VALUE=DATE:20260712
+SUMMARY:Exposition 2026: Update Cover Photo
+DESCRIPTION:Designer: Isuru | Writer: Unassigned | Status: Posted | Source: Exposition row 7
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:8@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260714
+DTEND;VALUE=DATE:20260715
+SUMMARY:Exposition 2026: What is Exposition 2026?
+DESCRIPTION:Designer: Isuru | Writer: Kaveesha | Status: On going | Source: Exposition row 8
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:11@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260717
+DTEND;VALUE=DATE:20260718
+SUMMARY:Exposition 2026: What is Podcast Series
+DESCRIPTION:Designer: kasun | Writer: Himaya | Status: On revision | Source: Exposition row 11
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:12@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260720
+DTEND;VALUE=DATE:20260721
+SUMMARY:Exposition 2026: Coming Soon Podcast Series - Video
+DESCRIPTION:Designer: Osanda | Writer: Araliya | Status: assigned | Source: Exposition row 12
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:13@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260723
+DTEND;VALUE=DATE:20260724
+SUMMARY:Exposition 2026: Coming Soon Podcast Epi 01
+DESCRIPTION:Designer: Kasun | Writer: Nethmi H | Status: Pending | Source: Exposition row 13
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:14@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260727
+DTEND;VALUE=DATE:20260728
+SUMMARY:Exposition 2026: Launch Podcast Episode 01
+DESCRIPTION:Designer: Maleesha | Writer: Manumi | Status: Pending | Source: Exposition row 14
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:15@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260730
+DTEND;VALUE=DATE:20260731
+SUMMARY:Exposition 2026: Now available epi01
+DESCRIPTION:Designer: Isuru | Writer: Sobashi | Status: Pending | Source: Exposition row 15
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:16@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260801
+DTEND;VALUE=DATE:20260802
+SUMMARY:Exposition 2026: Release Podcast epi 01 Short Clip 01
+DESCRIPTION:Designer: Kaveesha | Writer: Aradhana | Status: Pending | Source: Exposition row 16
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:17@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260805
+DTEND;VALUE=DATE:20260806
+SUMMARY:Exposition 2026: Release Podcast epi 01 Short Clip 02
+DESCRIPTION:Designer: Dulaj | Writer: Poojani | Status: Pending | Source: Exposition row 17
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:20@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260810
+DTEND;VALUE=DATE:20260811
+SUMMARY:Exposition 2026: What is ExpoNext10
+DESCRIPTION:Designer: Osanda | Writer: araliya | Status: Pending | Source: Exposition row 20
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:21@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260813
+DTEND;VALUE=DATE:20260814
+SUMMARY:Exposition 2026: Portal open (applications open)
+DESCRIPTION:Designer: kasun | Writer: manumi | Status: Pending | Source: Exposition row 21
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:22@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260818
+DTEND;VALUE=DATE:20260819
+SUMMARY:Exposition 2026: are u talented ? if it is click here. portal open now
+DESCRIPTION:Designer: Unassigned | Writer: imasha | Status: Pending | Source: Exposition row 22
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:23@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260821
+DTEND;VALUE=DATE:20260822
+SUMMARY:Exposition 2026: rewards of next10
+DESCRIPTION:Designer: kasun | Writer: himaya | Status: Pending | Source: Exposition row 23
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:25@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260823
+DTEND;VALUE=DATE:20260824
+SUMMARY:Exposition 2026: Coming Soon Podcast Epi 02
+DESCRIPTION:Designer: chamikara | Writer: Nethmi H | Status: Pending | Source: Exposition row 25
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:26@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260827
+DTEND;VALUE=DATE:20260828
+SUMMARY:Exposition 2026: Launch Podcast Episode 02
+DESCRIPTION:Designer: Maleesha | Writer: Manumi | Status: Pending | Source: Exposition row 26
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:27@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260830
+DTEND;VALUE=DATE:20260831
+SUMMARY:Exposition 2026: Now available epi02
+DESCRIPTION:Designer: Isuru | Writer: Sobashi | Status: Pending | Source: Exposition row 27
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:28@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260901
+DTEND;VALUE=DATE:20260902
+SUMMARY:Exposition 2026: Release Podcast epi02 Short Clip 02
+DESCRIPTION:Designer: kaveesha | Writer: Aradhana | Status: Pending | Source: Exposition row 28
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:29@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260901
+DTEND;VALUE=DATE:20260902
+SUMMARY:Exposition 2026: Release Podcast epi02 Short Clip 02
+DESCRIPTION:Designer: dulaj | Writer: poojami | Status: Pending | Source: Exposition row 29
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:31@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260826
+DTEND;VALUE=DATE:20260827
+SUMMARY:Exposition 2026: Next10 Closing Soon (Mock)-Hurry up registration
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: Exposition row 31
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:32@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260831
+DTEND;VALUE=DATE:20260901
+SUMMARY:Exposition 2026: Registration closing countdown-3 days more
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: Exposition row 32
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:33@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260901
+DTEND;VALUE=DATE:20260902
+SUMMARY:Exposition 2026: Registration closing countdown-2 days more
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: Exposition row 33
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:34@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260902
+DTEND;VALUE=DATE:20260903
+SUMMARY:Exposition 2026: Registration closing countdown-1 days more
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: Exposition row 34
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:35@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260903
+DTEND;VALUE=DATE:20260904
+SUMMARY:Exposition 2026: Registration closing date extended
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: Exposition row 35
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:36@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260906
+DTEND;VALUE=DATE:20260907
+SUMMARY:Exposition 2026: Hurry Up Flyer - Registration closing
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: Exposition row 36
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:37@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260907
+DTEND;VALUE=DATE:20260908
+SUMMARY:Exposition 2026: Extended registration closing countdown - 3 days
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: Exposition row 37
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:38@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260908
+DTEND;VALUE=DATE:20260909
+SUMMARY:Exposition 2026: Extended registration closing countdown - 2 days
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: Exposition row 38
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:39@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260909
+DTEND;VALUE=DATE:20260910
+SUMMARY:Exposition 2026: Extended registration closing countdown - 1 days
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: Exposition row 39
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:40@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260910
+DTEND;VALUE=DATE:20260911
+SUMMARY:Exposition 2026: Extended registration closing countdown - 12 hours
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: Exposition row 40
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:41@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260910
+DTEND;VALUE=DATE:20260911
+SUMMARY:Exposition 2026: Extended registration closing countdown - 6 hours
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: Exposition row 41
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:42@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260910
+DTEND;VALUE=DATE:20260911
+SUMMARY:Exposition 2026: Extended Closing
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: Exposition row 42
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:43@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260917
+DTEND;VALUE=DATE:20260918
+SUMMARY:Exposition 2026: Shortlist to 50 release(now available)-after cv evaluate
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: Exposition row 43
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:44@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260923
+DTEND;VALUE=DATE:20260924
+SUMMARY:Exposition 2026: Shortlist to 20-finalist-10 winners(flyer1)
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: Exposition row 44
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:45@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260923
+DTEND;VALUE=DATE:20260924
+SUMMARY:Exposition 2026: Shortlist to 20-finalist-10 winners(flyer2)
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: Exposition row 45
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:46@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260927
+DTEND;VALUE=DATE:20260928
+SUMMARY:Exposition 2026: Interview Stage open
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: Exposition row 46
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:47@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260929
+DTEND;VALUE=DATE:20260930
+SUMMARY:Exposition 2026: Happening now
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: Exposition row 47
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:48@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261005
+DTEND;VALUE=DATE:20261006
+SUMMARY:Exposition 2026: Final 10 Reveal
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: Exposition row 48
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:52@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260810
+DTEND;VALUE=DATE:20260811
+SUMMARY:Exposition 2026: What is tec Hub
+DESCRIPTION:Designer: Heshan | Writer: Poojani | Status: Pending | Source: Exposition row 52
+END:VEVENT
+BEGIN:VEVENT
+UID:Exposition:53@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260813
+DTEND;VALUE=DATE:20260814
+SUMMARY:Exposition 2026: Join the Tech Event Hub Community
+DESCRIPTION:Designer: Isuru | Writer: Imasha | Status: Pending | Source: Exposition row 53
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:5@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260616
+DTEND;VALUE=DATE:20260617
+SUMMARY:HackX 11.0: Update Profile Picture ( LINKED IN )
+DESCRIPTION:Designer: Maleesha | Writer: Sobashi | Status: Posted | Source: hackX row 5
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:6@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260616
+DTEND;VALUE=DATE:20260617
+SUMMARY:HackX 11.0: Update Cover Photo ( LINKED IN )
+DESCRIPTION:Designer: Maleesha | Writer: - | Status: Posted | Source: hackX row 6
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:7@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260616
+DTEND;VALUE=DATE:20260617
+SUMMARY:HackX 11.0: Update Profile Picture ( FACEBOOK )
+DESCRIPTION:Designer: Maleesha | Writer: Sobashi | Status: Posted | Source: hackX row 7
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:8@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260616
+DTEND;VALUE=DATE:20260617
+SUMMARY:HackX 11.0: Update Cover Photo ( FACEBOOK )
+DESCRIPTION:Designer: Maleesha | Writer: - | Status: Posted | Source: hackX row 8
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:10@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260624
+DTEND;VALUE=DATE:20260625
+SUMMARY:HackX 11.0: Ministry Colloboration Flyer
+DESCRIPTION:Designer: Unassigned | Writer: Manumi | Status: Posted | Source: hackX row 10
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:12@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260622
+DTEND;VALUE=DATE:20260623
+SUMMARY:HackX 11.0: Coming Soon Flyer - Facebook
+DESCRIPTION:Designer: Osanda | Writer: Binithi | Status: Posted | Source: hackX row 12
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:13@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260622
+DTEND;VALUE=DATE:20260623
+SUMMARY:HackX 11.0: Coming soon Flyer - Linked in
+DESCRIPTION:Designer: Osanda | Writer: Binithi | Status: Posted | Source: hackX row 13
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:14@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260720
+DTEND;VALUE=DATE:20260721
+SUMMARY:HackX 11.0: Recap Video
+DESCRIPTION:Designer: Tharindu/ Charith | Writer: - | Status: On Revision | Source: hackX row 14
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:15@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260703
+DTEND;VALUE=DATE:20260704
+SUMMARY:HackX 11.0: Why Hackx
+DESCRIPTION:Designer: Osanda | Writer: Araliya | Status: Posted | Source: hackX row 15
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:18@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260704
+DTEND;VALUE=DATE:20260705
+SUMMARY:HackX 11.0: Registration Open for Ambessadors
+DESCRIPTION:Designer: Sameera/kasun | Writer: Aradhana | Status: On Going | Source: hackX row 18
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:23@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260703
+DTEND;VALUE=DATE:20260704
+SUMMARY:HackX 11.0: Cover Page (Registration Open)
+DESCRIPTION:Designer: Osanda | Writer: - | Status: Posted | Source: hackX row 23
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:24@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260703
+DTEND;VALUE=DATE:20260704
+SUMMARY:HackX 11.0: Registrations Opens now Flyer
+DESCRIPTION:Designer: Isuru | Writer: Manumi | Status: Posted | Source: hackX row 24
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:26@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260722
+DTEND;VALUE=DATE:20260723
+SUMMARY:HackX 11.0: Rules And Regulations
+DESCRIPTION:Designer: Kasun | Writer: Binithi | Status: On Going | Source: hackX row 26
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:27@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260723
+DTEND;VALUE=DATE:20260724
+SUMMARY:HackX 11.0: Cash Price Await Flyer
+DESCRIPTION:Designer: Chamikara | Writer: Hiruni | Status: On Going | Source: hackX row 27
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:28@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260724
+DTEND;VALUE=DATE:20260725
+SUMMARY:HackX 11.0: Event Flow Flyer
+DESCRIPTION:Designer: Osanda | Writer: Afhem | Status: On Going | Source: hackX row 28
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:30@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260727
+DTEND;VALUE=DATE:20260728
+SUMMARY:HackX 11.0: Hurry Up for registration Flyer
+DESCRIPTION:Designer: Osanda | Writer: Nethmi H | Status: On Going | Source: hackX row 30
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:31@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260802
+DTEND;VALUE=DATE:20260803
+SUMMARY:HackX 11.0: Registration Countdown 1 day
+DESCRIPTION:Designer: Maleesha | Writer: Sobhashi | Status: On Going | Source: hackX row 31
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:33@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260803
+DTEND;VALUE=DATE:20260804
+SUMMARY:HackX 11.0: Registration Closing Date Extended
+DESCRIPTION:Designer: Hashmi | Writer: Imasha | Status: Pending | Source: hackX row 33
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:36@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260801
+DTEND;VALUE=DATE:20260802
+SUMMARY:HackX 11.0: Proposal Submission Open Flyer
+DESCRIPTION:Designer: Isuru | Writer: Aradana | Status: Pending | Source: hackX row 36
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:37@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260801
+DTEND;VALUE=DATE:20260802
+SUMMARY:HackX 11.0: Proposal Template
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 37
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:41@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260804
+DTEND;VALUE=DATE:20260805
+SUMMARY:HackX 11.0: Extended Registration closing countdown 3 days
+DESCRIPTION:Designer: Heshan | Writer: Nethmi H | Status: Pending | Source: hackX row 41
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:42@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260805
+DTEND;VALUE=DATE:20260806
+SUMMARY:HackX 11.0: Extended Registration closing countdown 2 days
+DESCRIPTION:Designer: Heshan | Writer: Nethmi H | Status: Pending | Source: hackX row 42
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:43@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260806
+DTEND;VALUE=DATE:20260807
+SUMMARY:HackX 11.0: Extended Registration closing countdown 1 day
+DESCRIPTION:Designer: Heshan | Writer: Afhem | Status: Pending | Source: hackX row 43
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:44@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260807
+DTEND;VALUE=DATE:20260808
+SUMMARY:HackX 11.0: Extended Registration closing countdown 12 hours
+DESCRIPTION:Designer: Chamikara | Writer: Manumi | Status: Pending | Source: hackX row 44
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:45@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260807
+DTEND;VALUE=DATE:20260808
+SUMMARY:HackX 11.0: Registration closed
+DESCRIPTION:Designer: Kasun | Writer: Sobhashi | Status: Pending | Source: hackX row 45
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:47@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260813
+DTEND;VALUE=DATE:20260814
+SUMMARY:HackX 11.0: Proposal Hurry up video
+DESCRIPTION:Designer: Osanda | Writer: - | Status: Pending | Source: hackX row 47
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:48@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260813
+DTEND;VALUE=DATE:20260814
+SUMMARY:HackX 11.0: Proposal submission closing countdown 1
+DESCRIPTION:Designer: Heshan | Writer: Hiruni | Status: Pending | Source: hackX row 48
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:49@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260814
+DTEND;VALUE=DATE:20260815
+SUMMARY:HackX 11.0: Proposal submission closing countdown 12 hours
+DESCRIPTION:Designer: Kasun | Writer: Binithi | Status: Pending | Source: hackX row 49
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:50@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260814
+DTEND;VALUE=DATE:20260815
+SUMMARY:HackX 11.0: Proposal submission date extended
+DESCRIPTION:Designer: Maleesha | Writer: Aradhana | Status: Pending | Source: hackX row 50
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:52@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260818
+DTEND;VALUE=DATE:20260819
+SUMMARY:HackX 11.0: Extended Proposal submission closing countdown 3
+DESCRIPTION:Designer: Hashmi | Writer: Unassigned | Status: Pending | Source: hackX row 52
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:53@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260819
+DTEND;VALUE=DATE:20260820
+SUMMARY:HackX 11.0: Extended Proposal submission closing countdown 2
+DESCRIPTION:Designer: Hashmi | Writer: Unassigned | Status: Pending | Source: hackX row 53
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:54@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260820
+DTEND;VALUE=DATE:20260821
+SUMMARY:HackX 11.0: Extended Proposal submission closing countdown 1
+DESCRIPTION:Designer: Hashmi | Writer: Unassigned | Status: Pending | Source: hackX row 54
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:55@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260821
+DTEND;VALUE=DATE:20260822
+SUMMARY:HackX 11.0: Extended Proposal submission closing countdown 12 hours
+DESCRIPTION:Designer: Isuru | Writer: Unassigned | Status: Pending | Source: hackX row 55
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:56@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260821
+DTEND;VALUE=DATE:20260822
+SUMMARY:HackX 11.0: Proposal Submission Closed
+DESCRIPTION:Designer: Isuru | Writer: Unassigned | Status: Pending | Source: hackX row 56
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:58@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260909
+DTEND;VALUE=DATE:20260910
+SUMMARY:HackX 11.0: Announcing ideaX semi finalist
+DESCRIPTION:Designer: Osanda | Writer: Aadila | Status: Pending | Source: hackX row 58
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:60@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260916
+DTEND;VALUE=DATE:20260917
+SUMMARY:HackX 11.0: Workshop flyer 1
+DESCRIPTION:Designer: Maleesha | Writer: Imasha | Status: Pending | Source: hackX row 60
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:61@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260917
+DTEND;VALUE=DATE:20260918
+SUMMARY:HackX 11.0: Thanking for workshop 1
+DESCRIPTION:Designer: Isuru | Writer: Imasha | Status: Pending | Source: hackX row 61
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:62@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260921
+DTEND;VALUE=DATE:20260922
+SUMMARY:HackX 11.0: Workshop flyer 2
+DESCRIPTION:Designer: Heshan | Writer: Poojani | Status: Pending | Source: hackX row 62
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:63@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260922
+DTEND;VALUE=DATE:20260923
+SUMMARY:HackX 11.0: Thanking for workshop 2
+DESCRIPTION:Designer: Sameera | Writer: Poojani | Status: Pending | Source: hackX row 63
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:64@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260926
+DTEND;VALUE=DATE:20260927
+SUMMARY:HackX 11.0: Workshop flyer 3
+DESCRIPTION:Designer: Heshan | Writer: Afhem | Status: Pending | Source: hackX row 64
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:65@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260927
+DTEND;VALUE=DATE:20260928
+SUMMARY:HackX 11.0: Thanking for workshop 3
+DESCRIPTION:Designer: Sameera | Writer: Afhem | Status: Pending | Source: hackX row 65
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:87@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261002
+DTEND;VALUE=DATE:20261003
+SUMMARY:HackX 11.0: IdeaX happening tomorrow
+DESCRIPTION:Designer: Unassigned | Writer: Araliya | Status: Pending | Source: hackX row 87
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:88@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261003
+DTEND;VALUE=DATE:20261004
+SUMMARY:HackX 11.0: IdeaX Happening today Video
+DESCRIPTION:Designer: Unassigned | Writer: Araliya | Status: Pending | Source: hackX row 88
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:89@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261003
+DTEND;VALUE=DATE:20261004
+SUMMARY:HackX 11.0: IdeaX Happening today Flyer
+DESCRIPTION:Designer: Unassigned | Writer: - | Status: Pending | Source: hackX row 89
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:90@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261008
+DTEND;VALUE=DATE:20261009
+SUMMARY:HackX 11.0: Announcing Finalist for hackX 11.0
+DESCRIPTION:Designer: Unassigned | Writer: Manumi | Status: Pending | Source: hackX row 90
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:103@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261031
+DTEND;VALUE=DATE:20261101
+SUMMARY:HackX 11.0: Workshop flyer 4
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 103
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:104@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261101
+DTEND;VALUE=DATE:20261102
+SUMMARY:HackX 11.0: Thanking for workshop 4
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 104
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:108@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261108
+DTEND;VALUE=DATE:20261109
+SUMMARY:HackX 11.0: Grand Final Count down 3
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 108
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:109@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261109
+DTEND;VALUE=DATE:20261110
+SUMMARY:HackX 11.0: Grand Final Count down 2
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 109
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:110@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261110
+DTEND;VALUE=DATE:20261111
+SUMMARY:HackX 11.0: Grand Final Count down 1
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 110
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:111@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261110
+DTEND;VALUE=DATE:20261111
+SUMMARY:HackX 11.0: Happening tomorrow video
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 111
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:112@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261111
+DTEND;VALUE=DATE:20261112
+SUMMARY:HackX 11.0: Happening Today Flyer
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 112
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:113@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261111
+DTEND;VALUE=DATE:20261112
+SUMMARY:HackX 11.0: Happening now video
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 113
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:114@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261111
+DTEND;VALUE=DATE:20261112
+SUMMARY:HackX 11.0: Grand Finals live
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 114
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:116@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261111
+DTEND;VALUE=DATE:20261112
+SUMMARY:HackX 11.0: Voting Closed at flyer for most popular team
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 116
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:118@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261112
+DTEND;VALUE=DATE:20261113
+SUMMARY:HackX 11.0: Announcing Winners by flyers
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 118
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:119@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261113
+DTEND;VALUE=DATE:20261114
+SUMMARY:HackX 11.0: Most popular team
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 119
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:120@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261113
+DTEND;VALUE=DATE:20261114
+SUMMARY:HackX 11.0: 2nd runners up
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 120
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:121@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261113
+DTEND;VALUE=DATE:20261114
+SUMMARY:HackX 11.0: Runners up
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 121
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:122@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261113
+DTEND;VALUE=DATE:20261114
+SUMMARY:HackX 11.0: Champions
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 122
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:124@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261114
+DTEND;VALUE=DATE:20261115
+SUMMARY:HackX 11.0: Thank you flyer Judge 1
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 124
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:125@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261114
+DTEND;VALUE=DATE:20261115
+SUMMARY:HackX 11.0: Thank you flyer Judge 2
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 125
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:126@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261114
+DTEND;VALUE=DATE:20261115
+SUMMARY:HackX 11.0: Thank you flyer Judge 3
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 126
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:127@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261114
+DTEND;VALUE=DATE:20261115
+SUMMARY:HackX 11.0: Thank you flyer Judge 4
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 127
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:128@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261114
+DTEND;VALUE=DATE:20261115
+SUMMARY:HackX 11.0: Thanking for mentors
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 128
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX:130@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20261117
+DTEND;VALUE=DATE:20261118
+SUMMARY:HackX 11.0: After Movies
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX row 130
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:4@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260616
+DTEND;VALUE=DATE:20260617
+SUMMARY:hackX Jr 9.0: Profile photo
+DESCRIPTION:Designer: Maleesha | Writer: Lavindi | Status: Posted | Source: hackX Jr row 4
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:5@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260616
+DTEND;VALUE=DATE:20260617
+SUMMARY:hackX Jr 9.0: Cover photo coming soon
+DESCRIPTION:Designer: Maleesha | Writer: Unassigned | Status: Posted | Source: hackX Jr row 5
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:6@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260625
+DTEND;VALUE=DATE:20260626
+SUMMARY:hackX Jr 9.0: Coming soon flyer
+DESCRIPTION:Designer: Osada\, Maleesha | Writer: Imasha | Status: Posted | Source: hackX Jr row 6
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:7@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260702
+DTEND;VALUE=DATE:20260703
+SUMMARY:hackX Jr 9.0: why hackX Jr
+DESCRIPTION:Designer: Osada | Writer: aradhana | Status: Posted | Source: hackX Jr row 7
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:8@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260621
+DTEND;VALUE=DATE:20260622
+SUMMARY:hackX Jr 9.0: Announcing registration open date by flyer
+DESCRIPTION:Designer: Isuru | Writer: Araliya | Status: Cancelled | Source: hackX Jr row 8
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:9@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260621
+DTEND;VALUE=DATE:20260622
+SUMMARY:hackX Jr 9.0: collobaration flyer
+DESCRIPTION:Designer: Osada | Writer: Binithi | Status: Posted | Source: hackX Jr row 9
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:10@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260703
+DTEND;VALUE=DATE:20260704
+SUMMARY:hackX Jr 9.0: Registration open now cover update
+DESCRIPTION:Designer: Chamikara | Writer: Unassigned | Status: Posted | Source: hackX Jr row 10
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:11@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260703
+DTEND;VALUE=DATE:20260704
+SUMMARY:hackX Jr 9.0: Registration open now flyer
+DESCRIPTION:Designer: Isuru | Writer: Aradhana | Status: Posted | Source: hackX Jr row 11
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:12@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260715
+DTEND;VALUE=DATE:20260716
+SUMMARY:hackX Jr 9.0: Rules and Regulations
+DESCRIPTION:Designer: Kasun | Writer: Chanuli | Status: On revision | Source: hackX Jr row 12
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:15@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260715
+DTEND;VALUE=DATE:20260716
+SUMMARY:hackX Jr 9.0: Awareness session coming soon video
+DESCRIPTION:Designer: #REF! | Writer: Sajana | Status: Completed | Source: hackX Jr row 15
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:16@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260720
+DTEND;VALUE=DATE:20260721
+SUMMARY:hackX Jr 9.0: Awareness session 1 date & venue reveal
+DESCRIPTION:Designer: Pathum | Writer: poojani | Status: Ongoing | Source: hackX Jr row 16
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:17@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260725
+DTEND;VALUE=DATE:20260726
+SUMMARY:hackX Jr 9.0: Awareness session- Introducing Guest speaker (03 posts)
+DESCRIPTION:Designer: Thanushika | Writer: Nethmi | Status: Completed | Source: hackX Jr row 17
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:18@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260730
+DTEND;VALUE=DATE:20260731
+SUMMARY:hackX Jr 9.0: Awareness session 1 happening tomorrow
+DESCRIPTION:Designer: Kasun | Writer: Binithi | Status: Pending | Source: hackX Jr row 18
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:19@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260715
+DTEND;VALUE=DATE:20260716
+SUMMARY:hackX Jr 9.0: Hapenning Now Loop
+DESCRIPTION:Designer: Maleesha | Writer: Unassigned | Status: Pending | Source: hackX Jr row 19
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:20@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260703
+DTEND;VALUE=DATE:20260704
+SUMMARY:hackX Jr 9.0: Awareness session 1 happening now flyer
+DESCRIPTION:Designer: Isuru | Writer: Unassigned | Status: Pending | Source: hackX Jr row 20
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:21@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260703
+DTEND;VALUE=DATE:20260704
+SUMMARY:hackX Jr 9.0: Awareness session happening now video
+DESCRIPTION:Designer: Ravidu / Maleesha | Writer: Unassigned | Status: Pending | Source: hackX Jr row 21
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:22@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260812
+DTEND;VALUE=DATE:20260813
+SUMMARY:hackX Jr 9.0: Awareness session aftermovie
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX Jr row 22
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:23@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260803
+DTEND;VALUE=DATE:20260804
+SUMMARY:hackX Jr 9.0: Awareness session-Guest speaker Thank You(03 posts)
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX Jr row 23
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:24@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260731
+DTEND;VALUE=DATE:20260801
+SUMMARY:hackX Jr 9.0: Proposal submission is open now flyer (submission deadline will be included here)
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX Jr row 24
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:25@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260725
+DTEND;VALUE=DATE:20260726
+SUMMARY:hackX Jr 9.0: Registration Closing Countdown - 3 days
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX Jr row 25
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:26@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260726
+DTEND;VALUE=DATE:20260727
+SUMMARY:hackX Jr 9.0: Registration Closing Countdown - 2 days
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX Jr row 26
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:27@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260727
+DTEND;VALUE=DATE:20260728
+SUMMARY:hackX Jr 9.0: Registration Closing Countdown - 1 day
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX Jr row 27
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:28@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260728
+DTEND;VALUE=DATE:20260729
+SUMMARY:hackX Jr 9.0: Registration closing date extended
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX Jr row 28
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:30@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260731
+DTEND;VALUE=DATE:20260801
+SUMMARY:hackX Jr 9.0: Extended registration closing countdown - 3 days
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX Jr row 30
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:31@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260801
+DTEND;VALUE=DATE:20260802
+SUMMARY:hackX Jr 9.0: Extended registration closing countdown - 2 days
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX Jr row 31
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:32@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260802
+DTEND;VALUE=DATE:20260803
+SUMMARY:hackX Jr 9.0: Extended registration closing countdown - 1 day
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX Jr row 32
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:33@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260803
+DTEND;VALUE=DATE:20260804
+SUMMARY:hackX Jr 9.0: Extended registration closing countdown - 12 hours
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX Jr row 33
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:34@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260803
+DTEND;VALUE=DATE:20260804
+SUMMARY:hackX Jr 9.0: Extended registration closing countdown - 6 hours
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX Jr row 34
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:35@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260803
+DTEND;VALUE=DATE:20260804
+SUMMARY:hackX Jr 9.0: Registration Closed
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX Jr row 35
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:36@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260814
+DTEND;VALUE=DATE:20260815
+SUMMARY:hackX Jr 9.0: Proposal submission deadline extended flyer
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX Jr row 36
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:37@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260815
+DTEND;VALUE=DATE:20260816
+SUMMARY:hackX Jr 9.0: Extended proposal submission closing countdown - 3 days
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX Jr row 37
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:38@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260816
+DTEND;VALUE=DATE:20260817
+SUMMARY:hackX Jr 9.0: Extended proposal submission closing countdown - 2 days
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX Jr row 38
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:39@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260817
+DTEND;VALUE=DATE:20260818
+SUMMARY:hackX Jr 9.0: Extended proposal submission closing countdown - 1 day
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX Jr row 39
+END:VEVENT
+BEGIN:VEVENT
+UID:hackX Jr:40@imssa.media
+DTSTAMP:20260805T055855Z
+DTSTART;VALUE=DATE:20260818
+DTEND;VALUE=DATE:20260819
+SUMMARY:hackX Jr 9.0: Proposal submission closed flyer
+DESCRIPTION:Designer: Unassigned | Writer: Unassigned | Status: Pending | Source: hackX Jr row 40
+END:VEVENT
+END:VCALENDAR
