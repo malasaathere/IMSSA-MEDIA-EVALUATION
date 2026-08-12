@@ -29,6 +29,27 @@
     --ease-standard: cubic-bezier(0.2, 0, 0, 1);
   }
 
+  :root[data-theme='dark'] {
+    --color-background: #07161d;
+    --color-surface: #0d222a;
+    --color-surface-selected: #133a3b;
+    --color-navy-950: #eef8f6;
+    --color-navy-900: #d8eeea;
+    --color-navy-800: #b7d7d2;
+    --color-navy-700: #8fc2bb;
+    --color-primary: #4fd1c5;
+    --color-primary-hover: #77e0d5;
+    --color-primary-soft: #123d3b;
+    --color-border: #29434a;
+    --color-text: #e1efed;
+    --color-text-muted: #91aaa9;
+    --color-success: #64c78c;
+    --color-warning: #f0ad55;
+    --color-danger: #ff8278;
+    --color-info: #77bdf0;
+    --color-focus: #76a6ff;
+  }
+
   body {
     @apply bg-background text-text antialiased;
     font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
@@ -90,6 +111,13 @@
   .imssa-search kbd { padding: 3px 7px; border: 1px solid #e0e6e3; border-radius: 7px; color: #8a9999; background: #f7f8f7; font-size: 11px; white-space: nowrap; }
   .imssa-top-actions { display: flex; align-items: center; gap: 10px; }
   .imssa-icon-button, .imssa-menu-button { position: relative; display: grid; width: 46px; height: 46px; flex: 0 0 auto; place-items: center; border: 1px solid #dce5e1; border-radius: 15px; color: #36575b; background: #fff; }
+  .imssa-theme-toggle { position: relative; display: grid; width: 46px; height: 46px; flex: 0 0 auto; place-items: center; overflow: hidden; border: 1px solid #dce5e1; border-radius: 15px; color: #36575b; background: #fff; transition: color 160ms ease, background 160ms ease, border-color 160ms ease, transform 160ms ease; }
+  .imssa-theme-toggle:hover { color: #087f76; border-color: #a8d7cd; transform: translateY(-1px); }
+  .imssa-theme-toggle:focus-visible { outline: 3px solid rgba(47,111,237,.35); outline-offset: 2px; }
+  .imssa-theme-toggle .theme-icon { position: absolute; transition: opacity 180ms ease, transform 180ms ease; }
+  .imssa-theme-toggle .theme-icon-sun { opacity: 1; transform: rotate(0deg) scale(1); }
+  .imssa-theme-toggle .theme-icon-moon { opacity: 0; transform: rotate(-40deg) scale(.55); }
+  .auth-theme-control { position: fixed; z-index: 80; top: max(18px, env(safe-area-inset-top)); right: max(18px, env(safe-area-inset-right)); }
   .imssa-menu-button { display: none; }
   .notification-dot { position: absolute; top: 10px; right: 10px; width: 7px; height: 7px; border: 2px solid white; border-radius: 99px; background: #e75e56; }
   .imssa-profile-chip { display: flex; min-width: 0; align-items: center; gap: 9px; min-height: 50px; padding: 5px 10px 5px 6px; border: 1px solid #dce5e1; border-radius: 17px; background: #fff; }
@@ -128,6 +156,66 @@
   .imssa-menu-scrim { display: none; }
 }
 
+html[data-theme='dark'] body { background: #07161d; }
+html[data-theme='dark'] .imssa-theme-toggle { color: #f6c85f; border-color: #29434a; background: #102a33; }
+html[data-theme='dark'] .imssa-theme-toggle:hover { color: #ffe08a; border-color: #447078; background: #15343e; }
+html[data-theme='dark'] .imssa-theme-toggle .theme-icon-sun { opacity: 0; transform: rotate(40deg) scale(.55); }
+html[data-theme='dark'] .imssa-theme-toggle .theme-icon-moon { opacity: 1; transform: rotate(0deg) scale(1); }
+html[data-theme='dark'] .auth-page,
+html[data-theme='dark'] .imssa-app { background: #061319; }
+html[data-theme='dark'] .auth-shell { border-color: #29434a; background: #0d222a; box-shadow: 0 24px 70px rgba(0,0,0,.35); }
+html[data-theme='dark'] .auth-intro { color: #e8f6f3; background: linear-gradient(155deg,#103d3b 0%,#18382f 64%,#172c28 100%); }
+html[data-theme='dark'] .auth-logo-image,
+html[data-theme='dark'] .imssa-brand-logo { filter: invert(1) brightness(1.35); mix-blend-mode: screen; }
+html[data-theme='dark'] .auth-kicker,
+html[data-theme='dark'] .auth-switch a { color: #58d3c5; }
+html[data-theme='dark'] .auth-intro > p:not(.auth-kicker),
+html[data-theme='dark'] .auth-heading p,
+html[data-theme='dark'] .auth-switch { color: #9cb2b0; }
+html[data-theme='dark'] .auth-heading h2 { color: #eef8f6; }
+html[data-theme='dark'] .auth-panel { background: #0d222a; }
+html[data-theme='dark'] .imssa-shell { border-color: #1f3941; background: #0b1d24; box-shadow: 0 22px 70px rgba(0,0,0,.38); }
+html[data-theme='dark'] .imssa-sidebar { border-color: #203840; background: rgba(9,29,36,.96); }
+html[data-theme='dark'] .imssa-nav a { color: #9bb2b1; }
+html[data-theme='dark'] .imssa-nav a:hover { color: #d7eeea; background: #102b32; }
+html[data-theme='dark'] .imssa-nav a.active { color: #73dfd2; background: #12373a; box-shadow: inset 3px 0 #4fd1c5; }
+html[data-theme='dark'] .imssa-sidebar-status { border-color: #29434a; background: #10282f; }
+html[data-theme='dark'] .imssa-sidebar-status strong { color: #d8e8e6; }
+html[data-theme='dark'] .imssa-topbar { border-color: #203840; background: rgba(9,27,34,.92); }
+html[data-theme='dark'] .imssa-search,
+html[data-theme='dark'] .imssa-icon-button,
+html[data-theme='dark'] .imssa-menu-button,
+html[data-theme='dark'] .imssa-profile-chip { color: #aac1bf; border-color: #29434a; background: #10262e; }
+html[data-theme='dark'] .imssa-search input,
+html[data-theme='dark'] .imssa-profile-copy strong { color: #e3efed; }
+html[data-theme='dark'] .imssa-search input::placeholder,
+html[data-theme='dark'] .imssa-profile-copy small { color: #829b9a; }
+html[data-theme='dark'] .imssa-search kbd { color: #9db3b1; border-color: #355058; background: #0a1d24; }
+html[data-theme='dark'] .imssa-content { background: #081920; }
+html[data-theme='dark'] .imssa-content thead { background: #10252c !important; }
+html[data-theme='dark'] .imssa-content th,
+html[data-theme='dark'] .imssa-content td { border-color: #294149 !important; }
+html[data-theme='dark'] .imssa-content tbody tr:hover { background-color: #10272e; }
+html[data-theme='dark'] .imssa-mobile-nav { border-color: #29434a; background: rgba(12,33,41,.96); box-shadow: 0 12px 36px rgba(0,0,0,.35); }
+html[data-theme='dark'] .imssa-mobile-nav a { color: #8fa6a4; }
+html[data-theme='dark'] .imssa-mobile-nav a.active { color: #70ded1; background: #12373a; }
+html[data-theme='dark'] .bg-white { background-color: #10262e !important; }
+html[data-theme='dark'] .bg-slate-50 { background-color: #0b1c23 !important; }
+html[data-theme='dark'] .bg-slate-100 { background-color: #142b32 !important; }
+html[data-theme='dark'] .border-slate-100,
+html[data-theme='dark'] .border-slate-200,
+html[data-theme='dark'] .border-slate-300 { border-color: #29434a !important; }
+html[data-theme='dark'] .text-slate-900 { color: #edf7f5 !important; }
+html[data-theme='dark'] .text-slate-800,
+html[data-theme='dark'] .text-slate-700 { color: #d2e4e1 !important; }
+html[data-theme='dark'] .text-slate-600,
+html[data-theme='dark'] .text-slate-500 { color: #9bb1af !important; }
+html[data-theme='dark'] input,
+html[data-theme='dark'] select,
+html[data-theme='dark'] textarea { color: #e5f0ee; border-color: #355058; background-color: #0c2028; }
+html[data-theme='dark'] input::placeholder,
+html[data-theme='dark'] textarea::placeholder { color: #78908f; }
+
 @media (max-width: 1023px) {
   .auth-page { padding: 0; }
   .auth-shell { min-height: 100vh; grid-template-columns: 1fr; border: 0; border-radius: 0; }
@@ -165,6 +253,7 @@
   .imssa-search input::placeholder { font-size: 0; }
   .imssa-search input::placeholder::after { content: 'Search'; font-size: 14px; }
   .imssa-search kbd, .imssa-profile-copy, .imssa-profile-chip > svg, .imssa-icon-button { display: none; }
+  .imssa-theme-toggle { display: grid; width: 44px; height: 44px; border-radius: 14px; }
   .imssa-profile-chip { min-height: 46px; padding: 4px; border: 0; background: transparent; }
   .imssa-avatar { width: 40px; height: 40px; }
   .imssa-content > div { padding: 16px !important; }

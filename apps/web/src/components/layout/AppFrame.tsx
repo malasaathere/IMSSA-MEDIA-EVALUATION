@@ -22,6 +22,7 @@ import {
 import { useState } from "react";
 import { useAuth } from "../../lib/auth-context";
 import { canAccessPath, primaryRoleLabel } from "../../lib/access-control";
+import { ThemeToggle } from "./ThemeToggle";
 
 const navigation = [
   { href: "/", label: "Dashboard", icon: Home },
@@ -51,7 +52,14 @@ export function AppFrame({ children }: { children: React.ReactNode }) {
   const initials = displayName.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase() || "TM";
   const roleLabel = primaryRoleLabel(roles);
 
-  if (isAuthPage) return <>{children}</>;
+  if (isAuthPage) {
+    return (
+      <>
+        <div className="auth-theme-control"><ThemeToggle /></div>
+        {children}
+      </>
+    );
+  }
 
   return (
     <div className="imssa-app">
@@ -98,6 +106,7 @@ export function AppFrame({ children }: { children: React.ReactNode }) {
               <kbd>⌘ K</kbd>
             </label>
             <div className="imssa-top-actions">
+              <ThemeToggle />
               <button aria-label="Notifications" className="imssa-icon-button"><Bell size={19} /><span className="notification-dot" /></button>
               <Link href="/profile" className="imssa-profile-chip" title={`${displayName} · ${roleLabel}`}>
                 <span className="imssa-avatar">{initials}</span>
