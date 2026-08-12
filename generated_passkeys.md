@@ -1,22 +1,22 @@
 # Generated Passkeys
 
-- **Tharushi** | Passkey: `2689` | Roles: CHIEF_COORDINATOR
-- **Praveen** | Passkey: `8478` | Roles: CHIEF_COORDINATOR
-- **Lavindi** | Passkey: `7545` | Roles: CHIEF_COORDINATOR
-- **Harshana** | Passkey: `8247` | Roles: CHIEF_COORDINATOR
-- **Dulaj** | Passkey: `9139` | Roles: DESIGNER, CHIEF_COORDINATOR
-- **Andrina** | Passkey: `7292` | Roles: CHIEF_COORDINATOR
-- **Charith** | Passkey: `6800` | Roles: MARKETING_COORDINATOR
-- **Manumi** | Passkey: `1505` | Roles: MARKETING_COORDINATOR
-- **Wasana** | Passkey: `3566` | Roles: MARKETING_COORDINATOR
-- **Tharushan** | Passkey: `4324` | Roles: MARKETING_COORDINATOR
-- **Nadeesha** | Passkey: `7648` | Roles: MARKETING_COORDINATOR
-- **Ravindu A** | Passkey: `6674` | Roles: MARKETING_COORDINATOR
-- **Maleesha** | Passkey: `3171` | Roles: MEDIA_DIRECTOR, VIDEO_EDITOR, DESIGNER
-- **Osanda** | Passkey: `9429` | Roles: DESIGNER, MEDIA_DIRECTOR
-- **Thanushika** | Passkey: `6906` | Roles: MEDIA_DIRECTOR
-- **Isuru** | Passkey: `4030` | Roles: DESIGNER, MEDIA_DIRECTOR
-- **Chamika** | Passkey: `8440` | Roles: MEDIA_DIRECTOR
-- **Nadeesha A** | Passkey: `6321` | Roles: MEDIA_DIRECTOR
-- **Kaveesha** | Passkey: `1690` | Roles: DESIGNER
-- **Kasun** | Passkey: `7697` | Roles: DESIGNER
+- **Tharushi** | Passkey: `9031` | Roles: CHIEF_COORDINATOR
+- **Praveen** | Passkey: `4458` | Roles: CHIEF_COORDINATOR
+- **Lavindi** | Passkey: `2360` | Roles: CHIEF_COORDINATOR
+- **Harshana** | Passkey: `8771` | Roles: CHIEF_COORDINATOR
+- **Dulaj** | Passkey: `2653` | Roles: DESIGNER, CHIEF_COORDINATOR
+- **Andrina** | Passkey: `4387` | Roles: CHIEF_COORDINATOR
+- **Charith** | Passkey: `6948` | Roles: MARKETING_COORDINATOR
+- **Manumi** | Passkey: `4350` | Roles: MARKETING_COORDINATOR
+- **Wasana** | Passkey: `2359` | Roles: MARKETING_COORDINATOR
+- **Tharushan** | Passkey: `8062` | Roles: MARKETING_COORDINATOR
+- **Nadeesha** | Passkey: `6490` | Roles: MARKETING_COORDINATOR
+- **Ravindu A** | Passkey: `4068` | Roles: MARKETING_COORDINATOR
+- **Maleesha** | Passkey: `9227` | Roles: MEDIA_DIRECTOR, VIDEO_EDITOR, DESIGNER
+- **Osanda** | Passkey: `7793` | Roles: DESIGNER, MEDIA_DIRECTOR
+- **Thanushika** | Passkey: `5426` | Roles: MEDIA_DIRECTOR
+- **Isuru** | Passkey: `5348` | Roles: DESIGNER, MEDIA_DIRECTOR
+- **Chamika** | Passkey: `1582` | Roles: MEDIA_DIRECTOR
+- **Nadeesha A** | Passkey: `7298` | Roles: MEDIA_DIRECTOR
+- **Kaveesha** | Passkey: `3283` | Roles: DESIGNER
+- **Kasun** | Passkey: `2573` | Roles: DESIGNER
