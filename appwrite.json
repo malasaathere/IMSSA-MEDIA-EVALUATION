@@ -3,6 +3,20 @@
     "projectName": "imssa-media",
     "functions": [
         {
+            "$id": "api-admin-access",
+            "name": "api-admin-access",
+            "runtime": "node-18.0",
+            "execute": [
+                "users"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 30,
+            "path": "apps/functions/api-admin-access",
+            "entrypoint": "src/main.js",
+            "commands": "npm install"
+        },
+        {
             "$id": "api-ai-assistant",
             "name": "api-ai-assistant",
             "runtime": "node-18.0",

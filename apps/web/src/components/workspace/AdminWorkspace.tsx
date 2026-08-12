@@ -3,7 +3,9 @@
 import { useMemo, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { BriefcaseBusiness, CalendarRange, Loader2, ShieldCheck, Users } from 'lucide-react'
+import Link from 'next/link'
 import { databases } from '../../lib/appwrite'
+import { api } from '../../api/api-client'
 import { COLLECTIONS, DATABASE_ID } from '../../lib/appwrite-collections'
 import { useMarketingPlans } from '../../api/queries'
 import { Dialog } from '../ui/dialog'
@@ -29,6 +31,8 @@ export function AdminWorkspace() {
   const [selectedUser, setSelectedUser] = useState<any | null>(null);
   const [draftRoles, setDraftRoles] = useState<string[]>([]);
   const [draftEvents, setDraftEvents] = useState<string[]>([]);
+  const [draftName, setDraftName] = useState('');
+  const [draftStatus, setDraftStatus] = useState<'ACTIVE' | 'INACTIVE'>('ACTIVE');
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
 
@@ -40,6 +44,8 @@ export function AdminWorkspace() {
     setSelectedUser(user);
     setDraftRoles(Array.isArray(user.roles) ? user.roles : []);
     setDraftEvents(Array.isArray(user.events) ? user.events : []);
+    setDraftName(user.name || '');
+    setDraftStatus(user.status === 'INACTIVE' ? 'INACTIVE' : 'ACTIVE');
     setSaveError('');
   };
 
@@ -52,7 +58,10 @@ export function AdminWorkspace() {
     setSaving(true);
     setSaveError('');
     try {
-      await databases.updateDocument(DATABASE_ID, COLLECTIONS.USERS, selectedUser.$id, {
+      await api.updateUserAccess({
+        userId: selectedUser.$id,
+        name: draftName,
+        status: draftStatus,
         roles: draftRoles,
         events: draftEvents,
       });
@@ -71,7 +80,11 @@ export function AdminWorkspace() {
   return (
     <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
       <div className="page-heading mb-8">
-        <div><p>TEAM & ACCESS</p><h1>Administration Dashboard</h1><span>Assign positions and event scope to each passkey account.</span></div>
+        <div><p>TEAM & ACCESS</p><h1>Administration Dashboard</h1><span>Control user identity, account status, positions and event access.</span></div>
+        <div className="flex flex-wrap gap-2">
+          <Link href="/analytics"><Button variant="outline">View all analytics</Button></Link>
+          <Link href="/calendar"><Button variant="outline">View master calendar</Button></Link>
+        </div>
       </div>
 
       <div className="mb-6 grid grid-cols-2 gap-3 xl:grid-cols-4">
@@ -113,6 +126,22 @@ export function AdminWorkspace() {
           <h2 className="text-xl font-bold text-navy-950">Edit user assignment</h2>
           <p className="mt-1 text-sm text-text-muted">{selectedUser?.name} · permissions are loaded automatically after their passkey login.</p>
 
+          <section className="mt-6">
+            <h3 className="text-sm font-bold text-navy-900">Account details</h3>
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              <label className="text-xs font-semibold text-text-muted">Display name
+                <input value={draftName} onChange={(event) => setDraftName(event.target.value)} maxLength={100} className="mt-1 block w-full rounded-xl border border-border bg-white px-3 py-2.5 text-sm text-navy-950 outline-none focus:border-primary focus:ring-2 focus:ring-primary-soft" />
+              </label>
+              <label className="text-xs font-semibold text-text-muted">Account status
+                <select value={draftStatus} onChange={(event) => setDraftStatus(event.target.value as 'ACTIVE' | 'INACTIVE')} className="mt-1 block w-full rounded-xl border border-border bg-white px-3 py-2.5 text-sm text-navy-950 outline-none focus:border-primary focus:ring-2 focus:ring-primary-soft">
+                  <option value="ACTIVE">Active</option>
+                  <option value="INACTIVE">Inactive</option>
+                </select>
+              </label>
+            </div>
+            <p className="mt-2 text-xs text-text-muted">Inactive accounts are blocked from passkey login until an administrator reactivates them.</p>
+          </section>
+
           <section className="mt-6"><h3 className="text-sm font-bold text-navy-900">Positions</h3><p className="mb-3 mt-1 text-xs text-text-muted">Select every position this person performs.</p>
             <div className="grid gap-2 sm:grid-cols-2">{ROLE_OPTIONS.map(([value,label]) => <label key={value} className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border p-3 text-sm font-semibold ${draftRoles.includes(value) ? 'border-primary bg-primary-soft text-primary' : 'border-border bg-white text-navy-700'}`}><input type="checkbox" checked={draftRoles.includes(value)} onChange={() => toggleValue(value,draftRoles,setDraftRoles)} className="h-4 w-4"/>{label}</label>)}</div>
           </section>
@@ -123,7 +152,7 @@ export function AdminWorkspace() {
           </section>
 
           {saveError && <p className="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">{saveError}</p>}
-          <div className="mt-6 flex justify-end gap-3"><Button variant="outline" onClick={() => setSelectedUser(null)}>Cancel</Button><Button onClick={saveAccess} disabled={saving || draftRoles.length === 0}>{saving && <Loader2 className="mr-2 h-4 w-4 animate-spin"/>}Save assignment</Button></div>
+          <div className="mt-6 flex justify-end gap-3"><Button variant="outline" onClick={() => setSelectedUser(null)}>Cancel</Button><Button onClick={saveAccess} disabled={saving || draftRoles.length === 0 || draftName.trim().length < 2}>{saving && <Loader2 className="mr-2 h-4 w-4 animate-spin"/>}Save assignment</Button></div>
         </div>
       </Dialog>
     </div>

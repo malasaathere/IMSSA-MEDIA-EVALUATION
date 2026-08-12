@@ -38,6 +38,9 @@ export async function loginOrSignupWithPin(pin: string) {
     }
     
     const dbUser = existingProfiles.documents[0];
+    if (String(dbUser.status || "ACTIVE").toUpperCase() !== "ACTIVE") {
+      throw new Error("This account is inactive. Please contact an administrator.");
+    }
     // Every authorized profile must already have a matching Appwrite Auth account.
     // Account creation is handled by the admin service, never by the public login page.
     try {

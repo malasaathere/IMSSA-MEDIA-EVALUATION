@@ -21,6 +21,14 @@ export interface NotificationInput {
   createdById: string;
 }
 
+export interface UpdateUserAccessInput {
+  userId: string;
+  name: string;
+  status: 'ACTIVE' | 'INACTIVE';
+  roles: string[];
+  events: string[];
+}
+
 export class ApiError extends Error {
   code?: string;
   details?: Record<string, unknown>;
@@ -35,6 +43,23 @@ export class ApiError extends Error {
 
 // A thin Appwrite-backed API client
 export const api = {
+  updateUserAccess: async (data: UpdateUserAccessInput) => {
+    const execution = await functions.createExecution({
+      functionId: 'api-admin-access',
+      body: JSON.stringify(data),
+      async: false,
+      xpath: '/user-access',
+      method: ExecutionMethod.POST,
+      headers: { 'content-type': 'application/json' },
+    });
+    let payload: any = {};
+    try { payload = execution.responseBody ? JSON.parse(execution.responseBody) : {}; }
+    catch { throw new ApiError('The administration service returned an invalid response.', 'INVALID_RESPONSE'); }
+    if (execution.responseStatusCode >= 400 || !payload.success) {
+      throw new ApiError(payload.error || 'Could not update this user assignment.', payload.code, payload);
+    }
+    return payload.user;
+  },
   // Phase 1: Tasks
   createTask: async (data: CreateTaskInput) => {
     const execution = await functions.createExecution({

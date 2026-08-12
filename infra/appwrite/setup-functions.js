@@ -19,6 +19,23 @@ const functionsClient = new Functions(client);
 
 const FUNCTIONS_TO_CREATE = [
   {
+    $id: 'api-admin-access',
+    name: 'api-admin-access',
+    runtime: 'node-18.0',
+    events: [],
+    schedule: '',
+    timeout: 30,
+    execute: [Role.users()],
+    entrypoint: 'src/main.js',
+    commands: 'npm install',
+    variables: [
+      { key: 'APPWRITE_API_KEY', value: process.env.APPWRITE_API_KEY || '' },
+      { key: 'APPWRITE_ENDPOINT', value: process.env.APPWRITE_ENDPOINT || 'http://localhost/v1' },
+      { key: 'APPWRITE_PROJECT_ID', value: process.env.APPWRITE_PROJECT_ID || '' },
+      { key: 'APPWRITE_DATABASE_ID', value: process.env.APPWRITE_DATABASE_ID || 'imssa-media' },
+    ]
+  },
+  {
     $id: 'api-ai-assistant',
     name: 'api-ai-assistant',
     runtime: 'node-18.0',

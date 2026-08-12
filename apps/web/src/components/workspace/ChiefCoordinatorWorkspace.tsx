@@ -2,7 +2,7 @@ import { useTasks, useUsers } from '../../api/queries'
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/card'
 import { Loader2, AlertCircle, Inbox } from 'lucide-react'
 import { useAuth } from '../../lib/auth-context'
-import { matchesAuthorizedEvent } from '../../lib/access-control'
+import { matchesAuthorizedEvent, normalizeRoles } from '../../lib/access-control'
 
 export function ChiefCoordinatorWorkspace() {
   const { data: response, isLoading, isError, error } = useTasks()
@@ -35,7 +35,8 @@ export function ChiefCoordinatorWorkspace() {
 
   const allTasks = response?.documents;
   const authorizedEvents = profile?.events || [];
-  const tasks = Array.isArray(allTasks) ? allTasks.filter(task => matchesAuthorizedEvent(task, authorizedEvents)) : [];
+  const isAdmin = normalizeRoles(profile?.roles || []).includes('ADMIN');
+  const tasks = Array.isArray(allTasks) ? (isAdmin ? allTasks : allTasks.filter(task => matchesAuthorizedEvent(task, authorizedEvents))) : [];
 
   if (!tasks || !Array.isArray(tasks) || tasks.length === 0) {
     return (
@@ -73,8 +74,8 @@ export function ChiefCoordinatorWorkspace() {
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 bg-slate-50 min-h-screen">
-      <div className="page-heading mb-8"><div><p>PERFORMANCE OVERVIEW</p><h1>Analytics Dashboard</h1><span>Read-only analytics for {authorizedEvents.length ? authorizedEvents.join(', ') : 'your assigned events'}.</span></div></div>
-      <div className="mb-6 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800">Chief Coordinator access is analytics-only. Task creation, assignment and workflow changes remain with operational roles.</div>
+      <div className="page-heading mb-8"><div><p>PERFORMANCE OVERVIEW</p><h1>Analytics Dashboard</h1><span>{isAdmin ? 'System-wide analytics across every event and user.' : `Read-only analytics for ${authorizedEvents.length ? authorizedEvents.join(', ') : 'your assigned events'}.`}</span></div></div>
+      <div className="mb-6 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800">{isAdmin ? 'Administrator view includes all events, workload and delivery activity.' : 'Chief Coordinator access is analytics-only. Task creation, assignment and workflow changes remain with operational roles.'}</div>
       
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-6 mb-8">
         <Card>
