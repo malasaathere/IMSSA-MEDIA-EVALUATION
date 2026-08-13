@@ -1,9 +1,16 @@
 const path = require('path');
+const fs = require('fs');
 const { execFileSync } = require('child_process');
 const { Client, Sites } = require('node-appwrite');
 const { InputFile } = require('node-appwrite/file');
 
-require('dotenv').config({ path: path.resolve(__dirname, '../../infra/appwrite/.env') });
+const environmentFile = path.resolve(__dirname, '../../infra/appwrite/.env');
+for (const line of fs.readFileSync(environmentFile, 'utf8').split(/\r?\n/)) {
+  const match = line.match(/^\s*([^#=\s]+)\s*=\s*(.*)\s*$/);
+  if (!match) continue;
+  const [, key, rawValue] = match;
+  process.env[key] = rawValue.replace(/^['"]|['"]$/g, '');
+}
 
 const required = ['APPWRITE_ENDPOINT', 'APPWRITE_PROJECT_ID', 'APPWRITE_API_KEY'];
 for (const key of required) {
