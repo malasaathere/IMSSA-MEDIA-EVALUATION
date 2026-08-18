@@ -9,6 +9,7 @@ import {
   CheckSquare2,
   ChevronDown,
   ClipboardList,
+  ClipboardCheck,
   Home,
   Menu,
   MessageCircle,
@@ -34,6 +35,7 @@ const navigation = [
   { href: "/admin", label: "Administration", icon: Users },
   { href: "/profile", label: "Profile & Preferences", icon: Settings },
   { href: "/writer", label: "Writing Queue", icon: FileText },
+  { href: "/system-review", label: "System Review", icon: ClipboardCheck },
 ];
 
 function isActive(pathname: string, href: string) {

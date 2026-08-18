@@ -21,6 +21,7 @@ const routeRoles: Array<{ prefix: string; roles: WorkspaceRole[] }> = [
   { prefix: "/writer", roles: ["ADMIN", "MARKETING_COORDINATOR", "CONTENT_WRITER", "WRITER"] },
   { prefix: "/calendar", roles: ["ADMIN", "MARKETING_COORDINATOR", "DESIGNER", "VIDEO_EDITOR", "MEDIA_DIRECTOR", "CONTENT_WRITER", "WRITER"] },
   { prefix: "/profile", roles: ["ADMIN", "CHIEF_COORDINATOR", "MARKETING_COORDINATOR", "DESIGNER", "VIDEO_EDITOR", "MEDIA_DIRECTOR", "CONTENT_WRITER", "WRITER"] },
+  { prefix: "/system-review", roles: ["ADMIN", "CHIEF_COORDINATOR", "MARKETING_COORDINATOR", "DESIGNER", "VIDEO_EDITOR", "MEDIA_DIRECTOR", "CONTENT_WRITER", "WRITER"] },
   { prefix: "/", roles: ["ADMIN", "MARKETING_COORDINATOR"] },
 ];
 
