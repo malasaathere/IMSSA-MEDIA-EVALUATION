@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { Check, X, Loader2, Search, SlidersHorizontal, Inbox, FilterX } from "lucide-react";
+import { ArrowRight, Check, FileCheck2, FilterX, Inbox, Loader2, Search, SlidersHorizontal, X } from "lucide-react";
 import { ReviewCanvas } from "./ReviewCanvas";
 import { PostApprovalDialog } from "./PostApprovalDialog";
 import { useTasks, useVersions } from "../../api/queries";
@@ -29,6 +29,8 @@ export function DirectorWorkspace() {
   const isAdmin = roles.includes('ADMIN');
   const scopedTasks = isAdmin ? tasks : tasks.filter(task => matchesAuthorizedEvent(task, assignedEvents));
   const reviewTasks = scopedTasks.filter(task => task.status === 'PENDING' || task.status === 'IN_REVIEW');
+  const actionedTasks = scopedTasks.filter(task => ['COMPLETED', 'POSTED'].includes(task.status)).length;
+  const reviewProgress = scopedTasks.length ? Math.round((actionedTasks / scopedTasks.length) * 100) : 0;
   const eventOptions = Array.from(new Set(scopedTasks.map((task: any) => task.eventName || task.eventId).filter(Boolean))).sort() as string[];
   const workTypeOptions = Array.from(new Set(scopedTasks.map((task: any) => task.workType).filter(Boolean))).sort() as string[];
   const inboxTasks = reviewTasks.filter((task: any) => {
@@ -104,87 +106,53 @@ export function DirectorWorkspace() {
   }
 
   return (
-    <div className="flex min-h-full flex-col bg-surface lg:min-h-[calc(100vh-82px)]">
-      {/* Header */}
-      <header className="page-heading director-page-heading mx-4 mt-4 sm:mx-6 sm:mt-6">
+    <div className="review-room flex min-h-full flex-col lg:min-h-[calc(100vh-82px)]">
+      <header className="review-room-header">
         <div>
-          <p>MEDIA DIRECTOR WORKSPACE</p>
-          <h1>Review Inbox</h1>
-          <span>Annotate submissions, request revisions and approve final work.</span>
+          <p>IMSSA MEDIA / REVIEW OPERATIONS</p>
+          <h1>Review inbox</h1>
+          <span>Review submissions, leave clear feedback and approve the final version.</span>
         </div>
+        <label className="review-room-search"><Search className="h-4 w-4"/><input value={searchQuery} onChange={event => setSearchQuery(event.target.value)} placeholder="Find a submission..."/></label>
       </header>
 
-      <main className="flex flex-1 flex-col overflow-visible lg:flex-row lg:overflow-hidden">
-        {/* Left Sidebar - Inbox */}
-        <div className="director-inbox w-full flex-shrink-0 border-b border-border bg-white p-3 space-y-3 overflow-x-auto lg:w-96 lg:border-b-0 lg:border-r lg:overflow-y-auto lg:p-4 lg:space-y-4">
-          <div className="px-2"><div className="flex items-center justify-between gap-2"><h3 className="text-sm font-semibold text-navy-950">Needs Review <span className="text-text-muted">({inboxTasks.length})</span></h3><SlidersHorizontal className="h-4 w-4 text-primary"/></div><p className="mt-1 text-[11px] text-text-muted">{isAdmin ? 'All assigned events' : assignedEvents.length ? assignedEvents.join(', ') : 'No event assigned'}</p></div>
+      <section className="review-room-summary">
+        <div className="review-room-status"><span className="review-room-status-dot"/><div><strong>Review workspace</strong><small>{inboxTasks.length} submission{inboxTasks.length === 1 ? '' : 's'} waiting</small></div></div>
+        <div className="review-room-progress"><div><span>{actionedTasks} of {scopedTasks.length} tasks approved or posted</span><strong>{reviewProgress}%</strong></div><i><b style={{ width: `${reviewProgress}%` }}/></i></div>
+        <div className="review-room-filters"><select aria-label="Filter by event" value={eventFilter} onChange={event => setEventFilter(event.target.value)}><option value="ALL">All events</option>{eventOptions.map(event => <option key={event} value={event}>{event}</option>)}</select><select aria-label="Filter by review status" value={statusFilter} onChange={event => setStatusFilter(event.target.value)}><option value="ALL">All statuses</option><option value="PENDING">Pending</option><option value="IN_REVIEW">In review</option></select><select aria-label="Filter by work type" value={workTypeFilter} onChange={event => setWorkTypeFilter(event.target.value)}><option value="ALL">All work types</option>{workTypeOptions.map(type => <option key={type} value={type}>{type}</option>)}</select>{hasActiveFilters && <button onClick={clearFilters} title="Clear filters"><FilterX className="h-4 w-4"/><span>Clear</span></button>}</div>
+      </section>
 
-          <div className="grid gap-2 rounded-2xl border border-border bg-surface p-3">
-            <label className="flex min-h-10 items-center gap-2 rounded-xl border border-border bg-white px-3 text-text-muted"><Search className="h-4 w-4 shrink-0"/><input value={searchQuery} onChange={event => setSearchQuery(event.target.value)} placeholder="Search submissions" className="w-full bg-transparent text-xs text-navy-950 outline-none"/></label>
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:grid-cols-1">
-              <select value={eventFilter} onChange={event => setEventFilter(event.target.value)} className="min-h-10 w-full rounded-xl border border-border bg-white px-3 text-xs text-navy-800"><option value="ALL">All events</option>{eventOptions.map(event => <option key={event} value={event}>{event}</option>)}</select>
-              <select value={statusFilter} onChange={event => setStatusFilter(event.target.value)} className="min-h-10 w-full rounded-xl border border-border bg-white px-3 text-xs text-navy-800"><option value="ALL">All review statuses</option><option value="PENDING">Pending</option><option value="IN_REVIEW">In review</option></select>
-              <select value={workTypeFilter} onChange={event => setWorkTypeFilter(event.target.value)} className="min-h-10 w-full rounded-xl border border-border bg-white px-3 text-xs text-navy-800"><option value="ALL">All work types</option>{workTypeOptions.map(type => <option key={type} value={type}>{type}</option>)}</select>
-            </div>
-            {hasActiveFilters && <button onClick={clearFilters} className="inline-flex min-h-9 items-center justify-center gap-2 rounded-xl text-xs font-semibold text-primary hover:bg-primary-soft"><FilterX className="h-3.5 w-3.5"/> Clear filters</button>}
+      <main className="review-room-main">
+        <aside className="review-room-map">
+          <div className="review-room-map-heading"><div><p>REVIEW MAP</p><h2>Pending decisions</h2></div><span>{inboxTasks.length} OPEN</span></div>
+          <div className="review-room-list">
+            {inboxTasks.map((task, index) => (
+              <button key={task.$id} onClick={() => setSelectedTaskId(task.$id)} className={`review-room-task ${selectedTask?.$id === task.$id ? 'is-selected' : ''}`}>
+                <span className="review-room-task-number">{String(index + 1).padStart(2, '0')}</span>
+                <span className="review-room-task-copy"><small>{task.eventName || task.eventId || 'GENERAL'} · {task.workType || 'TASK'}</small><strong>{task.title}</strong></span>
+                <Badge variant="warning">{task.status === 'IN_REVIEW' ? 'IN REVIEW' : 'PENDING'}</Badge><ArrowRight className="review-room-task-arrow h-4 w-4"/>
+              </button>
+            ))}
+            {inboxTasks.length === 0 && <div className="review-room-empty-list"><Inbox className="h-5 w-5"/><strong>{hasActiveFilters ? 'No matching submissions' : 'Your inbox is clear'}</strong><p>{hasActiveFilters ? 'Adjust or clear filters to see submissions.' : 'New submissions will appear here automatically.'}</p>{hasActiveFilters && <button onClick={clearFilters}>Reset filters</button>}</div>}
           </div>
-          
-          <div className="flex gap-3 lg:block lg:space-y-4">
-          {inboxTasks.map(task => (
-            <div 
-              key={task.$id}
-              onClick={() => setSelectedTaskId(task.$id)}
-              className={`w-[78vw] max-w-72 flex-none cursor-pointer rounded-lg border p-3 transition-colors lg:w-auto lg:max-w-none ${
-                (selectedTask && selectedTask.$id === task.$id) ? "border-navy-900 bg-surface-selected" : "border-border hover:bg-surface"
-              }`}
-            >
-              <div className="flex justify-between items-start mb-2">
-                <h4 className="text-sm font-semibold text-navy-950">{task.title}</h4>
-              </div>
-              <p className="text-xs text-text-muted mb-2">{task.eventId || 'General'} • {task.workType || 'Task'}</p>
-              <Badge variant="warning">{task.status || 'IN REVIEW'}</Badge>
-            </div>
-          ))}
-          </div>
-          {inboxTasks.length === 0 && (
-            <div className="director-empty-list rounded-2xl border border-dashed border-border p-5 text-center">
-              <Inbox className="mx-auto mb-2 h-5 w-5 text-primary" />
-              <p className="text-sm font-semibold text-navy-950">{hasActiveFilters ? 'No matching submissions' : 'Nothing is waiting for review'}</p>
-              <p className="mt-1 text-xs leading-5 text-text-muted">{hasActiveFilters ? 'Try clearing a filter or adjusting your search.' : 'New submissions will appear here automatically.'}</p>
-              {hasActiveFilters && <button onClick={clearFilters} className="mt-3 text-xs font-semibold text-primary hover:underline">Reset filters</button>}
-            </div>
-          )}
-        </div>
+        </aside>
 
-        {/* Main Review Area */}
-        <div className="flex-1 flex flex-col overflow-hidden bg-surface">
+        <section className="review-room-detail">
           {selectedTask ? (
             <>
-              {/* Toolbar */}
-              <div className="flex flex-col items-start gap-3 border-b border-border bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-center sm:space-x-4">
-                  <h2 className="text-lg font-semibold text-navy-950">{selectedTask.title}</h2>
-                  <Badge variant="outline">
-                    {latestVersion ? `Submitted ${new Date(latestVersion.$createdAt).toLocaleString()}` : 'No submission yet'}
-                  </Badge>
-                </div>
-              </div>
+              <div className="review-room-detail-heading"><div><p>{selectedTask.eventName || selectedTask.eventId || 'GENERAL'} / {selectedTask.workType || 'SUBMISSION'}</p><h2>{selectedTask.title}</h2><span>{selectedTask.description || 'Open the submitted version, annotate feedback, and approve when it is ready.'}</span></div><Badge variant="warning">{selectedTask.status === 'IN_REVIEW' ? 'IN REVIEW' : 'PENDING'}</Badge></div>
 
-              {actionMessage && <div className="border-b border-border bg-blue-50 px-4 py-3 text-sm text-blue-800" role="status">{actionMessage}</div>}
+              {actionMessage && <div className="review-room-message" role="status">{actionMessage}</div>}
 
-              {/* Preview Area */}
-              <div className="flex min-h-72 flex-1 items-center justify-center overflow-auto p-3 relative sm:p-6">
+              <div className="review-room-canvas">
                 {latestVersion && latestVersion.fileId ? (
                   <ReviewCanvas imageUrl={api.getFileView(BUCKETS.DRAFT_IMAGES, latestVersion.fileId)} />
                 ) : (
-                  <div className="text-text-muted">No draft submitted yet</div>
+                  <div className="review-room-no-draft"><FileCheck2 className="h-7 w-7"/><strong>No draft submitted yet</strong><p>The creator’s submitted version will appear here for annotation and review.</p></div>
                 )}
               </div>
 
-              {/* Bottom Actions */}
-              <div className="border-t border-border bg-white p-3 flex flex-col gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] sm:flex-row sm:items-center sm:justify-between sm:p-4">
-                <p className="text-xs text-text-muted">Use the pin or rectangle tools above to annotate the submitted design.</p>
-                <div className="grid grid-cols-1 gap-2 sm:flex sm:space-x-3">
+              <div className="review-room-actions"><p>Use the pin or rectangle tools to annotate the submitted design before making a decision.</p><div>
                   <Button variant="destructive" onClick={handleRevision} disabled={!latestVersion || actionPending}><X className="mr-2 h-4 w-4" /> Request Revision</Button>
                   <Button className="bg-success hover:bg-success/90" onClick={() => setFeedbackOpen(true)} disabled={!latestVersion || !profile || actionPending}>
                     <Check className="mr-2 h-4 w-4" /> Approve Version
@@ -193,16 +161,9 @@ export function DirectorWorkspace() {
               </div>
             </>
           ) : (
-            <div className="flex min-h-[340px] flex-1 items-center justify-center p-6">
-              <section className="director-empty-state max-w-md rounded-[22px] border border-border bg-white p-7 text-center shadow-sm sm:p-9">
-                <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-primary-soft text-primary"><Inbox className="h-6 w-6" /></span>
-                <h2 className="mt-5 text-xl font-bold text-navy-950">{hasActiveFilters ? 'No submissions match these filters' : 'Your review inbox is clear'}</h2>
-                <p className="mt-2 text-sm leading-6 text-text-muted">{hasActiveFilters ? 'Clear or adjust the filters to see submissions waiting for review.' : 'When a designer or editor submits work, it will appear here with its event, status and review tools.'}</p>
-                {hasActiveFilters && <Button variant="outline" size="sm" onClick={clearFilters} className="mt-5"><FilterX className="mr-2 h-4 w-4"/> Clear filters</Button>}
-              </section>
-            </div>
+            <div className="review-room-empty-detail"><Inbox className="h-8 w-8"/><p>SELECT A SUBMISSION</p><h2>{hasActiveFilters ? 'No tasks match these filters' : 'Nothing is waiting for review'}</h2><span>{hasActiveFilters ? 'Clear your filters to return to the review queue.' : 'Submitted work will show up here with everything needed to review it.'}</span>{hasActiveFilters && <Button variant="outline" size="sm" onClick={clearFilters}><FilterX className="mr-2 h-4 w-4"/>Clear filters</Button>}</div>
           )}
-        </div>
+        </section>
       </main>
 
       <PostApprovalDialog open={feedbackOpen} onOpenChange={setFeedbackOpen} onSubmit={handleApproval} isSubmitting={actionPending} />
