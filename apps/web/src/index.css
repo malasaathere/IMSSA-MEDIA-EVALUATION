@@ -192,6 +192,14 @@ html[data-theme='dark'] .imssa-search input::placeholder,
 html[data-theme='dark'] .imssa-profile-copy small { color: #829b9a; }
 html[data-theme='dark'] .imssa-search kbd { color: #9db3b1; border-color: #355058; background: #0a1d24; }
 html[data-theme='dark'] .imssa-content { background: #081920; }
+html[data-theme='dark'] .page-heading h1 { color: #eef8f6; }
+html[data-theme='dark'] .page-heading > div > span { color: #a9c1be; }
+html[data-theme='dark'] .imssa-nav-label { color: #90a8a6; }
+html[data-theme='dark'] .bg-navy-950 { background-color: #0b2831 !important; }
+html[data-theme='dark'] .bg-navy-900 { background-color: #12363e !important; }
+html[data-theme='dark'] .bg-navy-800 { background-color: #174852 !important; }
+html[data-theme='dark'] .hover\:bg-navy-900:hover { background-color: #12363e !important; }
+html[data-theme='dark'] .hover\:bg-navy-700:hover { background-color: #205b62 !important; }
 html[data-theme='dark'] .imssa-content thead { background: #10252c !important; }
 html[data-theme='dark'] .imssa-content th,
 html[data-theme='dark'] .imssa-content td { border-color: #294149 !important; }
@@ -215,6 +223,9 @@ html[data-theme='dark'] select,
 html[data-theme='dark'] textarea { color: #e5f0ee; border-color: #355058; background-color: #0c2028; }
 html[data-theme='dark'] input::placeholder,
 html[data-theme='dark'] textarea::placeholder { color: #78908f; }
+html[data-theme='dark'] .director-inbox,
+html[data-theme='dark'] .director-empty-state { background: #0d222a !important; }
+html[data-theme='dark'] .director-empty-list { background: #0b1d24; }
 
 @media (max-width: 1023px) {
   .auth-page { padding: 0; }

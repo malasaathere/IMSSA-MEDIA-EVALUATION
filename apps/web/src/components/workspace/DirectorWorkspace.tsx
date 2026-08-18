@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { Check, X, Loader2, Search, SlidersHorizontal } from "lucide-react";
+import { Check, X, Loader2, Search, SlidersHorizontal, Inbox, FilterX } from "lucide-react";
 import { ReviewCanvas } from "./ReviewCanvas";
 import { PostApprovalDialog } from "./PostApprovalDialog";
 import { useTasks, useVersions } from "../../api/queries";
@@ -41,6 +41,7 @@ export function DirectorWorkspace() {
       && (statusFilter === 'ALL' || task.status === statusFilter)
       && (workTypeFilter === 'ALL' || task.workType === workTypeFilter);
   });
+  const hasActiveFilters = Boolean(searchQuery || eventFilter !== 'ALL' || statusFilter !== 'ALL' || workTypeFilter !== 'ALL');
   const selectedTask = inboxTasks.find(t => t.$id === selectedTaskId) || inboxTasks[0];
 
   const { data: versionsResponse, isLoading: versionsLoading } = useVersions(selectedTask?.$id || null);
@@ -91,14 +92,21 @@ export function DirectorWorkspace() {
     }
   };
 
+  const clearFilters = () => {
+    setSearchQuery('');
+    setEventFilter('ALL');
+    setStatusFilter('ALL');
+    setWorkTypeFilter('ALL');
+  };
+
   if (tasksLoading) {
     return <div className="min-h-screen flex items-center justify-center bg-surface"><Loader2 className="animate-spin text-gold-500 h-10 w-10" /></div>;
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-surface lg:h-screen">
+    <div className="flex min-h-full flex-col bg-surface lg:min-h-[calc(100vh-82px)]">
       {/* Header */}
-      <header className="page-heading mx-4 mt-4 sm:mx-6 sm:mt-6">
+      <header className="page-heading director-page-heading mx-4 mt-4 sm:mx-6 sm:mt-6">
         <div>
           <p>MEDIA DIRECTOR WORKSPACE</p>
           <h1>Review Inbox</h1>
@@ -108,8 +116,8 @@ export function DirectorWorkspace() {
 
       <main className="flex flex-1 flex-col overflow-visible lg:flex-row lg:overflow-hidden">
         {/* Left Sidebar - Inbox */}
-        <div className="w-full flex-shrink-0 border-b border-border bg-white p-3 space-y-3 overflow-x-auto lg:w-96 lg:border-b-0 lg:border-r lg:overflow-y-auto lg:p-4 lg:space-y-4">
-          <div className="px-2"><div className="flex items-center justify-between gap-2"><h3 className="text-sm font-semibold text-navy-950">Needs Review ({inboxTasks.length})</h3><SlidersHorizontal className="h-4 w-4 text-primary"/></div><p className="mt-1 text-[11px] text-text-muted">{isAdmin ? 'All assigned events' : assignedEvents.length ? assignedEvents.join(', ') : 'No event assigned'}</p></div>
+        <div className="director-inbox w-full flex-shrink-0 border-b border-border bg-white p-3 space-y-3 overflow-x-auto lg:w-96 lg:border-b-0 lg:border-r lg:overflow-y-auto lg:p-4 lg:space-y-4">
+          <div className="px-2"><div className="flex items-center justify-between gap-2"><h3 className="text-sm font-semibold text-navy-950">Needs Review <span className="text-text-muted">({inboxTasks.length})</span></h3><SlidersHorizontal className="h-4 w-4 text-primary"/></div><p className="mt-1 text-[11px] text-text-muted">{isAdmin ? 'All assigned events' : assignedEvents.length ? assignedEvents.join(', ') : 'No event assigned'}</p></div>
 
           <div className="grid gap-2 rounded-2xl border border-border bg-surface p-3">
             <label className="flex min-h-10 items-center gap-2 rounded-xl border border-border bg-white px-3 text-text-muted"><Search className="h-4 w-4 shrink-0"/><input value={searchQuery} onChange={event => setSearchQuery(event.target.value)} placeholder="Search submissions" className="w-full bg-transparent text-xs text-navy-950 outline-none"/></label>
@@ -118,7 +126,7 @@ export function DirectorWorkspace() {
               <select value={statusFilter} onChange={event => setStatusFilter(event.target.value)} className="min-h-10 w-full rounded-xl border border-border bg-white px-3 text-xs text-navy-800"><option value="ALL">All review statuses</option><option value="PENDING">Pending</option><option value="IN_REVIEW">In review</option></select>
               <select value={workTypeFilter} onChange={event => setWorkTypeFilter(event.target.value)} className="min-h-10 w-full rounded-xl border border-border bg-white px-3 text-xs text-navy-800"><option value="ALL">All work types</option>{workTypeOptions.map(type => <option key={type} value={type}>{type}</option>)}</select>
             </div>
-            {(searchQuery || eventFilter !== 'ALL' || statusFilter !== 'ALL' || workTypeFilter !== 'ALL') && <button onClick={() => { setSearchQuery(''); setEventFilter('ALL'); setStatusFilter('ALL'); setWorkTypeFilter('ALL'); }} className="min-h-9 text-xs font-semibold text-primary hover:underline">Clear filters</button>}
+            {hasActiveFilters && <button onClick={clearFilters} className="inline-flex min-h-9 items-center justify-center gap-2 rounded-xl text-xs font-semibold text-primary hover:bg-primary-soft"><FilterX className="h-3.5 w-3.5"/> Clear filters</button>}
           </div>
           
           <div className="flex gap-3 lg:block lg:space-y-4">
@@ -139,7 +147,12 @@ export function DirectorWorkspace() {
           ))}
           </div>
           {inboxTasks.length === 0 && (
-            <div className="rounded-xl border border-dashed border-border p-5 text-center text-sm text-text-muted">No submissions match these filters.</div>
+            <div className="director-empty-list rounded-2xl border border-dashed border-border p-5 text-center">
+              <Inbox className="mx-auto mb-2 h-5 w-5 text-primary" />
+              <p className="text-sm font-semibold text-navy-950">{hasActiveFilters ? 'No matching submissions' : 'Nothing is waiting for review'}</p>
+              <p className="mt-1 text-xs leading-5 text-text-muted">{hasActiveFilters ? 'Try clearing a filter or adjusting your search.' : 'New submissions will appear here automatically.'}</p>
+              {hasActiveFilters && <button onClick={clearFilters} className="mt-3 text-xs font-semibold text-primary hover:underline">Reset filters</button>}
+            </div>
           )}
         </div>
 
@@ -180,8 +193,13 @@ export function DirectorWorkspace() {
               </div>
             </>
           ) : (
-            <div className="flex h-full items-center justify-center text-text-muted">
-              Select a task from the inbox to review
+            <div className="flex min-h-[340px] flex-1 items-center justify-center p-6">
+              <section className="director-empty-state max-w-md rounded-[22px] border border-border bg-white p-7 text-center shadow-sm sm:p-9">
+                <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-primary-soft text-primary"><Inbox className="h-6 w-6" /></span>
+                <h2 className="mt-5 text-xl font-bold text-navy-950">{hasActiveFilters ? 'No submissions match these filters' : 'Your review inbox is clear'}</h2>
+                <p className="mt-2 text-sm leading-6 text-text-muted">{hasActiveFilters ? 'Clear or adjust the filters to see submissions waiting for review.' : 'When a designer or editor submits work, it will appear here with its event, status and review tools.'}</p>
+                {hasActiveFilters && <Button variant="outline" size="sm" onClick={clearFilters} className="mt-5"><FilterX className="mr-2 h-4 w-4"/> Clear filters</Button>}
+              </section>
             </div>
           )}
         </div>
