@@ -71,7 +71,7 @@ export function AIAssistantWidget() {
   if (isLoading || !user || !profile) return null;
 
   return (
-    <div className="fixed bottom-10 right-[4.25rem] z-[60] flex flex-col items-end sm:bottom-12 sm:right-24">
+    <div className="fixed bottom-[94px] right-[4.25rem] z-[60] flex flex-col items-end sm:bottom-12 sm:right-24">
       {open && (
         <section
           aria-label="IMSSA AI Assistant"
