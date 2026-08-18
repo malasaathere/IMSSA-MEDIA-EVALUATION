@@ -269,6 +269,7 @@ html[data-theme='dark'] .marketing-plan-table tr.bg-white:hover { background-col
 .review-room-progress b { display: block; height: 100%; min-width: 5px; border-radius: inherit; background: #111612; transition: width .2s ease; }
 .review-room-filters { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
 .review-room-filters select, .review-room-filters button { min-height: 38px; max-width: 150px; padding: 0 11px; border: 1px solid #d2cdc2; border-radius: 999px; color: #252a26; background: #fffcf7; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; font-weight: 700; }
+.review-room-summary-chip { display: inline-flex; min-height: 38px; align-items: center; padding: 0 11px; border: 1px solid #d2cdc2; border-radius: 999px; color: #252a26; background: #fffcf7; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; font-weight: 700; white-space: nowrap; }
 .review-room-filters button { display: inline-flex; align-items: center; gap: 5px; color: #317468; cursor: pointer; }
 .review-room-main { display: grid; min-height: 620px; grid-template-columns: minmax(330px, 1fr) minmax(0, 1.08fr); }
 .review-room-map { min-width: 0; padding: 42px clamp(24px,4vw,72px); border-right: 1px solid #d8d2c6; }
@@ -312,6 +313,7 @@ html[data-theme='dark'] .review-room { color: #edf0e7; background: #0b1311; }
 html[data-theme='dark'] .review-room-header, html[data-theme='dark'] .review-room-summary, html[data-theme='dark'] .review-room-map { border-color: #2c3833; }
 html[data-theme='dark'] .review-room-header p, html[data-theme='dark'] .review-room-map-heading p { color: #9da59b; } html[data-theme='dark'] .review-room-header span, html[data-theme='dark'] .review-room-status small { color: #aab4aa; }
 html[data-theme='dark'] .review-room-search, html[data-theme='dark'] .review-room-filters select, html[data-theme='dark'] .review-room-filters button { border-color: #35433d; color: #e7eee5; background: #121e1a; }
+html[data-theme='dark'] .review-room-summary-chip { border-color: #35433d; color: #e7eee5; background: #121e1a; }
 html[data-theme='dark'] .review-room-progress i { background: #314039; } html[data-theme='dark'] .review-room-progress b { background: #c2ff38; }
 html[data-theme='dark'] .review-room-task { border-color: #2c3833; } html[data-theme='dark'] .review-room-task:hover, html[data-theme='dark'] .review-room-task.is-selected { background: #15221d; }
 html[data-theme='dark'] .review-room-list { border-color: #e5eee6; } html[data-theme='dark'] .review-room-task-copy strong, html[data-theme='dark'] .review-room-empty-list strong { color: #edf0e7; } html[data-theme='dark'] .review-room-task-arrow { color: #e5eee6; }
