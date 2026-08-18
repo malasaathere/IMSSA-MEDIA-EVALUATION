@@ -111,7 +111,7 @@ export function GlobalChatWidget() {
   if (authLoading || !user) return null;
 
   return (
-    <div className="fixed bottom-[94px] right-3 z-50 flex flex-col items-end sm:bottom-12 sm:right-6">
+    <div className="fixed bottom-10 right-3 z-50 flex flex-col items-end sm:bottom-12 sm:right-6">
       {isOpen && (
         <div className="bg-white dark:bg-navy-900 border dark:border-navy-800 shadow-xl rounded-xl mb-4 w-[350px] max-w-[calc(100vw-32px)] h-[500px] max-h-[calc(100vh-120px)] flex flex-col overflow-hidden animate-in slide-in-from-bottom-5">
           {/* Header */}
