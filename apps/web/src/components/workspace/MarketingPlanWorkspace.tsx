@@ -120,8 +120,8 @@ export const MarketingPlanWorkspace = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left">
+          <div className="marketing-plan-scroll overflow-x-auto">
+            <table className="marketing-plan-table min-w-[1060px] w-full text-sm text-left">
               <thead className="text-xs uppercase bg-gray-50 text-gray-700">
                 <tr>
                   <th className="px-4 py-3">Campaign</th>
@@ -154,12 +154,12 @@ export const MarketingPlanWorkspace = () => {
                     return (
                     <React.Fragment key={plan.$id}>
                       <tr className={`border-b transition-colors ${getCampaignTone(plan.campaign).row}`}>
-                        <td className="px-4 py-3 font-medium max-w-[150px] truncate">
+                        <td className="px-4 py-3 font-medium max-w-[170px] truncate">
                           <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${getCampaignTone(plan.campaign).label}`}>
                             {plan.campaign || '-'}
                           </span>
                         </td>
-                        <td className="px-4 py-3 max-w-[160px]">
+                        <td className="px-4 py-3 max-w-[190px]">
                           <div className="font-medium text-gray-900 truncate">{plan.title || '-'}</div>
                           {plan.description && (
                             <div className="text-xs text-gray-500 truncate">{plan.description}</div>

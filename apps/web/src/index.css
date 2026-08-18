@@ -227,6 +227,25 @@ html[data-theme='dark'] .director-inbox,
 html[data-theme='dark'] .director-empty-state { background: #0d222a !important; }
 html[data-theme='dark'] .director-empty-list { background: #0b1d24; }
 
+/* Marketing plan table: campaign colours must remain readable in dark mode,
+   including the hovered row that otherwise inherits the generic table hover. */
+.marketing-plan-scroll { scrollbar-color: #91aaa9 transparent; scrollbar-width: thin; }
+.marketing-plan-table th { white-space: nowrap; }
+.marketing-plan-table td { vertical-align: middle; }
+html[data-theme='dark'] .marketing-plan-table .text-gray-900 { color: #edf7f5 !important; }
+html[data-theme='dark'] .marketing-plan-table .text-gray-800 { color: #d2e4e1 !important; }
+html[data-theme='dark'] .marketing-plan-table .text-gray-700,
+html[data-theme='dark'] .marketing-plan-table .text-gray-600 { color: #b6cecb !important; }
+html[data-theme='dark'] .marketing-plan-table .text-gray-500 { color: #94aeab !important; }
+html[data-theme='dark'] .marketing-plan-table tr.bg-blue-50 { background-color: #132c44 !important; }
+html[data-theme='dark'] .marketing-plan-table tr.bg-sky-50 { background-color: #12333c !important; }
+html[data-theme='dark'] .marketing-plan-table tr.bg-yellow-50 { background-color: #302b16 !important; }
+html[data-theme='dark'] .marketing-plan-table tr.bg-white { background-color: #10262e !important; }
+html[data-theme='dark'] .marketing-plan-table tr.bg-blue-50:hover { background-color: #1a3a59 !important; }
+html[data-theme='dark'] .marketing-plan-table tr.bg-sky-50:hover { background-color: #17424d !important; }
+html[data-theme='dark'] .marketing-plan-table tr.bg-yellow-50:hover { background-color: #443b18 !important; }
+html[data-theme='dark'] .marketing-plan-table tr.bg-white:hover { background-color: #17323b !important; }
+
 /* Review room: a task map paired with one focused decision surface. */
 .review-room { min-height: 100%; color: #111612; background: #f4f1e9; }
 .review-room-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 28px; padding: 42px clamp(24px,4vw,72px) 36px; border-bottom: 1px solid #d8d2c6; }
